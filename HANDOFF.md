@@ -2,15 +2,17 @@
 
 ## Built
 
-Nothing in this repo yet beyond the harness: `AGENTS.md`, `CLAUDE.md`, this file and `verify.sh`.
+The page, promoted in from the archive prototype at commit `633b95b` and byte-identical to it:
+`index.html`, `assets/site.css`, the Inter variable font and its licence, `COPY.md`, `DESIGN.md`,
+`PRODUCT.md`, six verification screenshots and `.impeccable/design.json`, the design tool's state
+for this build. 2,628 bytes of HTML, 10,071 bytes of CSS, a 73,016-byte font.
 
-The page itself is finished, but it lives outside this repo, git-ignored and never deployed, at
-`~/Projects/in-the-loop-archive/site/_prototypes/personal-site-minimal-v2-2026-08-20/`. It is 2,628
-bytes of HTML, 10,071 bytes of CSS and a 73,016-byte font. Because that path is git-ignored, the
-learnings behind it were written to tracked files instead, and those are now in
-`../shared/agent-memory/`.
+Not yet deployed. The domain is registered and still points at a stale Bear blog that has to be
+replaced, not left up.
 
-The domain is registered and points at a stale Bear blog that has to be replaced, not left up.
+Rejected type variants and four unused fonts stayed behind in
+`~/Projects/in-the-loop-archive/site/_prototypes/personal-site-minimal-v2-2026-08-20/explorations/`.
+The craft rulings behind the build are in `../shared/agent-memory/`.
 
 ## Test
 
