@@ -1,0 +1,414 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T22:16:58Z",
+  "title": "Design System: Ryan Hennebry",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Pure White",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Cool Near-Black",
+        "canonical": "oklch(20.77% 0.005 248.07)",
+        "tonalRamp": [
+          "oklch(15% 0.005 248.07)",
+          "oklch(26.4% 0.005 248.07)",
+          "oklch(37.9% 0.005 248.07)",
+          "oklch(49.3% 0.005 248.07)",
+          "oklch(60.7% 0.005 248.07)",
+          "oklch(72.1% 0.005 248.07)",
+          "oklch(83.6% 0.005 248.07)",
+          "oklch(95% 0.005 248.07)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Cool Muted Grey",
+        "canonical": "oklch(50.36% 0.0121 248.07)",
+        "tonalRamp": [
+          "oklch(15% 0.0121 248.07)",
+          "oklch(26.4% 0.0121 248.07)",
+          "oklch(37.9% 0.0121 248.07)",
+          "oklch(49.3% 0.0121 248.07)",
+          "oklch(60.7% 0.0121 248.07)",
+          "oklch(72.1% 0.0121 248.07)",
+          "oklch(83.6% 0.0121 248.07)",
+          "oklch(95% 0.0121 248.07)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule Grey",
+        "canonical": "oklch(56.93% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Rule Grey",
+        "canonical": "oklch(50.32% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "selection": {
+        "role": "neutral",
+        "displayName": "Neutral Grey Wash",
+        "canonical": "oklch(92.49% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "print-paper": {
+        "role": "neutral",
+        "displayName": "Print White",
+        "canonical": "oklch(100% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "print-ink": {
+        "role": "neutral",
+        "displayName": "Print Black",
+        "canonical": "oklch(0% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      },
+      "print-muted": {
+        "role": "neutral",
+        "displayName": "Print Grey",
+        "canonical": "oklch(40.91% 0 0)",
+        "tonalRamp": [
+          "oklch(15% 0 0)",
+          "oklch(26.4% 0 0)",
+          "oklch(37.9% 0 0)",
+          "oklch(49.3% 0 0)",
+          "oklch(60.7% 0 0)",
+          "oklch(72.1% 0 0)",
+          "oklch(83.6% 0 0)",
+          "oklch(95% 0 0)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "strong": {
+        "displayName": "Strong",
+        "purpose": "The h1 and nothing else on screen. 15px at 500. The section labels, the project names and the links are all body weight now, so the strong weight is what separates the name from the rest of the page. In forced-colours mode the h2 also takes 500, because muted resolves to CanvasText there and heading rank has to be carried by weight instead of colour."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Everything else: the role line, the three narrative paragraphs, the two section labels and every link. 15px at 400. That is also Inter's default instance, which is why every rule that sets type states font-weight rather than letting the default stand in for a decision."
+      }
+    },
+    "fonts": [
+      {
+        "family": "Inter",
+        "variable": true,
+        "axes": "wght 100-900 shipped; opsz 14-32 present but deliberately never set",
+        "subset": "latin",
+        "format": "woff2-variations, self-hosted at assets/fonts/inter-latin-var.woff2",
+        "bytes": 73016,
+        "license": "SIL OFL 1.1",
+        "fontDisplay": "swap",
+        "note": "The page ships two weights, 400 and 500. Inter's default instance is also 400, so every rule that sets type states its font-weight rather than letting the default stand in for a decision. The opsz axis is left unset so the browser resolves it from the rendered size.",
+        "deferred": "A rel=preload link was tried and reverted: on file:// the CORS-mode font fetch is blocked as origin 'null', producing console errors and a duplicate fetch. Revisit on a real origin, where it matters more now that the binary is 73,016 bytes."
+      }
+    ],
+    "shadows": [],
+    "motion": [],
+    "breakpoints": [
+      {
+        "name": "narrow",
+        "value": "480 / 481px",
+        "purpose": "The only boundary, with exactly one consequence: below 481px the padding above the name drops from 117px to 56px. The bottom padding, the type size, both weights, the line-height, the gutter and the measure are identical at 320px and 1440px."
+      }
+    ],
+    "spacingLadder": {
+      "steps": [
+        "8px",
+        "12px",
+        "24px",
+        "48px",
+        "56px",
+        "117px"
+      ],
+      "note": "Six tokens in :root, every one of them used, and no step declared that is not used: --space-void 117px, --space-void-narrow 56px, --space-bottom 48px, --space-group 24px, --space-para 12px, --space-tight 8px. The two inner steps are sourced rather than eyeballed: 8px is rad-spacing's tightest-grouping value, and 24px against 12px is exactly the 2.0x between-group to within-group ratio better-layout requires. Page padding is asymmetric: 117px top against 48px bottom on desktop, 56px top below 481px.",
+      "assignments": [
+        {
+          "distance": "0px",
+          "relationship": "The name to the role line. Not a token: the global h1/h2/p margin reset, which leaves the role line sitting one line-height under the name so the two read as a single unit."
+        },
+        {
+          "distance": "8px",
+          "relationship": "A section label to its first item."
+        },
+        {
+          "distance": "12px",
+          "relationship": "Adjacent body paragraphs, from the third paragraph onward."
+        },
+        {
+          "distance": "24px",
+          "relationship": "Block to block, and the role line to the first paragraph. One token for both uses, deliberately not split. Also the horizontal gutter."
+        },
+        {
+          "distance": "48px",
+          "relationship": "The page's bottom padding, at every width."
+        },
+        {
+          "distance": "56px",
+          "relationship": "The silence above the name below 481px."
+        },
+        {
+          "distance": "117px",
+          "relationship": "The silence above the name on desktop. The only generous gesture on a page with no scroll, no large type, no imagery, no colour and no dividers."
+        }
+      ]
+    },
+    "mediaTiers": [
+      {
+        "name": "print",
+        "purpose": "A complete second colour tier, not a tint of the first. The stylesheet says why it exists: a background check may well be printed. True white paper, true black ink tier, darker grey annotation tier at #4A4A4A (8.86:1 on white), black underlines, no focus ring. Both tiers enumerate the same elements."
+      },
+      {
+        "name": "forced-colors",
+        "purpose": "System colours pass through: LinkText for the underline, Highlight for the focus ring. The h2 takes the strong weight here, because its muted colour resolves to CanvasText and the label would otherwise be indistinguishable from body text. The link technique survives high-contrast mode instead of vanishing."
+      },
+      {
+        "name": "hover-capable",
+        "purpose": "The entire hover block is gated behind (hover: hover) and (pointer: fine), so hover never fires as a sticky state on touch. No information is conveyed by hover alone."
+      }
+    ],
+    "constraints": {
+      "typeScale": "One size, 15px, for every element on the page. The name is 1.00x body. There is no size hierarchy; weight, colour and position are the only signals.",
+      "lineBox": "line-height 1.5 on 15px, a 22.5px line box, one line box across the whole page.",
+      "tracking": "None. letter-spacing is not declared anywhere on the page: at 15px Inter's own tracking stands unaltered. An earlier build carried -0.0064em on body and it has been removed.",
+      "javascript": "None. The only <script> is a JSON-LD Person block.",
+      "networkRequests": "Zero beyond local file:// fetches. Works fully as a single static document.",
+      "motion": "Zero transitions, animations, keyframes and transforms. Because nothing moves there is deliberately no prefers-reduced-motion block; adding one transition makes that omission a defect.",
+      "theme": "Single theme. color-scheme: light is declared and no dark palette exists. The page carries no hue at all: every colour in the system is a neutral grey. All contrast ratios, including the resting underline's 4.48:1 against a 3:1 non-text floor, are computed against paper."
+    },
+    "measureHistory": {
+      "current": "600px, frozen",
+      "sequence": [
+        "600px",
+        "644px",
+        "600px"
+      ],
+      "body": "600px is ibelick.com's measure, about 80 characters per line at this size, and it is where this page started. It was raised to 644px, emilkowal.ski's measure, only because the first body sentence then ran 90 characters, wrapped, and stranded two words on a second line. It returned to 600px when Ryan shortened that sentence to 78 characters, which sets on one line with 45.05px of slack. The return was enabled by shorter copy, not by relaxing the rule. The prohibition on tuning the measure to fit copy stands in both directions: it is not to be raised to rescue a long sentence or lowered to tighten a short one. If new copy does not fit 600px, the copy changes."
+    },
+    "deferredDecisions": [
+      "Font preload: reverted because file:// blocks the CORS-mode font fetch as origin 'null'. Revisit on a real origin, where it matters more now that the Inter binary is 73,016 bytes.",
+      "Share card: twitter:card is summary with no og:image, so shares render a text card. Every remedy needs an image asset, which the imagery constraint forbids. Decide at deployment.",
+      "Canonical URL: canonical, og:url and the JSON-LD url key are all omitted until a live domain is approved. They land together."
+    ],
+    "notRecorded": {
+      "items": [
+        "document height",
+        "fold position at any viewport",
+        "characters per line at a given viewport"
+      ],
+      "reason": "Each is a function of the current wording. Across this build the page height and the fold moved on every copy edit, and chasing them is what drove the measure up and back before it was frozen. A design system records the rules that hold when the copy changes; a number a comma can invalidate belongs in a verification report. Durable measurements are recorded and sourced: the contrast ratios, the 22.5px line box, the 648px container, and the stylesheet's own note that 600px sets about 80 characters per line at this size."
+    }
+  },
+  "components": [
+    {
+      "name": "Inline Link",
+      "kind": "custom",
+      "refersTo": "link",
+      "description": "The only interactive element on the page, and the only thing on it that responds to input. Text inherits its context colour and its weight; the underline carries all the signal. The resting underline is a neutral grey at 4.48:1 against paper, well past the 1.7 to 2.5:1 the reference sites use, because it is the sole non-colour identifier of a link and has to clear the 3:1 non-text floor. Hover darkens it and thickens it; both changes are gated behind a hover-capable pointer.",
+      "html": "<p class=\"ds-body\"><a class=\"ds-link\" href=\"#\">Email</a>, <a class=\"ds-link\" href=\"#\">GitHub</a>, <a class=\"ds-link\" href=\"#\">LinkedIn</a></p>",
+      "css": ".ds-body { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--ink, #16181A); text-wrap: pretty; margin: 0; } .ds-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rule, #777777); text-decoration-thickness: 0.08em; text-underline-offset: 0.15em; text-decoration-skip-ink: auto; } @media (hover: hover) and (pointer: fine) { .ds-link:hover { text-decoration-color: var(--rule-strong, #646464); text-decoration-thickness: 0.11em; } } .ds-link:focus-visible { outline: 2px solid var(--rule-strong, #646464); outline-offset: 2px; border-radius: 2px; } @media (forced-colors: active) { .ds-link { text-decoration-color: LinkText; } .ds-link:focus-visible { outline-color: Highlight; } }"
+    },
+    {
+      "name": "Page Title",
+      "kind": "custom",
+      "refersTo": "page-title",
+      "description": "The h1, used once, holding the name and nothing else, with no margin beneath it. The role line sits directly under it at one line-height, baseline to baseline, so the name and the role read as a single unit. The h1 is the only element on screen set at 500; it also comes first and is the ink tier, and those three things are the whole of its rank. No text-wrap treatment; wrapping is left to the browser.",
+      "html": "<h1 class=\"ds-page-title\">Ryan Hennebry</h1><p class=\"ds-page-role\">AI-native startup operator</p>",
+      "css": ".ds-page-title { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--ink, #16181A); margin: 0; } .ds-page-role { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--muted, #5F656B); margin: 0; }"
+    },
+    {
+      "name": "Section Label",
+      "kind": "custom",
+      "refersTo": "section-label",
+      "description": "An h2 at 15px and 400, in muted rather than ink, with 8px beneath it. It is the same size and the same weight as the body text directly below it, so colour alone separates the label from its items. That is the lightest mark available and it keeps the page to two weights. In forced colours, where muted resolves to CanvasText, the weight steps up to 500 to keep the distinction.",
+      "html": "<h2 class=\"ds-section-label\">Projects</h2>",
+      "css": ".ds-section-label { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--muted, #5F656B); margin: 0 0 8px 0; } @media (forced-colors: active) { .ds-section-label { font-weight: 500; } }"
+    },
+    {
+      "name": "Page Container",
+      "kind": "custom",
+      "refersTo": "page",
+      "description": "One centred column capped at 648px, the 600px measure plus a 24px gutter each side. The reading measure comes from padding inward, never from a narrower content box. Vertical padding is asymmetric and heavily top-weighted: 117px above the name against 48px below the last line, so one long silence opens the page and the block beneath it reads as a single object. Below 481px the void alone shrinks, to 56px. Selection recolours the ground only: setting a colour here also resets text-decoration-color and flattens the muted tier.",
+      "html": "<main class=\"ds-page\"><p class=\"ds-page-body\">I&#8217;ve been building with them ever since.</p></main>",
+      "css": ".ds-page { max-width: calc(600px + 2 * 24px); margin-inline: auto; padding-inline: 24px; padding-block: 117px 48px; background-color: var(--paper, #ffffff); color: var(--ink, #16181A); font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; } .ds-page-body { text-wrap: pretty; margin: 0; } .ds-page ::selection { background-color: var(--selection, #E6E6E6); } @media (max-width: 480px) { .ds-page { padding-block: 56px 48px; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Index Card",
+    "overview": "This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, a role line under it, three sentences and two labelled lists. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.\n\nThe defining fact of the system is that it has no size hierarchy. Every piece of text on the page is 15px. The name, the role line, the section labels, the project names, the body copy and the links are all set at the same size in the same face, and what separates them is weight, colour and position alone. Only the h1 uses the second weight, so on most of the page colour and position are doing the work by themselves. That is a deliberately narrow set of signals, and it is why the spacing and the two text tiers carry more load here than in a conventional page. Set at 15px on a 22.5px line box, the page reads closer to a well-made interface than to an essay.\n\nThe world it belongs to is the minimal personal-site canon (Benji, Emil, ibelick, Josh, Matt, Jakub), applied at full fidelity rather than copied cosmetically. What is drawn from it directly is named as such in the stylesheet: the measure is calibrated against ibelick's column, and the void above the name was measured against emilkowal.ski's and ibelick's before being set on this page's own terms.\n\nOne honest caveat about what is absent. This build ships no imagery, no colour, no hairline rules, no cards, no shadows and no motion, but the canon itself uses several of those natively, and the practitioners named above include people whose public work is largely about motion. Their absence here is a decision about this page, taken because a static single-document background check has nothing that needs to move or be boxed, and it is recorded as a scoped rule about this artefact. It is not a claim that the world forbids the device. Only the imagery ban is absolute, and it is absolute because Ryan set it, not because the world implies it.",
+    "keyCharacteristics": [
+      "One type size, 15px, across every element on the page",
+      "Two weights, 400 and 500, and only the h1 uses the second one",
+      "Two text tiers: ink for narrative, muted for the role line and the section labels",
+      "Hierarchy carried by weight, colour and position, never by scale",
+      "One surface, no depth of any kind",
+      "No hue anywhere: every colour is a neutral grey and there is no accent",
+      "Zero motion, zero JavaScript, zero network requests; works fully from file://"
+    ],
+    "rules": [
+      {
+        "name": "The Two Tiers Rule",
+        "body": "Every piece of text on the page is either ink or muted. There is no third text colour, no lighter fourth tier for metadata, and no colour-coded categories. If a new element cannot decide which of the two tiers it belongs to, it does not belong on the page.",
+        "section": "colors"
+      },
+      {
+        "name": "The Muted Label Rule",
+        "body": "The section label is muted specifically so it is not read as another item. It is the same size and the same weight as the links directly beneath it, so colour is the only mechanism separating a heading from its contents. Never set a section label in ink. The one place this breaks down is forced-colours mode, where muted resolves to CanvasText, and the stylesheet hands the job to weight there rather than letting the distinction disappear.",
+        "section": "colors"
+      },
+      {
+        "name": "The Underline Carries the Signal Rule",
+        "body": "Link text inherits the colour and the weight of its context and never changes. All link signal lives in the underline. This is what lets a link sit inside a paragraph without punching a hole in it, and it is why the underline has to clear 3:1 rather than merely look like a link.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Hue Rule",
+        "body": "The page carries no hue at all. An earlier build used a quiet teal on the underline, the focus ring and the selection wash; each was replaced by a neutral grey matched in luminance to the colour it replaced, so nothing moved except the chroma. Do not reintroduce an accent, and do not reach for one to mark a new element: this system has no colour signal to spend, only weight, tier and position.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Size Rule",
+        "body": "15px, everywhere, for everything. There is no display size, no heading size and no small print. Any new element is 15px. A second size is not an addition to this system, it is the abandonment of its central premise, and it would immediately make the weight and colour signals redundant.",
+        "section": "typography"
+      },
+      {
+        "name": "The Explicit Weight Rule",
+        "body": "Every rule that sets type also sets font-weight. Inter's default instance is 400, which is also one of the two shipped weights, so this is not about avoiding a wrong value: it is so that every element on the page states its weight as a decision rather than inheriting one by accident. An element that says nothing about its weight cannot be read as having chosen it.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Tracking Rule",
+        "body": "letter-spacing is not declared anywhere on this page. At 15px Inter's own tracking stands unaltered. A previous build carried a global -0.0064em optical correction on body; it was removed, and the measure figures were re-measured without it. Do not add tracking to an individual element; if something looks wrong, the size or the weight is the thing in question.",
+        "section": "typography"
+      },
+      {
+        "name": "The Unset Optical Size Rule",
+        "body": "Inter's opsz axis runs 14 to 32 and is deliberately never set. The browser resolves it from the rendered size, which is correct at every size the page uses. Pinning it would override that resolution for no gain.",
+        "section": "typography"
+      },
+      {
+        "name": "The Measure Is Frozen Rule",
+        "body": "The measure is 600px and the stylesheet marks it frozen. It is ibelick's column, about 80 characters per line at this size. It went to 644px once, to stop the first body sentence wrapping, and came back when Ryan shortened the sentence. That round trip is not licence to keep moving it: a measure tuned to how the current copy breaks becomes a function of the current wording and never settles. The rule holds in both directions, up and down. If a line bothers you, the sentence is the thing to change, and the copy is Ryan's.",
+        "section": "typography"
+      },
+      {
+        "name": "The Padded Measure Rule",
+        "body": "The container is always wider than the text; the reading measure comes from padding-inline, never from a narrower content box. max-width: calc(var(--measure) + 2 * var(--gutter)).",
+        "section": "layout"
+      },
+      {
+        "name": "The Distance Is The Relationship Rule",
+        "body": "Every gap on the page is one of the distances in the spacing ladder, and which one is used is the only signal of how two elements relate. There are no rules, boxes, tints or badges doing that job. If two elements seem to need a new distance to look related, the hierarchy is wrong, not the ladder.",
+        "section": "layout"
+      },
+      {
+        "name": "The Page Sits High Rule",
+        "body": "Vertical padding is 117px above the name against 48px below the last line on desktop, and 56px above below 481px. The page is deliberately top-weighted, not vertically centred and not mis-padded. The void is the only generous gesture the page makes, and it keeps the whole document inside a 700px viewport without scrolling. It should not be evened up.",
+        "section": "layout"
+      },
+      {
+        "name": "The Single Plane Rule",
+        "body": "Nothing on this page is drawn on top of anything else. If a new element needs a shadow, a border or a background tint to be legible, the correct fix is a spacing change, a weight change or a tier change, not a surface.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Only Corner Is The Focus Ring Rule",
+        "body": "border-radius exists in this system for one purpose. Any other use means a box has appeared, and the box is the thing to question.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do set every new element at 15px. The single size is the premise of the system, not a default to be relaxed.",
+      "Do build hierarchy from the three signals that remain: weight (400 against 500), colour (ink against muted) and position.",
+      "Do set font-weight explicitly on every rule that sets type, so the weight reads as a decision rather than as Inter's default standing in for one.",
+      "Do leave letter-spacing undeclared. Inter's own tracking at 15px is the page's tracking.",
+      "Do leave Inter's opsz axis unset and let the browser resolve it from the rendered size.",
+      "Do pick every gap from the distances in the spacing ladder, and let spacing alone carry the grouping.",
+      "Do keep any group's internal gaps at most half the gap that separates it from the next group. 12px inside against 24px between is exactly the 2.0x the rule asks for.",
+      "Do keep link text inheriting its context colour and weight, and put all link signal in the underline.",
+      "Do keep any non-text identifier at or above 3:1 against paper. The resting underline sits at 4.48:1 for exactly this reason; a lighter, prettier value would fail.",
+      "Do add any new text element to the correct group in the @media print block at the same time you add it to the screen styles. This page gets printed, and a text colour that exists in only one of the two tiers is a defect.",
+      "Do check any new element in forced-colours mode, where the muted tier collapses into CanvasText and colour-only distinctions stop working.",
+      "Do keep :focus-visible visible, offset, and free of layout shift on every interactive element.",
+      "Do gate any hover affordance behind (hover: hover) and (pointer: fine), and make sure the resting state alone is sufficient.",
+      "Do delete a spacing token when nothing uses it. All six tokens in :root are in use."
+    ],
+    "donts": [
+      "Don't add imagery of any kind, meaning photography, avatar, logo, illustration, icon or decorative SVG. This is an absolute constraint set by Ryan, not an inference from the style.",
+      "Don't introduce a second type size to solve a hierarchy problem. Use weight, colour or position, which is what every existing distinction on the page does.",
+      "Don't add a third weight. The 400 and 500 pair is the whole weight vocabulary, and the h1 is currently the only thing spending the second one.",
+      "Don't set letter-spacing anywhere, and don't pin opsz on an individual element.",
+      "Don't move the measure to improve how a particular paragraph breaks. It is frozen at 600px on typographic grounds, and it is not to be moved up to rescue a long sentence or down to tighten a short one.",
+      "Don't reintroduce an accent colour, a tint or any hue. Every colour in the system is a neutral grey, including the underline, the focus ring and the selection wash.",
+      "Don't give a project name a placeholder link, a greyed-out link or a coming soon. Every listed project is a live link; work with nothing public to open is not listed at all.",
+      "Don't introduce a third text colour tier. Ink or muted; anything that fits neither should be cut.",
+      "Don't set a colour on ::selection. It paints the ground only, because setting colour there also resets text-decoration-color, which flattens the muted tier and jumps the link underline to ink.",
+      "Don't even up the asymmetric page padding. 117px above the name against 48px below the last line is deliberate.",
+      "Don't reach for a border, divider, card, background tint or shadow to separate content on this page. It has one surface, and spacing has been proven sufficient for it. Elsewhere in the minimal personal-site canon these devices are normal; the rule is scoped to this artefact, not to the world.",
+      "Don't add motion to this page. It ships with zero transitions, animations and transforms, which is why it correctly has no prefers-reduced-motion block. Adding a single transition makes that omission a defect and obliges the block. Again scoped: the canon this page belongs to uses motion freely.",
+      "Don't add JavaScript. The only <script> is a JSON-LD Person block, and the page's guarantee is that it works as a single static document from file://.",
+      "Don't add a prefers-color-scheme: dark palette without treating it as a redesign. The page declares color-scheme: light and its contrast ratios, including the underline's 3:1 floor, are all computed against paper."
+    ]
+  }
+}

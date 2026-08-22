@@ -1,0 +1,278 @@
+/* Inter, variable, latin subset, served locally. Zero network requests. */
+@font-face {
+  font-family: "Inter";
+  src: url("fonts/inter-latin-var.woff2") format("woff2-variations");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/*
+  Two weights only: 400 and 500. Inter's default instance is also 400, so every
+  rule that sets type below states its font-weight rather than letting the
+  default stand in for a decision. The opsz axis (14 to 32) is never pinned to a
+  fixed value: `font-optical-sizing: auto` states explicitly that the browser is
+  to resolve it from the rendered size.
+*/
+
+:root {
+  --paper: #ffffff;         /* 1.00:1  pure white, the background */
+  --ink: #16181A;           /* 17.80:1 near-black, narrative text */
+  --muted: #5F656B;         /* 5.90:1  muted grey, the role line and the section labels */
+  --rule: #777777;          /* 4.48:1  resting link underline; clears 3:1 as a non-text identifier */
+  --rule-strong: #646464;   /* 5.92:1  hover underline and focus ring */
+  --selection: #E6E6E6;
+
+  /*
+    FROZEN at 600px. The full history, recorded honestly so the next reader does
+    not re-derive it or read the round trip as licence to keep moving:
+      1. 600px was the original measure. It is ibelick.com's measure, which sets
+         about 80 characters per line at this size.
+      2. It was raised to 644px, emilkowal.ski's measure, because the first body
+         sentence then ran 90 characters and would not fit 600px: it wrapped and
+         stranded "Series A." alone on a second line at 10.4 per cent of the
+         measure. 644px set that sentence as one line with 20.78px of slack.
+      3. It has now returned to 600px because Ryan shortened that sentence. In the
+         shipping copy it is 78 characters and sets on one line at 600px with
+         45.05px of slack. The return was enabled by shorter copy, not by relaxing
+         the rule. (Point 2's slack figure, and an earlier 83-character draft of
+         this sentence, were measured with -0.0064em of tracking on the body; the
+         45.05px above is re-measured with no letter-spacing set.)
+    The longest line on this page is the second body sentence: 80 characters,
+    569.48px of ink, 30.52px of slack. That is still just past ibelick's 80.
+    The prohibition on tuning the measure to fit copy stands in full, and applies
+    in both directions: this number is not to be moved up to rescue a long sentence
+    or down to tighten a short one. Short final lines are a property of the
+    sentences, not the column; optimising the measure for them makes the column a
+    function of the current wording and it will not settle. If new copy does not
+    fit 600px, the copy changes, not the measure.
+  */
+  --measure: 600px;
+  --gutter: 24px;
+
+  --leading: 1.5;             /* body and h2. No letter-spacing is set anywhere on the page: at 15px Inter's own
+                                 tracking stands unaltered. */
+
+  --size-name: 15px;
+  --size-body: 15px;
+  --weight-regular: 400;
+  --weight-strong: 500;
+
+  /*
+    Void, then dense. One long silence above the name, then a block whose
+    internal steps are small enough that the page reads as a single object.
+
+    The two inner steps follow published spacing rules on ui-skills.com rather
+    than eyeballed numbers:
+      - nolanperk/rad-spacing moves in 4/8 increments and names 8px as the base
+        for the tightest grouping, with 4px reserved as an edge-case floor. That
+        sets --space-tight at 8px and --space-para at 12px rather than 10px.
+      - jakubkrehel/better-layout requires the gap between groups to be at least
+        twice the gap within one. 24px against 12px is exactly 2.0x, so the
+        block step and the paragraph step now satisfy that ratio.
+  */
+  --space-void: 117px;         /* above the name, desktop. Justified by this page, not borrowed: the void is the
+                                  only generous gesture available here, on a page with no scroll, no large type, no
+                                  imagery, no colour and no dividers. 117px reads as chosen rather than as a default
+                                  top margin, and keeps the whole page inside a 700px viewport without scrolling.
+                                  emilkowal.ski also paints 117px, but that is a coincidence and not the reason: his
+                                  is 64px of authored padding plus 53px of flow taken by an invisible sticky banner.
+                                  ibelick's 248px was measured and rejected as an outlier. See DESIGN.md, The Void
+                                  Above The Name Rule, which supersedes any earlier provenance note. */
+  --space-void-narrow: 56px;   /* above the name, below 481px. The old narrow value (120px) scaled proportionally from the old 248px desktop void. */
+  --space-tight: 8px;          /* a section label to its first item. rad-spacing's tightest-grouping value. */
+  --space-para: 12px;          /* adjacent paragraphs. On the 4/8 scale, and exactly half --space-group per better-layout's 2x rule. */
+  --space-group: 24px;         /* block to block, AND the role line to the first paragraph. One token, one value, both uses: do not split it. */
+  --space-bottom: 48px;        /* below the last line */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--paper);
+}
+
+body {
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: var(--size-body);
+  font-weight: var(--weight-regular);
+  font-optical-sizing: auto;
+  line-height: var(--leading);
+}
+
+/*
+  Background only. Setting `color` here also resets text-decoration-color, which
+  flattened the muted tier: selected muted text jumped to ink and the link
+  underline jumped from --rule to ink. Selection now recolours the ground only.
+*/
+::selection {
+  background-color: var(--selection);
+}
+
+/* Container is wider than the text; the reading measure is created by padding inward. */
+.page {
+  max-width: calc(var(--measure) + 2 * var(--gutter));
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  padding-block: var(--space-void) var(--space-bottom);
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/*
+  The name carries no margin below it: the role line sits directly under it at
+  one line-height, baseline to baseline, so the two read as a single unit.
+*/
+h1 {
+  font-size: var(--size-name);
+  font-weight: var(--weight-strong);
+}
+
+/* The role line. Body size, body weight, muted: it is an annotation on the name. */
+.intro__role {
+  font-size: var(--size-body);
+  font-weight: var(--weight-regular);
+  color: var(--muted);
+}
+
+/*
+  The role line is an annotation on the name, so the step from it to the first
+  body paragraph is the block step, not the paragraph step. A plain `.intro p + p`
+  was applying the paragraph step there and the top of the page ran short.
+  This deliberately reuses --space-group rather than declaring its own number:
+  splitting the role step away from the block step was considered and rejected,
+  so the two stay identical at one token. Do not hardcode 24px here.
+*/
+.intro__role + p {
+  margin-top: var(--space-group);
+}
+
+/* Adjacent body paragraphs only: the third p onward, so the role line is excluded. */
+.intro p + p + p {
+  margin-top: var(--space-para);
+}
+
+.projects,
+.links {
+  margin-top: var(--space-group);
+}
+
+/*
+  Section label. Same size and same weight as body text: it is separated from the
+  items below by colour alone, which is the lightest possible way to mark a label
+  and keeps the page to two weights.
+*/
+h2 {
+  font-size: var(--size-body);
+  font-weight: var(--weight-regular);
+  color: var(--muted);
+  margin-bottom: var(--space-tight);
+}
+
+/*
+  Link technique: text inherits its context colour, the underline carries the signal.
+  The underline is the sole non-colour identifier of a link, so --rule is raised
+  well past the 1.7 to 2.5:1 the references use: it must clear 3:1 as a non-text
+  identifier. It is a neutral grey matched in luminance to the teal it replaced,
+  so the page carries no hue at all.
+*/
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--rule);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.15em;
+  text-decoration-skip-ink: auto;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  a:hover {
+    text-decoration-color: var(--rule-strong);
+    text-decoration-thickness: 0.11em;
+  }
+}
+
+a:focus-visible {
+  outline: 2px solid var(--rule-strong);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+@media (forced-colors: active) {
+  a {
+    text-decoration-color: LinkText;
+  }
+
+  /* h2 is --muted on screen; in forced colours it resolves to CanvasText, the same
+     value as body text, so heading rank is carried by weight instead. */
+  h2 {
+    font-weight: var(--weight-strong);
+  }
+
+  a:focus-visible {
+    outline-color: Highlight;
+  }
+}
+
+/* Same page, same sizes, same gutter. Only the silence above the name shrinks. */
+@media (max-width: 480px) {
+  .page {
+    padding-block: var(--space-void-narrow) var(--space-bottom);
+  }
+}
+
+/* A background check may well be printed. Ink on paper, no tints, no focus ring. */
+@media print {
+  html,
+  body {
+    background: #FFFFFF;
+  }
+
+  body,
+  h1 {
+    color: #000000;
+  }
+
+  h2,
+  .intro__role {
+    color: #4A4A4A;
+  }
+
+  a {
+    text-decoration-color: #000000;
+  }
+
+  /* Printed links are otherwise inert words. mailto: is left alone: the address
+     is already the link text. */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-weight: var(--weight-regular);
+  }
+
+  a:focus-visible {
+    outline: none;
+  }
+}
+
+/*
+  Motion: none, anywhere. A decision, not an omission. The reference end states are
+  kept and every timed property change is dropped. Because nothing on this page moves,
+  there is deliberately no prefers-reduced-motion block: there is nothing to reduce.
+*/
