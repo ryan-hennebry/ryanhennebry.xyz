@@ -2,13 +2,14 @@
 
 ## Built
 
-The page, promoted in from the archive prototype at commit `633b95b` and byte-identical to it:
-`index.html`, `assets/site.css`, the Inter variable font and its licence, `COPY.md`, `DESIGN.md`,
-`PRODUCT.md`, six verification screenshots and `.impeccable/design.json`, the design tool's state
-for this build. 2,628 bytes of HTML, 10,071 bytes of CSS, a 73,016-byte font.
+The finished static page: `index.html`, `assets/site.css`, the Inter variable font and its licence,
+`COPY.md`, `DESIGN.md`, `PRODUCT.md`, the verification harness and the Cloudflare deploy config. The
+page carries Ryan's final copy, a 550px measure, the Previously, Projects and Links groups, and no
+runtime dependency.
 
-Not yet deployed. The domain is registered and still points at a stale Bear blog that has to be
-replaced, not left up.
+Deployed to Cloudflare as the `ryanhennebry-xyz` Worker. Namecheap delegates the domain to
+Cloudflare. Both `https://ryanhennebry.xyz/` and `https://www.ryanhennebry.xyz/` serve the same
+static page, replacing the stale Bear blog.
 
 Rejected type variants and four unused fonts stayed behind in
 `~/Projects/in-the-loop-archive/site/_prototypes/personal-site-minimal-v2-2026-08-20/explorations/`.
@@ -16,27 +17,24 @@ The craft rulings behind the build are in `../shared/agent-memory/`.
 
 ## Test
 
-Run `./verify.sh`. Today it checks house style on the Markdown files and then reports that the site
-has not been promoted in yet. Once `index.html` and `assets/site.css` exist it also asserts the
-locked invariants: no imagery, no script other than the JSON-LD block, the 600px measure, and pure
-ASCII in the shipped files.
+Run `./verify.sh`. It checks house style on the Markdown files and asserts the locked page
+invariants: no imagery, no script other than the JSON-LD block, the 550px measure, all four supplied
+public destinations, and pure ASCII in the shipped files.
 
 Beyond that: open `index.html` from `file://` and confirm it renders complete with no network
-requests. Check the three body sentences each set as one line at 600px, and zero orphans at 1440,
-768, 390 and 320. `../shared/agent-memory/builder/verification-browser-measurement.md` has the exact
-method, including the contamination check on the debug port. Read it before producing any number.
+requests. Check the two narrative sentences each set as two lines at 550px, the 4px label-to-content
+gaps, the 24px group gaps, and zero overflow at 1440, 768, 390 and 320.
+
+On 2026-08-26, the apex and `www` returned HTTP 200 and their HTML matched local `index.html`
+byte-for-byte. The live stylesheet and font also matched their local files byte-for-byte. Public DNS
+returned Cloudflare's assigned nameservers and the preserved Private Email MX, SPF, DKIM, SRV,
+autoconfig, autodiscover and mail records. Every public destination except LinkedIn returned HTTP
+200; LinkedIn returned its automated-request block, so only that external response was not
+certified by the command-line check.
 
 ## Next
 
-1. Promote the prototype directory into this repo as the root of the site. Read the as-built
-   handoff in the archive first; it is written for a session with no context.
-2. Add the Projects section naming Startup Skills, the Feed and In The Loop as three separate links.
-   Ordering and copy are Ryan's call in his own session. Do not write them unilaterally.
-3. Add deploy config and replace the Bear blog on the live domain.
-4. Land the items that were deferred until there is an origin: `canonical`, `og:url`, the JSON-LD
-   `url`, font preload and a favicon.
-5. Raise the share card with Ryan explicitly. It is deliberately incomplete because imagery is
+1. Run the required fresh-context certification review. The deployment writer's review attempt was
+   blocked by the Codex usage limit, so the measured checks above are evidence, not certification.
+2. Raise the share card with Ryan explicitly. It is deliberately incomplete because imagery is
    banned, and it is not to be resolved by adding an image.
-
-Effort estimate from the consolidation plan: about a day. This is item 1 of 3 in the build sequence,
-ahead of the studio page and Startup Skills.

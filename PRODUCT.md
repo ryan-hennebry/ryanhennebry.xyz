@@ -21,7 +21,7 @@ Both readers arrive warm, already holding a reason to look. Nobody arrives cold 
 
 ## Product Purpose
 
-A quiet background check, not a funnel. The page identifies Ryan, gives the Minima-to-agents chronology in three sentences, names the projects that have something public to open, and leaves one ordinary way to make contact.
+A quiet background check, not a funnel. The page identifies Ryan, states what he is building now, records that he was Minima's first employee, names three projects with public repositories, and leaves ordinary contact links.
 
 Success means either audience understands the through-line and continues the conversation that already brought them here. There is no second conversion path, because there is no second thing to convert to.
 
@@ -43,15 +43,15 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 
 - No claim of customers, clients, users, readers, adoption, outcomes or prices. Nothing currently supports one.
 - No location anywhere, by Ryan's explicit choice, including in the structured data.
-- The page currently makes no checkable factual claim. What it asserts are categories rather than testable facts, and the two linked repositories are the only evidence a reader can inspect.
+- The page makes one employment claim, that Ryan was Minima's first employee, and links Minima as the named organisation. Three linked public repositories are the work a reader can inspect.
 - If `from seed to Series A`, or any equivalent stage claim, returns to the page, it must be accurate: a $2.5m seed and a contribution to a $6.5m Series A, with Ryan as Minima's first employee from 2019.
 - Retired claims do not come back without fresh approval: the Minima team growing to 30, any duration beyond `over four years`, and the Competitor Intel review result.
 - No imagery of any kind. This is absolute, and it is Ryan's own instruction rather than an inference from the style.
 - Ryan is not described as a consultant, a design engineer or a full-stack software engineer.
 - The two-word phrase pairing the acronym with `agents` never appears. The page says `agents` and `coding agents`.
-- In The Loop is named but never linked while it is pre-launch, and it is not listed among the projects until it has a destination a stranger can open.
+- In The Loop is linked inline to its public studio site, but it is not listed among the three repository-backed projects.
 - `View project` is barred while no project pages exist.
-- Two projects currently appear, the two with public repositories.
+- Three projects currently appear: Competitor Intel, Growth Experiments and Career Matching. Each links to its public repository.
 - No brief link, because no safe public artefact exists yet.
 - The sole continuation is ordinary contact: email, GitHub or LinkedIn.
 - Ryan owns the copy and edits it directly. Propose wording to him; do not rewrite it in place.
@@ -65,10 +65,10 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 
 ## Evidence on Hand
 
-- Public GitHub repositories for Competitor Intel and Career Matching. They are the only proof the page can point a reader at, and both sit off-page.
+- Public GitHub repositories for Competitor Intel, Growth Experiments and Career Matching. They are the inspectable work the page points a reader at, and all three sit off-page.
 - The parsed CV, which verifies the seed-to-Series-A claim: a $2.5m seed and a contribution to a $6.5m Series A, as Minima's first employee from 2019. Correction to the CV itself: Ryan joined before the seed round and before friends and family, so `from seed to Series A` understates when he arrived. Several agents have read that wording as evidence that the initial-idea stage predated him. The CV should be corrected.
 - A measured audit of reference personal sites, which informs `DESIGN.md` rather than this document.
-- The limits: no public Feed, no customer proof, no external-use evidence and no safe public brief URL. With no deployment and no analytics, nothing is known about how the page performs with real readers.
+- The limits: no public Feed, no customer proof, no external-use evidence and no safe public brief URL. The page is deployed, but with no analytics nothing is known about how it performs with real readers.
 
 ## Product Principles
 

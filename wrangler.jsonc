@@ -1,0 +1,16 @@
+{
+  "name": "ryanhennebry-xyz",
+  "compatibility_date": "2026-08-25",
+  "workers_dev": true,
+  "preview_urls": true,
+  "routes": [
+    {
+      "pattern": "ryanhennebry.xyz/*",
+      "zone_name": "ryanhennebry.xyz"
+    },
+    {
+      "pattern": "www.ryanhennebry.xyz/*",
+      "zone_name": "ryanhennebry.xyz"
+    }
+  ]
+}

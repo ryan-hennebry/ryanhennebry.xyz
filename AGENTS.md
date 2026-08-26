@@ -14,8 +14,8 @@ search. It is not a funnel and it carries no call to action beyond its links.
 
 ## What is here now
 
-The harness only. The finished page has not been promoted into this repo yet, so there is no
-`index.html`, no `assets/` and no CSS. Read `HANDOFF.md` before creating any of them.
+The finished static page: `index.html`, `assets/site.css` and one self-hosted Inter font. Read
+`HANDOFF.md` before changing them.
 
 ## The page as specified
 
@@ -23,14 +23,14 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 
 | Layer | Locked |
 |---|---|
-| Body copy | About 51 words, three sentences, each set as one line at the full measure |
-| Measure | 600px, frozen. If new copy does not fit, the copy changes, not the measure |
+| Body copy | Two narrative sentences, each set as two lines at the full measure |
+| Measure | 550px, frozen for the final copy |
 | Type | Inter, self-hosted variable latin subset. One size, 15px, for every element. Two weights, 400 and 500, with 500 used once on the `h1` |
 | Colour | No hue anywhere. Two text tiers, ink and muted. Link signal lives entirely in the underline |
 | Spacing | Seven distances, driven by tokens. The 117px void above the name and the 48px bottom padding are deliberately unequal |
 | Motion | Zero. There is correctly no `prefers-reduced-motion` block, and adding one transition turns that omission into a defect |
-| Structure | `h1`, role line, three paragraphs, a Projects section, a Links section. Heading outline `H1 > H2 > H2` at every width |
-| Projects | Startup Skills, the Feed and In The Loop are three separate links, not one line. A name on this page is a promise that there is something to open, so nothing unlinked, greyed or marked as coming |
+| Structure | `h1`, role line, two narrative paragraphs, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
+| Projects | Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
 
 ## Never
 
@@ -39,7 +39,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
   quietly adding an image; raise it with him.
 - No location anywhere, including inside the JSON-LD.
 - No claim of clients, customers, users, readers, adoption, outcomes or prices.
-- No rewriting the copy, the role line or the order of the Projects links without Ryan. Those get
+- No rewriting the copy, the role line or the order of the Projects or Links without Ryan. Those get
   their own session with him.
 - No second type size, no italic, no availability badge, no two-column layout for Projects or Links.
   Each was proposed, measured and rejected.
@@ -64,7 +64,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 
 ## Domain and deploy
 
-`ryanhennebry.xyz` is registered at Namecheap and expires 2027-04-22. It currently serves a stale
-Bear blog whose positioning contradicts everything above, so the deploy replaces that rather than
-sitting alongside it. Static hosting, no server, no build. Three head values need the live origin
-before they can be filled in: `canonical`, `og:url` and the JSON-LD `url`.
+`ryanhennebry.xyz` is registered at Namecheap and expires 2027-04-22. DNS is delegated to
+Cloudflare, and the static page is deployed as the `ryanhennebry-xyz` Worker on both the apex and
+`www`. Static hosting, no server, no build. The canonical, `og:url` and JSON-LD `url` values use the
+live apex origin.

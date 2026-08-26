@@ -53,13 +53,70 @@ else
   echo "ok: no JavaScript beyond the JSON-LD block"
 fi
 
-# The measure is frozen at 600px. If copy does not fit, the copy changes.
-if grep -qE '(--measure|measure)[[:space:]]*:[[:space:]]*600px' assets/site.css; then
-  echo "ok: measure is 600px"
+# The measure is frozen at 550px for the final copy.
+if grep -qE '(--measure|measure)[[:space:]]*:[[:space:]]*550px' assets/site.css; then
+  echo "ok: measure is 550px"
 else
-  echo "FAIL the 600px measure is not set. It is frozen; do not tune it to fit copy."
+  echo "FAIL the 550px measure is not set. It is frozen for the final copy."
   fail=1
 fi
+
+# Section labels and their content form the tightest pair on the page.
+if grep -qE -- '--space-tight:[[:space:]]*4px' assets/site.css; then
+  echo "ok: label-to-content gap is 4px"
+else
+  echo "FAIL the label-to-content gap must be 4px."
+  fail=1
+fi
+
+# The final page has three visible section labels and four supplied public destinations.
+headings=$(grep -c '<h2' index.html || true)
+if [ "$headings" = "3" ]; then
+  echo "ok: Previously, Projects and Links headings present"
+else
+  echo "FAIL expected 3 h2 section labels, found $headings"
+  fail=1
+fi
+
+for sentence in \
+  'I explore emerging ecosystems and build systems that help people navigate them.' \
+  'exploring how startups should operate now that agents work.'
+do
+  if grep -Fq "$sentence" index.html; then
+    echo "ok: final narrative copy present"
+  else
+    echo "FAIL missing final narrative copy: $sentence"
+    fail=1
+  fi
+done
+
+for origin_value in \
+  '<link rel="canonical" href="https://ryanhennebry.xyz/">' \
+  '<meta property="og:url" content="https://ryanhennebry.xyz/">' \
+  '"url": "https://ryanhennebry.xyz/"' \
+  'href="https://in-the-loop.studio/"'
+do
+  if grep -Fq "$origin_value" index.html; then
+    echo "ok: live-origin value present"
+  else
+    echo "FAIL missing live-origin value: $origin_value"
+    fail=1
+  fi
+done
+
+for url in \
+  'https://minima.global/' \
+  'https://github.com/ryan-hennebry/competitor-intel' \
+  'https://github.com/ryan-hennebry/growth-experiments' \
+  'https://github.com/ryan-hennebry/career-matching'
+do
+  if grep -Fq "href=\"$url\"" index.html; then
+    echo "ok: linked $url"
+  else
+    echo "FAIL missing final public link $url"
+    fail=1
+  fi
+done
 
 # No location, anywhere, including the structured data.
 if grep -nEi 'addressLocality|addressCountry|"address"' index.html; then
