@@ -2,39 +2,54 @@
 
 ## Built
 
-The finished static page: `index.html`, `assets/site.css`, the Inter variable font and its licence,
-`COPY.md`, `DESIGN.md`, `PRODUCT.md`, the verification harness and the Cloudflare deploy config. The
-page carries Ryan's final copy, a 550px measure, the Previously, Projects and Links groups, and no
-runtime dependency.
+The finished static identity page is live at `https://ryanhennebry.xyz/`. The visible body and
+stylesheet remain unchanged: final copy, 550px measure, one 15px type size, the locked spacing
+system, and no content imagery or runtime dependency.
 
-Deployed to Cloudflare as the `ryanhennebry-xyz` Worker. Namecheap delegates the domain to
-Cloudflare. Both `https://ryanhennebry.xyz/` and `https://www.ryanhennebry.xyz/` serve the same
-static page, replacing the stale Bear blog.
+The browser title, Open Graph title and Twitter title are `Ryan Hennebry`. The page, Open Graph and
+Twitter descriptions are all explicitly empty so sharing clients have no fallback description. No
+preview image is declared or deployed. Twitter uses its compact summary card. The 48px browser
+favicon, ICO and 180px Apple touch icon are fully opaque solid fields of the approved LinkedIn
+banner colour, `#24303C`, with no text or mark. `robots.txt`, `sitemap.xml`, canonical metadata and
+the WebSite and Person JSON-LD graph use the live apex origin.
 
-Rejected type variants and four unused fonts stayed behind in
-`~/Projects/in-the-loop-archive/site/_prototypes/personal-site-minimal-v2-2026-08-20/explorations/`.
-The craft rulings behind the build are in `../shared/agent-memory/`.
+Cloudflare version `c91ef044-f896-41f5-9b2d-39da0a1730e2` serves the static files. The account-level
+Bulk Redirect rule `Redirect www to apex` sends `www` to the apex with HTTP 301 while preserving
+paths and query strings. The `workers.dev` and preview surfaces are disabled.
+
+Google Search Console has the verified domain property `ryanhennebry.xyz`. The verification TXT
+record is public in Cloudflare DNS and must remain in place. The sitemap has been submitted. URL
+Inspection reports that the homepage is indexed, available to Google and served over HTTPS. A new
+indexing request for the updated homepage was accepted into Google's priority crawl queue.
 
 ## Test
 
-Run `./verify.sh`. It checks house style on the Markdown files and asserts the locked page
-invariants: no imagery, no script other than the JSON-LD block, the 550px measure, all four supplied
-public destinations, and pure ASCII in the shipped files.
+Run `./verify.sh`. It checks pure ASCII, the locked visible page, metadata, crawler files, identity
+asset formats, dimensions and exact hashes, canonical URLs, accessibility structure, typography,
+spacing, motion and public destinations.
 
-Beyond that: open `index.html` from `file://` and confirm it renders complete with no network
-requests. Check the two narrative sentences each set as two lines at 550px, the 4px label-to-content
-gaps, the 24px group gaps, and zero overflow at 1440, 768, 390 and 320.
+On 2026-08-26:
 
-On 2026-08-26, the apex and `www` returned HTTP 200 and their HTML matched local `index.html`
-byte-for-byte. The live stylesheet and font also matched their local files byte-for-byte. Public DNS
-returned Cloudflare's assigned nameservers and the preserved Private Email MX, SPF, DKIM, SRV,
-autoconfig, autodiscover and mail records. Every public destination except LinkedIn returned HTTP
-200; LinkedIn returned its automated-request block, so only that external response was not
-certified by the command-line check.
+- `./verify.sh`, `git diff --check`, JSON-LD parsing and sitemap XML parsing passed.
+- The W3C HTML validator returned zero messages for the live page.
+- The live HTML matched the local file byte-for-byte, and the old share-card URL returned HTTP 404.
+- Meta, WhatsApp and normal-browser user agents all received only the title, three empty
+  descriptions and the compact summary-card declaration. None received an Open Graph or Twitter
+  image field or the retired description copy.
+- The live sitemap returned HTTP 200 as `application/xml` to both a normal client and Googlebot.
+- Google's live URL test reported the sitemap URL as available to Google and indexable.
+- The `www` path-and-query probe returned HTTP 301 to the equivalent apex URL.
+- Public DNS returned the Search Console verification TXT record.
+- A fresh-context reviewer confirmed the visible `<body>` and `assets/site.css` are byte-identical
+  to the approved page before this metadata update, and the deployment package contains nine files.
 
 ## Next
 
-1. Run the required fresh-context certification review. The deployment writer's review attempt was
-   blocked by the Codex usage limit, so the measured checks above are evidence, not certification.
-2. Raise the share card with Ryan explicitly. It is deliberately incomplete because imagery is
-   banned, and it is not to be resolved by adding an image.
+Search Console still displays `Couldn't fetch` for the submitted sitemap even though the same
+Google account's live URL test says the sitemap is available and indexable, and the endpoint passes
+all local and public checks. Recheck the Sitemaps report after Google has processed the new property.
+Do not resubmit repeatedly; the homepage indexing request is already accepted.
+
+WhatsApp may continue showing its previously cached preview for the exact apex URL until Meta
+refreshes that cache. Meta's Sharing Debugger requires a Facebook login to force a fresh scrape. The
+live crawler response is already corrected; do not reintroduce metadata to work around the cache.

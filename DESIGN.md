@@ -77,7 +77,7 @@ The third defining fact is the shape of the vertical space. The page opens with 
 
 The world it belongs to is the minimal personal-site canon (Benji, Emil, ibelick, Josh, Matt, Jakub), applied at full fidelity rather than copied cosmetically. ibelick's 600px column was the reference measure; Ryan selected 550px for this final copy after comparing 600px, 550px and 525px. The bare comma-separated links retain ibelick's treatment rather than a row grid. The two inner spacing steps come from the same neighbourhood by a different route: they follow published skills on ui-skills.com, the registry of agent skills ibelick curates. The void above the name is borrowed from nobody. It is argued from this page's own conditions in The Void Above The Name Rule, and the fact that it lands on the same number as Emil's (emilkowal.ski) rendered top is a coincidence rather than a source.
 
-One honest caveat about what is absent. This build ships no imagery, no hairline rules, no cards, no shadows and no motion, but the canon itself uses several of those natively, and the practitioners named above include people whose public work is largely about motion. Their absence here is a decision about this page, taken because a static single-document background check has nothing that needs to move or be boxed, and it is recorded below as a scoped rule about this artefact. It is not a claim that the world forbids the device. Only the imagery ban is absolute, and it is absolute because Ryan set it, not because the world implies it.
+One honest caveat about what is absent. The visible page ships no imagery, hairline rules, cards, shadows or motion, but the canon itself uses several of those natively, and the practitioners named above include people whose public work is largely about motion. Their absence here is a decision about this page, taken because a static single-document background check has nothing that needs to move or be boxed. The off-page favicon uses the approved LinkedIn banner colour without introducing a mark or changing the page palette.
 
 **Key Characteristics:**
 - One type size, 15px, across every element on the page
@@ -86,7 +86,7 @@ One honest caveat about what is absent. This build ships no imagery, no hairline
 - Zero hue: no accent family, no saturated value anywhere
 - Hierarchy carried by colour, position and one long silence, never by scale
 - One surface, no depth of any kind
-- Zero motion, zero JavaScript, zero network requests; works fully from `file://`
+- Zero motion, zero JavaScript, zero third-party runtime requests; works fully from `file://`
 
 ## Colors
 
@@ -120,6 +120,13 @@ Print also restores the one thing paper takes away. A printed link is otherwise 
 **The Underline Carries the Signal Rule.** Link text inherits the colour of its context and never changes. All link colour lives in the underline, which is neutral grey and must stay at or above 3:1 against paper because it is the sole non-colour identifier of a link. This is what lets a link sit inside a paragraph without punching a hole in it.
 
 **The Page Has No Hue Rule.** There is no saturated value on this page. The only colours are white, a cool near-black, a cool grey and two neutral greys. A hue reintroduced anywhere, including in a link underline, a focus ring or a selection wash, is a change to the premise of the palette rather than an addition to it, and it would immediately make itself the loudest thing on a page that has nothing else loud.
+
+### Technical Identity Asset
+
+The favicon is an off-page derivative, not a new brand surface. It uses `#24303C`, the dominant RGB
+value measured from Ryan's LinkedIn banner. It is a fully opaque solid field with no text or mark,
+supplied at 48px for browsers and search and at 180px for Apple touch surfaces. Link previews use a
+compact text card with only `Ryan Hennebry`, no description and no preview image.
 
 ## Typography
 
@@ -303,7 +310,7 @@ Rules removed on 2026-08-21, recorded rather than deleted because why a rule die
 - **Do** measure page height, fold position and characters per line fresh when they matter, rather than trusting a figure recorded here or in an older report.
 
 ### Don't:
-- **Don't** add imagery of any kind, meaning photography, avatar, logo, illustration, icon or decorative SVG. This is an absolute constraint set by Ryan, not an inference from the style.
+- **Don't** add imagery to the visible page. The solid `#24303C` favicon is the complete exception: a technical identity asset, not a new mark.
 - **Don't** introduce a second type size to solve a hierarchy problem. Use colour or position, which is what every existing distinction on the page does.
 - **Don't** add a third weight, and do not spend the existing 500 on a second element. One element on the page is strong, and that is what makes it the name.
 - **Don't** put weight back on the section labels on screen. They separate from their contents by colour alone, and reintroducing weight both breaks that mechanism and puts a rival at the name's weight. The `forced-colors: active` block is the one sanctioned exception, because colour is unavailable there; see Section Label.
@@ -323,11 +330,9 @@ Rules removed on 2026-08-21, recorded rather than deleted because why a rule die
 
 ## Deferred Decisions
 
-Three items the build leaves open. None is a defect in the current artefact, and all three have survived every rebuild unchanged.
+One item remains open. It is not a defect in the current artefact.
 
-1. **Font preload.** A `<link rel="preload">` for the woff2 was tried and reverted. On `file://` the CORS-mode font fetch is blocked as `origin 'null'`, which produced console errors and a duplicate fetch. The constraint is an artefact of `file://` and disappears on a real origin. Revisit if the page is ever served over HTTP, where it now matters more: the Inter binary is 73,016 bytes, roughly two and a half times the size of the face it replaced.
-2. **Share card.** `twitter:card` is `summary` with no `og:image`, so a shared link renders as a text card. Every remedy requires creating an image asset, which the imagery constraint forbids. Decide at deployment time; do not resolve it by quietly adding an image.
-3. **Canonical URL.** `canonical` and `og:url` are omitted, and the JSON-LD `Person` block carries no `url` key, because no live domain is approved yet. All three land together when it is.
+1. **Font preload.** A `<link rel="preload">` for the woff2 was tried and reverted. On `file://` the CORS-mode font fetch is blocked as `origin 'null'`, which produced console errors and a duplicate fetch. The page is now live over HTTPS, but the `file://` guarantee remains binding. Revisit only if a measured live performance trace shows a material gain and the implementation preserves clean local rendering.
 
 One open copy question sits outside this document's scope but touches the layout: whether an availability line returns. It was removed deliberately along with the closing contact sentence. If it comes back it is a fourth block at 24px, in one of the two existing tiers, and not a badge.
 

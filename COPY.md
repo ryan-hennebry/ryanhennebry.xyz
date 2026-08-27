@@ -28,8 +28,10 @@ GitHub -> github.com/ryan-hennebry
 LinkedIn -> linkedin.com/in/ryanhennebry
 
 Browser tab and link previews, not visible on the page:
-Title: Ryan Hennebry, Founding Operator
-Description: Ryan Hennebry is a founding operator currently building In The Loop and exploring how startups should operate now that agents work. He was Minima's first employee.
+Title: Ryan Hennebry
+Description: none
+
+Page metadata and social previews use the title `Ryan Hennebry`, no description and no preview image.
 
 ---
 

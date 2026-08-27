@@ -31,7 +31,7 @@ Ryan Hennebry is the sole public identity. The freelance practice is unbranded a
 
 ## Operating Context
 
-The page has never been deployed and no domain is approved yet.
+The page is deployed at `https://ryanhennebry.xyz/` as a Cloudflare Worker with static assets.
 
 It must work as a single static document opened from `file://`, with no server, no scripts, no analytics and no external asset. It must survive being read on a phone, at high browser zoom, and by a screen reader.
 
@@ -46,7 +46,7 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 - The page makes one employment claim, that Ryan was Minima's first employee, and links Minima as the named organisation. Three linked public repositories are the work a reader can inspect.
 - If `from seed to Series A`, or any equivalent stage claim, returns to the page, it must be accurate: a $2.5m seed and a contribution to a $6.5m Series A, with Ryan as Minima's first employee from 2019.
 - Retired claims do not come back without fresh approval: the Minima team growing to 30, any duration beyond `over four years`, and the Competitor Intel review result.
-- No imagery of any kind. This is absolute, and it is Ryan's own instruction rather than an inference from the style.
+- No imagery appears in the page content. The solid-colour favicon is the only image asset. Link previews carry only Ryan's name, with no description or preview image.
 - Ryan is not described as a consultant, a design engineer or a full-stack software engineer.
 - The two-word phrase pairing the acronym with `agents` never appears. The page says `agents` and `coding agents`.
 - In The Loop is linked inline to its public studio site, but it is not listed among the three repository-backed projects.

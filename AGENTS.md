@@ -14,7 +14,8 @@ search. It is not a funnel and it carries no call to action beyond its links.
 
 ## What is here now
 
-The finished static page: `index.html`, `assets/site.css` and one self-hosted Inter font. Read
+The finished static page, crawler files and technical identity assets: `index.html`,
+`assets/site.css`, one self-hosted Inter font, `robots.txt`, `sitemap.xml` and the favicons. Read
 `HANDOFF.md` before changing them.
 
 ## The page as specified
@@ -34,9 +35,10 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 
 ## Never
 
-- No imagery in any form: no photograph, avatar, logo, illustration, icon or decorative SVG. This is
-  Ryan's own instruction, not an inference from the style. Never resolve the missing share card by
-  quietly adding an image; raise it with him.
+- Keep the visible page free of imagery: no photograph, avatar, logo, illustration, icon or
+  decorative SVG. The favicon is the only image asset. It uses the approved `#24303C` as a solid
+  field with no text or mark. Link previews carry only `Ryan Hennebry`, with no description or
+  preview image.
 - No location anywhere, including inside the JSON-LD.
 - No claim of clients, customers, users, readers, adoption, outcomes or prices.
 - No rewriting the copy, the role line or the order of the Projects or Links without Ryan. Those get
@@ -65,6 +67,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 ## Domain and deploy
 
 `ryanhennebry.xyz` is registered at Namecheap and expires 2027-04-22. DNS is delegated to
-Cloudflare, and the static page is deployed as the `ryanhennebry-xyz` Worker on both the apex and
-`www`. Static hosting, no server, no build. The canonical, `og:url` and JSON-LD `url` values use the
-live apex origin.
+Cloudflare, and the static page is deployed as the `ryanhennebry-xyz` Worker at the apex. A
+Cloudflare Bulk Redirect sends `www` permanently to the apex while preserving paths and query
+strings. Static hosting, no server, no build. The canonical, `og:url` and JSON-LD `url` values use
+the live apex origin.
