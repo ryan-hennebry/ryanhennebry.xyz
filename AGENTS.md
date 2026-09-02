@@ -8,15 +8,40 @@ conflict with it.
 
 A single hand-written HTML page, one stylesheet, one self-hosted font. No build step, no framework,
 no JavaScript beyond a JSON-LD `Person` block, no network requests, and it renders correctly from
-`file://`. It exists so that a founder who has just been sent an unsolicited report by Ryan, or a
-hiring manager already mid-process, can confirm who he is in ten seconds. Nobody arrives cold from
-search. It is not a funnel and it carries no call to action beyond its links.
+`file://`. Those rules describe the page and they still hold; the Worker that now sits in front of
+it is covered under What runs server-side. It exists so that a founder who has just been sent an
+unsolicited report by Ryan, or a hiring manager already mid-process, can confirm who he is in ten
+seconds. Nobody arrives cold from search. It is not a funnel and it carries no call to action
+beyond its links.
 
 ## What is here now
 
 The finished static page, crawler files and technical identity assets: `index.html`,
 `assets/site.css`, one self-hosted Inter font, `robots.txt`, `sitemap.xml` and the favicons. Read
 `HANDOFF.md` before changing them.
+
+The server side is `src/index.js`, the Worker entrypoint, with `schema.sql` and `queries.sql` for
+the visit log. `wrangler.jsonc` carries the `main` entrypoint, the ASSETS binding and the DB
+binding.
+
+## What runs server-side
+
+`src/index.js` runs first on every request. It hands the request to the static asset binding and
+returns that response untouched, so it cannot change what a visitor sees. The log write happens
+after the response is on its way, inside `ctx.waitUntil`, so it adds no latency. There are no
+external network calls.
+
+One row per request is written to the D1 database `ryanhennebry-visits`, bound as `env.DB` and
+running in WEUR: timestamp, path, status, ASN, AS organisation, country, city, region, timezone,
+colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP round-trip time, a
+classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash. The hash is
+SHA-256 of the IP, the user agent and the current `YYYY-MM`, so the salt rotates every calendar
+month and hashes cannot be joined across months. No raw IP address is stored. The schema is
+`schema.sql` and the reads are `queries.sql`.
+
+The visible page is unaffected. It is byte-identical, carries no client JavaScript beyond the
+JSON-LD block, makes no network requests and still renders from `file://`. `verify.sh` does not
+check the Worker or the visit log.
 
 ## The page as specified
 
@@ -67,7 +92,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 ## Domain and deploy
 
 `ryanhennebry.xyz` is registered at Namecheap and expires 2027-04-22. DNS is delegated to
-Cloudflare, and the static page is deployed as the `ryanhennebry-xyz` Worker at the apex. A
-Cloudflare Bulk Redirect sends `www` permanently to the apex while preserving paths and query
-strings. Static hosting, no server, no build. The canonical, `og:url` and JSON-LD `url` values use
-the live apex origin.
+Cloudflare, and the page is deployed as the `ryanhennebry-xyz` Worker at the apex. A Cloudflare
+Bulk Redirect sends `www` permanently to the apex while preserving paths and query strings. Static
+assets and no build step, but no longer no server: the Worker runs on every request and writes the
+visit log. The canonical, `og:url` and JSON-LD `url` values use the live apex origin.

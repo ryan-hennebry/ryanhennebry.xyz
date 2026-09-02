@@ -10,7 +10,7 @@ web
 
 ## Stack
 
-Plain static HTML and CSS. No JavaScript, no framework, no package manager, no preprocessor, no build step. No network requests at runtime, and one self-hosted typeface under an open font licence. Which face, and how it is set, is `DESIGN.md`'s to state.
+The page is plain static HTML and CSS. No JavaScript, no framework, no package manager, no preprocessor, no build step. No network requests at runtime, and one self-hosted typeface under an open font licence. Which face, and how it is set, is `DESIGN.md`'s to state. Serving it is a Cloudflare Worker, `src/index.js`, which returns the static response untouched and writes a visit log to D1 afterwards. That code never reaches the browser.
 
 ## Users
 
@@ -31,9 +31,9 @@ Ryan Hennebry is the sole public identity. The freelance practice is unbranded a
 
 ## Operating Context
 
-The page is deployed at `https://ryanhennebry.xyz/` as a Cloudflare Worker with static assets.
+The page is deployed at `https://ryanhennebry.xyz/` as a Cloudflare Worker with static assets. The Worker runs first on every request, serves the assets unchanged, and logs one row per request to the D1 database `ryanhennebry-visits`. No raw IP address is stored.
 
-It must work as a single static document opened from `file://`, with no server, no scripts, no analytics and no external asset. It must survive being read on a phone, at high browser zoom, and by a screen reader.
+The document itself must still work as a single static file opened from `file://`, with no server, no scripts, no client-side analytics and no external asset. Nothing the Worker does may change that. It must survive being read on a phone, at high browser zoom, and by a screen reader.
 
 LinkedIn carries Ryan's role availability, which is why the page carries no availability line.
 
@@ -68,7 +68,8 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 - Public GitHub repositories for Competitor Intel, Growth Experiments and Career Matching. They are the inspectable work the page points a reader at, and all three sit off-page.
 - The parsed CV, which verifies the seed-to-Series-A claim: a $2.5m seed and a contribution to a $6.5m Series A, as Minima's first employee from 2019. Correction to the CV itself: Ryan joined before the seed round and before friends and family, so `from seed to Series A` understates when he arrived. Several agents have read that wording as evidence that the initial-idea stage predated him. The CV should be corrected.
 - A measured audit of reference personal sites, which informs `DESIGN.md` rather than this document.
-- The limits: no public Feed, no customer proof, no external-use evidence and no safe public brief URL. The page is deployed, but with no analytics nothing is known about how it performs with real readers.
+- The limits: no public Feed, no customer proof, no external-use evidence and no safe public brief URL.
+- Since 2026-08-27 the server-side visit log in D1 records who reaches the page. It is the first evidence of real readers, and it is raw request data, not a claim.
 
 ## Product Principles
 

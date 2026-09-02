@@ -4,7 +4,8 @@
 
 The finished static identity page is live at `https://ryanhennebry.xyz/`. The visible body and
 stylesheet remain unchanged: final copy, 550px measure, one 15px type size, the locked spacing
-system, and no content imagery or runtime dependency.
+system, and no content imagery or client-side runtime dependency. The Worker described below sits
+in front of it and does not alter a byte of it.
 
 The browser title, Open Graph title and Twitter title are `Ryan Hennebry`. The page, Open Graph and
 Twitter descriptions are all explicitly empty so sharing clients have no fallback description. No
@@ -13,9 +14,20 @@ favicon, ICO and 180px Apple touch icon are fully opaque solid fields of the app
 banner colour, `#24303C`, with no text or mark. `robots.txt`, `sitemap.xml`, canonical metadata and
 the WebSite and Person JSON-LD graph use the live apex origin.
 
-Cloudflare version `c91ef044-f896-41f5-9b2d-39da0a1730e2` serves the static files. The account-level
-Bulk Redirect rule `Redirect www to apex` sends `www` to the apex with HTTP 301 while preserving
-paths and query strings. The `workers.dev` and preview surfaces are disabled.
+Cloudflare version `ca1f7099-f461-4217-8e60-f942b201b034`, deployed 2026-08-27, serves the site.
+Version `c91ef044-f896-41f5-9b2d-39da0a1730e2` was the last assets-only deployment before it. The
+account-level Bulk Redirect rule `Redirect www to apex` sends `www` to the apex with HTTP 301 while
+preserving paths and query strings. The `workers.dev` and preview surfaces are disabled.
+
+`src/index.js` is a Worker entrypoint that runs first on every request. It serves the page through
+the ASSETS binding and returns that response untouched, then logs one row per request to the D1
+database `ryanhennebry-visits` inside `ctx.waitUntil`, so no latency is added and no external
+network call is made. The row holds timestamp, path, status, ASN, AS organisation, country, city,
+region, timezone, colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP
+round-trip time, a classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash
+that is SHA-256 of the IP, the user agent and the current `YYYY-MM`. No raw IP address is stored,
+and the monthly salt makes hashes unjoinable across months. `schema.sql` holds the schema and
+`queries.sql` the reads.
 
 Google Search Console has the verified domain property `ryanhennebry.xyz`. The verification TXT
 record is public in Cloudflare DNS and must remain in place. The sitemap has been submitted. URL
@@ -26,7 +38,8 @@ indexing request for the updated homepage was accepted into Google's priority cr
 
 Run `./verify.sh`. It checks pure ASCII, the locked visible page, metadata, crawler files, identity
 asset formats, dimensions and exact hashes, canonical URLs, accessibility structure, typography,
-spacing, motion and public destinations.
+spacing, motion and public destinations. It does not check `src/index.js`, the D1 schema or the
+visit log; those are verified by reading them and by querying the database.
 
 On 2026-08-26:
 

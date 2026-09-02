@@ -1,5 +1,6 @@
 {
   "name": "ryanhennebry-xyz",
+  "main": "src/index.js",
   "compatibility_date": "2026-08-25",
   "workers_dev": false,
   "preview_urls": false,
@@ -11,6 +12,40 @@
     {
       "pattern": "www.ryanhennebry.xyz/*",
       "zone_name": "ryanhennebry.xyz"
+    }
+  ],
+  // The assets directory is supplied at the command line by deploy.sh, which
+  // builds a temp dir of exactly the nine public files. Wrangler merges
+  // --assets over this block as the "directory" value, so it is deliberately
+  // absent here: there is no checked-in directory that is safe to serve.
+  "assets": {
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+  // Email Routing on ryanhennebry.xyz must be enabled and this destination
+  // must be a verified Email Routing destination address, or send() throws at
+  // runtime. Failures land in the alert_log table, not in the response.
+  "send_email": [
+    {
+      "name": "ALERT_EMAIL",
+      "destination_address": "ryanhennebry@gmail.com"
+    }
+  ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "ryanhennebry-visits",
+      "database_id": "1c1f1617-6753-421a-a3df-339f116e837a"
+    }
+  ],
+  // Enrichment cache only. Never authoritative: every read is optional and a
+  // miss just costs one more upstream call. PTR is keyed by a hash of the IP,
+  // never the IP itself; company attribution is keyed by ASN because that is
+  // what the attribution is actually derived from.
+  "kv_namespaces": [
+    {
+      "binding": "VISIT_ENRICH",
+      "id": "0927f190975943dc9fd01ea7c0c95cd0"
     }
   ]
 }

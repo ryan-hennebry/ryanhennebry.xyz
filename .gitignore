@@ -1,3 +1,6 @@
 .DS_Store
 .wrangler/
 node_modules/
+
+# Agent working memory - contains account metadata, and this repo is public.
+.claude/
