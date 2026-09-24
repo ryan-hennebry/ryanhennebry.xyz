@@ -19,7 +19,7 @@ First employee at [Minima](https://minima.global/).
 
 Projects
 
-[Competitor Intel](https://github.com/ryan-hennebry/competitor-intel), [Growth Experiments](https://github.com/ryan-hennebry/growth-experiments), [Career Matching](https://github.com/ryan-hennebry/career-matching)
+[Startup Skills](https://startupskills.dev/), [Competitor Intel](https://github.com/ryan-hennebry/competitor-intel), [Growth Experiments](https://github.com/ryan-hennebry/growth-experiments), [Career Matching](https://github.com/ryan-hennebry/career-matching)
 
 Links
 

@@ -51,7 +51,7 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 - The two-word phrase pairing the acronym with `agents` never appears. The page says `agents` and `coding agents`.
 - In The Loop is linked inline to its public studio site, but it is not listed among the three repository-backed projects.
 - `View project` is barred while no project pages exist.
-- Three projects currently appear: Competitor Intel, Growth Experiments and Career Matching. Each links to its public repository.
+- Four projects currently appear: Startup Skills, Competitor Intel, Growth Experiments and Career Matching. Startup Skills links to its site; the other three link to their public repositories.
 - No brief link, because no safe public artefact exists yet.
 - The sole continuation is ordinary contact: email, GitHub or LinkedIn.
 - Ryan owns the copy and edits it directly. Propose wording to him; do not rewrite it in place.

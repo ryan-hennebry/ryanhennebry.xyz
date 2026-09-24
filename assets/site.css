@@ -175,6 +175,7 @@ a {
   text-decoration-thickness: 0.08em;
   text-underline-offset: 0.15em;
   text-decoration-skip-ink: auto;
+  white-space: nowrap;          /* a link name never splits across lines; the longest is well inside 320px */
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -230,6 +231,7 @@ a:focus-visible {
 
   a {
     text-decoration-color: #000000;
+    white-space: normal;        /* the appended URL below must be free to wrap */
   }
 
   /* Printed links are otherwise inert words. mailto: is left alone: the address

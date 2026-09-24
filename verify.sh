@@ -270,6 +270,7 @@ done
 
 for url in \
   'https://minima.global/' \
+  'https://startupskills.dev/' \
   'https://github.com/ryan-hennebry/competitor-intel' \
   'https://github.com/ryan-hennebry/growth-experiments' \
   'https://github.com/ryan-hennebry/career-matching'

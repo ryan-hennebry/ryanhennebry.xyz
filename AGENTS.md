@@ -56,7 +56,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 | Spacing | Seven distances, driven by tokens. The 117px void above the name and the 48px bottom padding are deliberately unequal |
 | Motion | Zero. There is correctly no `prefers-reduced-motion` block, and adding one transition turns that omission into a defect |
 | Structure | `h1`, role line, two narrative paragraphs, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
-| Projects | Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
+| Projects | Startup Skills, linked to startupskills.dev, then Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
 
 ## Never
 
