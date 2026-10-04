@@ -1287,8 +1287,9 @@ async function logVisit(request, response, env) {
     const status = response ? response.status : null;
     const classification = classify(url.pathname, ua, asn, asOrg);
 
-    // The IP exists only inside these two expressions. It is never stored,
-    // and what is hashed is the /64 for an IPv6 client, not the address.
+    // The IP exists only inside these two expressions and is never stored as
+    // itself, though the PTR name enrichment finds for it can embed it. What
+    // is hashed is the /64 for an IPv6 client, not the address.
     //
     // The version tag and the scope are part of the input, and hash_scope
     // carries the version, so hashes from different generations never

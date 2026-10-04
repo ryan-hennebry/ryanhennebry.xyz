@@ -10,8 +10,8 @@
 --
 -- Why: v1 and v2 hashes were salted with the month, a value anyone can read in
 -- this public repository, so an IPv4 visitor can be recovered from them by
--- brute force. They cannot be re-hashed under the new salt because no IP was
--- ever stored, so the only fix is to clear them.
+-- brute force. They cannot be re-hashed under the new salt because no IP
+-- column exists to re-hash from, so the only fix is to clear them.
 --
 -- Pre-cutover means, in visits, any hash whose hash_scope does not start with
 -- 'v3:'. alerts_sent and alert_log have no hash_scope, so there it means any
