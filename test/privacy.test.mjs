@@ -389,6 +389,51 @@ test("purge: wrangler.jsonc declares one daily cron trigger", () => {
   assert.match(config.triggers.crons[0], /^\d{1,2} \d{1,2} \* \* \*$/);
 });
 
+// --- migration -------------------------------------------------------------------
+
+// Runs the unrun migration against :memory: SQLite only, never against D1.
+test("migration: clears pre-v3 identifiers and fingerprints, keeps v3 rows, runs twice", () => {
+  const db = freshDb();
+  const visit = db.prepare(
+    "INSERT INTO visits (ts, path, classification, visitor_hash, hash_scope, accept_language, http_protocol, tls_version, client_tcp_rtt) VALUES (?, '/', 'human', ?, ?, 'en-GB', 'HTTP/2', 'TLSv1.3', 12)"
+  );
+  visit.run("2026-09-01T10:00:00.000Z", "v1hash", null);
+  visit.run("2026-10-01T10:00:00.000Z", "v2hash", "ipv4");
+  visit.run("2026-10-06T10:00:00.000Z", "v3hash", "v3:ipv4");
+  for (const [ts, hash] of [["2026-10-01T10:00:00.000Z", "v2hash"], ["2026-10-06T10:00:00.000Z", "v3hash"]]) {
+    db.prepare("INSERT INTO alerts_sent (visitor_hash, day, ts) VALUES (?, ?, ?)").run(hash, ts.slice(0, 10), ts);
+    db.prepare("INSERT INTO alert_log (ts, visitor_hash, outcome) VALUES (?, ?, 'sent')").run(ts, hash);
+  }
+
+  const sql = readFileSync(join(ROOT, "migrations", "2026-10-04-clear-old-identifiers.sql"), "utf8");
+  db.exec(sql);
+  db.exec(sql);
+
+  const plain = (rows) => rows.map((r) => ({ ...r }));
+  assert.deepEqual(
+    plain(db.prepare("SELECT visitor_hash, accept_language, http_protocol, tls_version, client_tcp_rtt FROM visits ORDER BY ts").all()),
+    [
+      { visitor_hash: null, accept_language: null, http_protocol: null, tls_version: null, client_tcp_rtt: null },
+      { visitor_hash: null, accept_language: null, http_protocol: null, tls_version: null, client_tcp_rtt: null },
+      { visitor_hash: "v3hash", accept_language: null, http_protocol: null, tls_version: null, client_tcp_rtt: null },
+    ]
+  );
+  assert.deepEqual(plain(db.prepare("SELECT visitor_hash FROM alerts_sent").all()), [{ visitor_hash: "v3hash" }]);
+  assert.deepEqual(plain(db.prepare("SELECT visitor_hash FROM alert_log ORDER BY ts").all()), [
+    { visitor_hash: null },
+    { visitor_hash: "v3hash" },
+  ]);
+});
+
+test("migration: before any v3 row exists the alert tables are untouched", () => {
+  const db = freshDb();
+  db.prepare("INSERT INTO alerts_sent (visitor_hash, day, ts) VALUES ('v2hash', '2026-10-01', '2026-10-01T10:00:00.000Z')").run();
+  db.prepare("INSERT INTO alert_log (ts, visitor_hash, outcome) VALUES ('2026-10-01T10:00:00.000Z', 'v2hash', 'sent')").run();
+  db.exec(readFileSync(join(ROOT, "migrations", "2026-10-04-clear-old-identifiers.sql"), "utf8"));
+  assert.equal(db.prepare("SELECT COUNT(*) AS n FROM alerts_sent").get().n, 1);
+  assert.equal(db.prepare("SELECT visitor_hash FROM alert_log").get().visitor_hash, "v2hash");
+});
+
 // --- verify.sh -------------------------------------------------------------------
 
 test("verify.sh fails when index.html is missing", () => {

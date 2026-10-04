@@ -8,7 +8,11 @@ A pointer, not a plan change: product decisions stay gated until Ryan approves t
   `../docs/plans/active/itl-grill-2026-09-28-progress.md`. Both live in the private parent
   workspace at `~/Projects/in-the-loop/`.
 - `../PRODUCT-DIRECTION.md` is unchanged and remains the authority until the grill write-back.
-- Pending here: the `visitor_hash` privacy item at `src/index.js:1209` is still live. Do not change it until Ryan says "fix now" (quick tab Q-1).
+- Closed in code: the `visitor_hash` privacy item (quick tab Q-1, C15-1). Ryan approved it on
+  4 Oct 2026 as one reviewed change: a random daily salt, no fingerprint fields, 90-day retention
+  and a short notice. It is live only once Ryan runs `./deploy.sh`. Merging does not deploy.
+  `migrations/2026-10-04-clear-old-identifiers.sql` is optional and unrun; it clears the old month-salted
+  hashes now instead of letting them age out over 90 days.
 
 ## Built
 
@@ -35,13 +39,17 @@ the ASSETS binding and returns that response untouched, then logs one row per re
 database `ryanhennebry-visits` inside `ctx.waitUntil`, so no latency is added. Since 2026-09-02 (`6e9cc0c`) genuine visits are
 also enriched (reverse DNS, IPLocate) and emailed to Ryan through Email Routing, so the Worker
 does make external calls off the response path. The row holds timestamp, path, status, ASN, AS organisation, country, city,
-region, timezone, colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP
-round-trip time, a classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash
-that is SHA-256 of a version tag, address scope, normalised IPv4 address or IPv6 /64, user agent
-and current `YYYY-MM`. No raw IP address is stored in the visits row; the month changes the hash
-input and `hash_scope` identifies comparable versions. This is a runtime description, not privacy
-clearance; the known hashing issue remains held under quick Q-1. `schema.sql` holds the schema and
-`queries.sql` the reads.
+region, timezone, colo, referer, user agent, a classification of `human`, `scanner`, `bot_ua`,
+`datacenter` or `asset`, and a visitor hash. From the v3 deploy the hash is HMAC-SHA256 of a
+version tag, address scope, normalised IPv4 address or IPv6 /64 and user agent, under a random salt
+made each UTC day and kept only in KV (`salt:v3:YYYY-MM-DD`, 48-hour TTL). It links visits within
+one UTC day; with no salt it is NULL. Accept-language, HTTP protocol, TLS version and TCP
+round-trip time are no longer written. A daily cron at 03:17 UTC deletes rows older than 90 days
+from `visits`, `enrichment`, `alerts_sent` and `alert_log`; on the live data the first rows go
+around 25 Nov 2026. No raw IP address is stored anywhere. Rows written before the deploy keep the
+public month-salted hash (`hash_scope` NULL or without the `v3:` prefix) until the purge or the
+optional migration removes it. `privacy.html`, linked last in Links, states all of this to
+visitors. `schema.sql` holds the schema and `queries.sql` the reads.
 
 Google Search Console has the verified domain property `ryanhennebry.xyz`. The verification TXT
 record is public in Cloudflare DNS and must remain in place. The sitemap has been submitted. URL
@@ -50,10 +58,11 @@ indexing request for the updated homepage was accepted into Google's priority cr
 
 ## Test
 
-Run `./verify.sh`. It checks pure ASCII, the locked visible page, metadata, crawler files, identity
-asset formats, dimensions and exact hashes, canonical URLs, accessibility structure, typography,
-spacing, motion and public destinations. It does not check `src/index.js`, the D1 schema or the
-visit log; those are verified by reading them and by querying the database.
+Run `./verify.sh`. It checks pure ASCII, the locked visible page and the privacy notice, metadata,
+crawler files, identity asset formats, dimensions and exact hashes, canonical URLs, accessibility
+structure, typography, spacing, motion and public destinations, then runs the Worker tests with
+`node --test test/*.test.mjs` (Node 24, `node:sqlite`). A missing `index.html` fails. It does not
+query the live visit log. `deploy.sh` runs it first, so a failing Worker test blocks a deploy.
 
 On 2026-08-26:
 

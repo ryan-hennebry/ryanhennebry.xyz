@@ -33,12 +33,13 @@
 -- That triple is the STRICT filter. It is the default in queries 1 to 4.
 -- Query 6 is the same data with nothing filtered at all.
 --
--- visitor_hash is a salted hash of address plus user agent, re-salted every
--- calendar month. It joins within a month and cannot be joined across months.
--- No raw IP is stored anywhere.
+-- visitor_hash is an HMAC of address plus user agent under a random salt made
+-- each UTC day and deleted from KV after 48 hours. Since v3 it joins within one
+-- UTC day and cannot be joined across days. No raw IP is stored anywhere, and
+-- every table keeps 90 days of rows.
 --
 --
--- TWO GENERATIONS OF visitor_hash. READ THIS BEFORE COUNTING VISITORS.
+-- THREE GENERATIONS OF visitor_hash. READ THIS BEFORE COUNTING VISITORS.
 --
 -- hash_scope IS NULL   v1. The hash covered the FULL address. Most traffic here
 --                      is IPv6, and IPv6 privacy extensions rotate the low 64
@@ -46,16 +47,21 @@
 --                      Android, so one returning person produced a new hash
 --                      most days. These hashes are unstable: they overcount
 --                      distinct visitors and undercount repeats.
--- hash_scope NOT NULL  v2. The hash covers the IPv6 /64 prefix (or the whole
---                      IPv4 address), which does not rotate, under a new salt
---                      version.
+-- hash_scope 'ipv4', 'ipv6-64', 'raw'
+--                      v2. The hash covers the IPv6 /64 prefix (or the whole
+--                      IPv4 address), which does not rotate, under the public
+--                      month salt.
+-- hash_scope 'v3:...'  v3. The same input under the KV day salt. A returning
+--                      person gets a new hash every UTC day, so the counts
+--                      below that say visitors count person-days for v3 rows,
+--                      and "days" in query 2 is always 1 for them.
 --
--- The two never agree. The same person has a different hash either side of the
--- change, and a v1 hash can never equal a v2 hash, so counting them together
--- counts that person twice. Every query below that counts distinct visitors or
--- looks for repeats therefore restricts itself to hash_scope IS NOT NULL, and
--- says so in its column name. Hit counts and row listings still cover the whole
--- log; it is only visitor identity that is v2-only.
+-- No two generations agree. The same person has a different hash either side
+-- of each change, so counting generations together counts that person twice.
+-- Every query below that counts distinct visitors or looks for repeats
+-- restricts itself to hash_scope IS NOT NULL, which excludes v1 only; v2 and v3
+-- rows are both counted there until v2 rows age out under the 90-day purge.
+-- Hit counts and row listings still cover the whole log.
 
 
 -- 1. CANDIDATE REAL VISITS, most recent first.
@@ -233,8 +239,7 @@ ORDER BY hits DESC;
 --    that both rows carry the same hash_scope. Nothing is counted, so nothing
 --    is double counted.
 SELECT ts, path, status, classification, asn, as_org, country, city, colo,
-       referer, ua, accept_language, http_protocol, tls_version,
-       client_tcp_rtt, visitor_hash, hash_scope
+       referer, ua, visitor_hash, hash_scope
 FROM visits
 ORDER BY id DESC
 LIMIT 100;
