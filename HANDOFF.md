@@ -2,13 +2,31 @@
 
 ## Status (4 Oct 2026)
 
-4 Oct 2026: cross-repo planning closed. Next step for this repo: run `./deploy.sh` so the
-`visitor_hash` privacy fix goes live.
+4 Oct 2026: cross-repo planning closed. The `visitor_hash` privacy fix is deployed and its
+migration has run.
 
 - The fix, approved on 4 Oct 2026, uses a random daily salt, no fingerprint fields, 90-day
-  retention and a short notice. It is live only once `./deploy.sh` runs. Merging does not deploy.
-  `migrations/2026-10-04-clear-old-identifiers.sql` is optional and unrun; it clears the old
-  month-salted hashes now instead of letting them age out over 90 days.
+  retention and a short notice. `deploy.sh`, using wrangler 4.125.0, deployed it on 4 Oct 2026 at
+  19:31:50Z as Worker version `4ea93d17-cba1-4a3a-8779-9d4650a21bbf` and registered the cron
+  `17 3 * * *`. The live homepage was confirmed byte-identical, and `/privacy.html` returns a 307
+  to `/privacy`, which returns 200. The first v3 row was written at 19:32:14Z; no old-style hashed
+  row was written after it.
+- `migrations/2026-10-04-clear-old-identifiers.sql` ran against production D1 at 19:38:01Z with
+  Ryan's approval. It cleared 48,425 old visitor hashes and the fingerprint fields on 48,425 rows,
+  cleared 391 `alert_log` hashes and deleted 337 pre-cutover `alerts_sent` rows. `visits` still
+  holds 48,432 rows. The old `hash_scope` labels are deliberately left in place.
+- A D1 Time Travel restore point was taken immediately before the migration: bookmark
+  `00000a0d-00000000-000050fa-ccffac10c2ec074a78cba01e46e1b090`, usable until about 3 Nov 2026.
+  Restore with `npx --yes wrangler@4.125.0 d1 time-travel restore ryanhennebry-visits
+  --bookmark=00000a0d-00000000-000050fa-ccffac10c2ec074a78cba01e46e1b090`. It rolls back all D1
+  writes after that point, not just the migration, including every visit logged since.
+- The first purge deletions are due around 25 Nov 2026.
+- A further redeploy follows for the `privacy.html` wording ("a later day", not "a later visit").
+  Its version is not recorded here; `npx --yes wrangler@4.125.0 deployments list` shows the latest.
+- Open for Ryan: coarsening the reverse DNS name kept in `enrichment.ptr` and printed in the alert
+  email; whether to drop or coarsen `ua`; the title of `queries.sql` query 2, which says "this
+  calendar month" although a v3 hash links visits only within one UTC day; and the BT reverse DNS
+  name used as a fixture in `test/enrichment.test.mjs`, which embeds an address.
 
 ## Built
 
@@ -25,7 +43,9 @@ favicon, ICO and 180px Apple touch icon are fully opaque solid fields of the app
 banner colour, `#24303C`, with no text or mark. `robots.txt`, `sitemap.xml`, canonical metadata and
 the WebSite and Person JSON-LD graph use the live apex origin.
 
-Cloudflare version `ca1f7099-f461-4217-8e60-f942b201b034`, deployed 2026-08-27, serves the site.
+Cloudflare version `4ea93d17-cba1-4a3a-8779-9d4650a21bbf`, deployed 2026-10-04, or a later one
+serves the site; `npx --yes wrangler@4.125.0 deployments list` shows the latest. Version
+`ca1f7099-f461-4217-8e60-f942b201b034`, deployed 2026-08-27, is the earlier one this file recorded.
 Version `c91ef044-f896-41f5-9b2d-39da0a1730e2` was the last assets-only deployment before it. The
 account-level Bulk Redirect rule `Redirect www to apex` sends `www` to the apex with HTTP 301 while
 preserving paths and query strings. The `workers.dev` and preview surfaces are disabled.
@@ -45,15 +65,16 @@ from `visits`, `enrichment`, `alerts_sent` and `alert_log`; on the live data the
 around 25 Nov 2026. No table has an IP address column, but for a visit that clears
 `isGenuineVisit` the reverse DNS name is stored in `enrichment.ptr` and printed in the alert email,
 and that name often embeds the address (`host86-181-229-144.range86-181.btcentralplus.com`). Alert
-emails stay in Ryan's inbox outside the 90-day purge. Rows written before the deploy keep the
-public month-salted hash (`hash_scope` NULL or without the `v3:` prefix) until the purge or the
-optional migration removes it. `privacy.html` states the retention, hashing, enrichment and email
-terms, with the purpose, the lawful basis (legitimate interests), the right to object and the right
-to complain to the ICO. Its daily-key claim holds for rows written before the deploy only once
-`migrations/2026-10-04-clear-old-identifiers.sql` is run or those rows age out. `privacy.html`
+emails stay in Ryan's inbox outside the 90-day purge. Rows written before the deploy keep their
+old `hash_scope` label (NULL or without the `v3:` prefix), but the migration cleared their
+month-salted hashes and fingerprint fields on 4 Oct 2026. `privacy.html` states the retention,
+hashing, enrichment and email terms, with the purpose, the lawful basis (legitimate interests), the
+right to object and the right to complain to the ICO. Its daily-key claim holds for every stored
+row, because `migrations/2026-10-04-clear-old-identifiers.sql` has run. `privacy.html`
 exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being
 told it probably does not meet UK GDPR Art 13's 'easy to access' requirement. `deploy.sh` still
-ships it, so it is served at `/privacy.html`; it is not in `sitemap.xml`. `schema.sql` holds the
+ships it: `/privacy.html` returns a 307 to `/privacy`, which returns 200. It is not in
+`sitemap.xml`. `schema.sql` holds the
 schema and `queries.sql` the reads.
 
 Google Search Console has the verified domain property `ryanhennebry.xyz`. The verification TXT
