@@ -8,6 +8,10 @@
 // undefined - a bare ReferenceError inside maybeAlert would be swallowed by
 // its own try/catch and look exactly like a real defect. And the trailing
 // "export default" block is cut so the remainder can be evaluated as a body.
+//
+// A name in EXPORTED that src/index.js does not define comes back undefined
+// rather than throwing at load, so one missing function fails its own tests
+// and the "harness" test in privacy.test.mjs, not every suite at once.
 
 import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -25,7 +29,7 @@ export class StubEmailMessage {
   }
 }
 
-const EXPORTED = [
+export const EXPORTED = [
   "classify",
   "normaliseIpForHash",
   "logVisit",
@@ -39,6 +43,7 @@ const EXPORTED = [
   "maybeAlert",
   "lookupPtr",
   "lookupCompany",
+  "purgeOldRows",
 ];
 
 export function loadWorker() {
@@ -52,7 +57,23 @@ export function loadWorker() {
     .replace(/^import\s.*$/m, "");
   const factory = new Function(
     "EmailMessage",
-    body + "\nreturn { " + EXPORTED.join(", ") + " };"
+    body +
+      "\nreturn { " +
+      EXPORTED.map((name) => name + ": typeof " + name + " === 'undefined' ? undefined : " + name).join(", ") +
+      " };"
   );
   return factory(StubEmailMessage);
+}
+
+// The whole Worker module, export default included, evaluated as a body that
+// returns its default export. This is how the scheduled handler is reached.
+export function loadEntrypoint() {
+  const src = readFileSync(SRC, "utf8");
+  if (src.indexOf("export default") === -1) {
+    throw new Error("export default not found in src/index.js");
+  }
+  const body = src
+    .replace(/^import\s.*$/m, "")
+    .replace("export default", "return");
+  return new Function("EmailMessage", body)(StubEmailMessage);
 }

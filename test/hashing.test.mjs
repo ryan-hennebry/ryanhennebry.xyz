@@ -132,6 +132,10 @@ function insertedRow(calls) {
   return row;
 }
 
+// One KV namespace for the whole file, so every call on one UTC day reads the
+// same day salt, exactly as the Worker does.
+const SHARED_KV = stubKv();
+
 async function logged(ip) {
   const db = stubDb();
   const request = {
@@ -140,14 +144,14 @@ async function logged(ip) {
     headers: new Headers({ "user-agent": UA, "cf-connecting-ip": ip }),
   };
   // No ALERT_EMAIL: maybeAlert returns before it touches anything.
-  await logVisit(request, { status: 200 }, { DB: db.DB });
+  await logVisit(request, { status: 200 }, { DB: db.DB, VISIT_ENRICH: SHARED_KV.env.VISIT_ENRICH });
   return insertedRow(db.calls);
 }
 
 test("hash: three addresses on one /64 hash identically", async () => {
   const rows = await Promise.all([logged(V6_A), logged(V6_B), logged(V6_C)]);
-  const months = new Set(rows.map((r) => r.ts.slice(0, 7)));
-  assert.equal(months.size, 1, "test straddled a month boundary; re-run");
+  const days = new Set(rows.map((r) => r.ts.slice(0, 10)));
+  assert.equal(days.size, 1, "test straddled a UTC day boundary; re-run");
   assert.equal(rows[0].visitor_hash, rows[1].visitor_hash);
   assert.equal(rows[1].visitor_hash, rows[2].visitor_hash);
   assert.equal(typeof rows[0].visitor_hash, "string");
@@ -207,8 +211,16 @@ test("hash: the salt version breaks continuity with the v1 hash", async () => {
 
 // --- PTR cache --------------------------------------------------------------
 
-const HIT_TTL = 7 * 24 * 60 * 60;
+const HIT_TTL = 24 * 60 * 60;
 const MISS_TTL = 6 * 60 * 60;
+
+function ptrPuts(kv) {
+  return kv.puts.filter((p) => p.key.startsWith("ptr:"));
+}
+
+function ptrGets(kv) {
+  return kv.gets.filter((key) => key.startsWith("ptr:"));
+}
 
 function stubKv() {
   const store = new Map();
@@ -290,7 +302,7 @@ test("ptr: a rotating identifier reuses one cache key", async () => {
   const second = await ptr(kv, V6_B, { Status: 3 });
   assert.equal(second.value, "host.example.net");
   assert.equal(second.calls.length, 0, "a rotated address missed the cache");
-  assert.deepEqual(kv.gets[0], kv.gets[1]);
+  assert.deepEqual(ptrGets(kv)[0], ptrGets(kv)[1]);
 });
 
 test("ptr: a different /64 does not share the cache entry", async () => {
@@ -301,20 +313,20 @@ test("ptr: a different /64 does not share the cache entry", async () => {
   assert.equal(other.calls.length, 1);
 });
 
-test("ptr: a hit is cached for 7 days", async () => {
+test("ptr: a hit is cached for 24 hours", async () => {
   const kv = stubKv();
   await ptr(kv, V6_A, { Status: 0, Answer: [{ type: 12, data: "host.example.net." }] });
-  assert.equal(kv.puts.length, 1);
-  assert.equal(kv.puts[0].value, "host.example.net");
-  assert.deepEqual(kv.puts[0].options, { expirationTtl: HIT_TTL });
+  assert.equal(ptrPuts(kv).length, 1);
+  assert.equal(ptrPuts(kv)[0].value, "host.example.net");
+  assert.deepEqual(ptrPuts(kv)[0].options, { expirationTtl: HIT_TTL });
 });
 
 test("ptr: a miss is cached for 6 hours", async () => {
   const kv = stubKv();
   await ptr(kv, V6_A, { Status: 3 });
-  assert.equal(kv.puts.length, 1);
-  assert.equal(kv.puts[0].value, "-");
-  assert.deepEqual(kv.puts[0].options, { expirationTtl: MISS_TTL });
+  assert.equal(ptrPuts(kv).length, 1);
+  assert.equal(ptrPuts(kv)[0].value, "-");
+  assert.deepEqual(ptrPuts(kv)[0].options, { expirationTtl: MISS_TTL });
 });
 
 test("ptr: the two TTLs are different, and the miss is the shorter", async () => {
@@ -324,7 +336,7 @@ test("ptr: the two TTLs are different, and the miss is the shorter", async () =>
     Status: 0,
     Answer: [{ type: 12, data: "host.example.net." }],
   });
-  const ttls = kv.puts.map((p) => p.options.expirationTtl);
+  const ttls = ptrPuts(kv).map((p) => p.options.expirationTtl);
   assert.deepEqual(ttls, [MISS_TTL, HIT_TTL]);
   assert.ok(ttls[0] < ttls[1]);
 });
@@ -332,7 +344,7 @@ test("ptr: the two TTLs are different, and the miss is the shorter", async () =>
 test("ptr: the cache key never contains the address", async () => {
   const kv = stubKv();
   await ptr(kv, V6_A, { Status: 3 });
-  for (const key of kv.gets.concat(kv.puts.map((p) => p.key))) {
+  for (const key of ptrGets(kv).concat(ptrPuts(kv).map((p) => p.key))) {
     assert.equal(key.indexOf("2a00"), -1, key);
     assert.equal(key.indexOf(V6_A), -1, key);
     assert.match(key, /^ptr:[0-9a-f]{32}$/);
