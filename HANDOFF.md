@@ -1,18 +1,14 @@
 # Handoff: ryanhennebry.xyz
 
-## Cross-repo status (4 Oct 2026)
+## Status (4 Oct 2026)
 
-A pointer, not a plan change: product decisions stay gated until Ryan approves the grill summary.
+4 Oct 2026: cross-repo planning closed. Next step for this repo: run `./deploy.sh` so the
+`visitor_hash` privacy fix goes live.
 
-- Parent grill handoff: `../docs/plans/active/itl-grill-handoff.md`. Ledger:
-  `../docs/plans/active/itl-grill-2026-09-28-progress.md`. Both live in the private parent
-  workspace at `~/Projects/in-the-loop/`.
-- `../PRODUCT-DIRECTION.md` is unchanged and remains the authority until the grill write-back.
-- Closed in code: the `visitor_hash` privacy item (quick tab Q-1, C15-1). Ryan approved it on
-  4 Oct 2026 as one reviewed change: a random daily salt, no fingerprint fields, 90-day retention
-  and a short notice. It is live only once Ryan runs `./deploy.sh`. Merging does not deploy.
-  `migrations/2026-10-04-clear-old-identifiers.sql` is optional and unrun; it clears the old month-salted
-  hashes now instead of letting them age out over 90 days.
+- The fix, approved on 4 Oct 2026, uses a random daily salt, no fingerprint fields, 90-day
+  retention and a short notice. It is live only once `./deploy.sh` runs. Merging does not deploy.
+  `migrations/2026-10-04-clear-old-identifiers.sql` is optional and unrun; it clears the old
+  month-salted hashes now instead of letting them age out over 90 days.
 
 ## Built
 
