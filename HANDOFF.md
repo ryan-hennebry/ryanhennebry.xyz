@@ -1,9 +1,20 @@
 # Handoff: ryanhennebry.xyz
 
+## Cross-repo status (4 Oct 2026)
+
+A pointer, not a plan change: product decisions stay gated until Ryan approves the grill summary.
+
+- Parent grill handoff: `../docs/plans/active/itl-grill-handoff.md`. Ledger:
+  `../docs/plans/active/itl-grill-2026-09-28-progress.md`. Both live in the private parent
+  workspace at `~/Projects/in-the-loop/`.
+- `../PRODUCT-DIRECTION.md` is unchanged and remains the authority until the grill write-back.
+- Pending here: the `visitor_hash` privacy item at `src/index.js:1209` is still live. Do not change it until Ryan says "fix now" (quick tab Q-1).
+
 ## Built
 
-The finished static identity page is live at `https://ryanhennebry.xyz/`. The visible body and
-stylesheet remain unchanged: final copy, 550px measure, one 15px type size, the locked spacing
+The finished static identity page is live at `https://ryanhennebry.xyz/`. Since 2026-09-24
+(`b73fa14`) Startup Skills is the first project link and link names no longer wrap; that commit's
+deployment is not recorded here. Otherwise the visible body and stylesheet remain as approved: final copy, 550px measure, one 15px type size, the locked spacing
 system, and no content imagery or client-side runtime dependency. The Worker described below sits
 in front of it and does not alter a byte of it.
 
@@ -21,8 +32,9 @@ preserving paths and query strings. The `workers.dev` and preview surfaces are d
 
 `src/index.js` is a Worker entrypoint that runs first on every request. It serves the page through
 the ASSETS binding and returns that response untouched, then logs one row per request to the D1
-database `ryanhennebry-visits` inside `ctx.waitUntil`, so no latency is added and no external
-network call is made. The row holds timestamp, path, status, ASN, AS organisation, country, city,
+database `ryanhennebry-visits` inside `ctx.waitUntil`, so no latency is added. Since 2026-09-02 (`6e9cc0c`) genuine visits are
+also enriched (reverse DNS, IPLocate) and emailed to Ryan through Email Routing, so the Worker
+does make external calls off the response path. The row holds timestamp, path, status, ASN, AS organisation, country, city,
 region, timezone, colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP
 round-trip time, a classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash
 that is SHA-256 of the IP, the user agent and the current `YYYY-MM`. No raw IP address is stored,
