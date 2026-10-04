@@ -186,13 +186,13 @@ test("hash_scope is written for every scope", async () => {
   ]);
   assert.deepEqual(
     rows.map((r) => r.hash_scope),
-    ["ipv6-64", "ipv4", "raw"]
+    ["v3:ipv6-64", "v3:ipv4", "v3:raw"]
   );
 });
 
 test("hash: an unparseable address is logged, not dropped", async () => {
   const row = await logged("not-an-address");
-  assert.equal(row.hash_scope, "raw");
+  assert.equal(row.hash_scope, "v3:raw");
   assert.equal(typeof row.visitor_hash, "string");
   assert.equal(row.visitor_hash.length, 64);
 });
@@ -205,7 +205,7 @@ test("hash: the salt version breaks continuity with the v1 hash", async () => {
   assert.notEqual(
     row.visitor_hash,
     v1,
-    "v2 reproduced a v1 hash; the version tag is not in the input"
+    "the current hash reproduced a v1 hash; the version tag is not in the input"
   );
 });
 
