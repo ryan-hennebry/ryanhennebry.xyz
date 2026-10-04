@@ -15,8 +15,10 @@
 --
 -- Pre-cutover means, in visits, any hash whose hash_scope does not start with
 -- 'v3:'. alerts_sent and alert_log have no hash_scope, so there it means any
--- row older than the first v3 visit. Before the v3 Worker has written a row,
--- that subquery is NULL and those two statements change nothing.
+-- hash that no v3 visits row carries. Matching on the hash, not on time,
+-- also catches rows an old isolate wrote while the deploy rolled out. Until
+-- the v3 Worker has written a row, the EXISTS guard makes those two
+-- statements change nothing.
 --
 -- alerts_sent.visitor_hash is NOT NULL and part of the primary key, so its
 -- pre-cutover rows are deleted rather than cleared. Each is only the
@@ -32,10 +34,18 @@ WHERE visitor_hash IS NOT NULL
 UPDATE alert_log
 SET visitor_hash = NULL
 WHERE visitor_hash IS NOT NULL
-  AND ts < (SELECT MIN(ts) FROM visits WHERE hash_scope LIKE 'v3:%');
+  AND EXISTS (SELECT 1 FROM visits WHERE hash_scope LIKE 'v3:%')
+  AND visitor_hash NOT IN (
+    SELECT visitor_hash FROM visits
+    WHERE hash_scope LIKE 'v3:%' AND visitor_hash IS NOT NULL
+  );
 
 DELETE FROM alerts_sent
-WHERE ts < (SELECT MIN(ts) FROM visits WHERE hash_scope LIKE 'v3:%');
+WHERE EXISTS (SELECT 1 FROM visits WHERE hash_scope LIKE 'v3:%')
+  AND visitor_hash NOT IN (
+    SELECT visitor_hash FROM visits
+    WHERE hash_scope LIKE 'v3:%' AND visitor_hash IS NOT NULL
+  );
 
 UPDATE visits
 SET accept_language = NULL,

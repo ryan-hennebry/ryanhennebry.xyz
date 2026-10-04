@@ -46,7 +46,10 @@ made each UTC day and kept only in KV (`salt:v3:YYYY-MM-DD`, 48-hour TTL). It li
 one UTC day; with no salt it is NULL. Accept-language, HTTP protocol, TLS version and TCP
 round-trip time are no longer written. A daily cron at 03:17 UTC deletes rows older than 90 days
 from `visits`, `enrichment`, `alerts_sent` and `alert_log`; on the live data the first rows go
-around 25 Nov 2026. No raw IP address is stored anywhere. Rows written before the deploy keep the
+around 25 Nov 2026. No table has an IP address column, but for a visit that clears
+`isGenuineVisit` the reverse DNS name is stored in `enrichment.ptr` and printed in the alert email,
+and that name often embeds the address (`host86-181-229-144.range86-181.btcentralplus.com`). Alert
+emails stay in Ryan's inbox outside the 90-day purge. Rows written before the deploy keep the
 public month-salted hash (`hash_scope` NULL or without the `v3:` prefix) until the purge or the
 optional migration removes it. `privacy.html`, linked last in Links, states all of this to
 visitors. `schema.sql` holds the schema and `queries.sql` the reads.

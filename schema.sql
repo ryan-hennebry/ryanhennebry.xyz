@@ -1,6 +1,7 @@
 -- Retention: purgeOldRows in src/index.js deletes rows older than 90 days from
 -- visits, enrichment, alerts_sent and alert_log once a day, on the cron
--- trigger in wrangler.jsonc. No table here holds a raw IP address.
+-- trigger in wrangler.jsonc. No table has an IP address column, but
+-- enrichment.ptr is a reverse DNS name and often embeds the address.
 --
 -- visitor_hash is HMAC-SHA256 under a random salt made each UTC day and held
 -- only in KV, where it expires after 48 hours. It links visits within one UTC
@@ -66,9 +67,10 @@ CREATE TABLE IF NOT EXISTS alert_log (
 
 -- Enrichment for the small number of visits that clear isGenuineVisit(). One
 -- row per alert-worthy visit, keyed to visits.id, written whether or not any
--- provider answered. Still no raw IP: the address is an input to the PTR
+-- provider answered. No IP column: the address is an input to the PTR
 -- lookup and to the cache key hash, and is never a column here.
---   ptr           reverse DNS name, from Cloudflare DNS-over-HTTPS
+--   ptr           reverse DNS name, from Cloudflare DNS-over-HTTPS. Often
+--                 embeds the address, and is printed in the alert email
 --   company_*     IPLocate, only when the IPLOCATE_KEY secret is present
 --   is_vpn/proxy/tor  IPLocate privacy flags, 1/0/NULL (NULL = not asked)
 --   is_hosting    IPLocate privacy.is_hosting, added by the migration at the

@@ -35,8 +35,8 @@
 --
 -- visitor_hash is an HMAC of address plus user agent under a random salt made
 -- each UTC day and deleted from KV after 48 hours. Since v3 it joins within one
--- UTC day and cannot be joined across days. No raw IP is stored anywhere, and
--- every table keeps 90 days of rows.
+-- UTC day and cannot be joined across days. No table has an IP column, though
+-- enrichment.ptr often embeds the address. Every table keeps 90 days of rows.
 --
 --
 -- THREE GENERATIONS OF visitor_hash. READ THIS BEFORE COUNTING VISITORS.
@@ -52,15 +52,14 @@
 --                      IPv4 address), which does not rotate, under the public
 --                      month salt.
 -- hash_scope 'v3:...'  v3. The same input under the KV day salt. A returning
---                      person gets a new hash every UTC day, so the counts
---                      below that say visitors count person-days for v3 rows,
---                      and "days" in query 2 is always 1 for them.
+--                      person gets a new hash every UTC day, so the visitor
+--                      counts below are person-days, and "days" in query 2
+--                      is always 1.
 --
 -- No two generations agree. The same person has a different hash either side
 -- of each change, so counting generations together counts that person twice.
 -- Every query below that counts distinct visitors or looks for repeats
--- restricts itself to hash_scope IS NOT NULL, which excludes v1 only; v2 and v3
--- rows are both counted there until v2 rows age out under the 90-day purge.
+-- restricts itself to hash_scope LIKE 'v3:%', and says so in its column name.
 -- Hit counts and row listings still cover the whole log.
 
 
@@ -86,8 +85,8 @@ LIMIT 100;
 -- 2. REPEAT VISITORS THIS CALENDAR MONTH.
 --    Anyone who came back. Two hits a few seconds apart is one page view
 --    with a reload; hits on two different days is somebody returning.
---    v2 rows only. A v1 hash cannot be trusted to mean "the same person came
---    back", which is the entire question this query asks.
+--    v3 rows only. A v1 or v2 hash cannot be compared with a v3 hash, and a
+--    v3 hash only links hits within one UTC day.
 SELECT visitor_hash,
        COUNT(*)                          AS hits,
        COUNT(DISTINCT substr(ts, 1, 10)) AS days,
@@ -100,7 +99,7 @@ WHERE classification = 'human'
   AND ua LIKE '%Mozilla%'
   AND path NOT LIKE '%.%'
   AND visitor_hash IS NOT NULL
-  AND hash_scope IS NOT NULL
+  AND hash_scope LIKE 'v3:%'
   AND substr(ts, 1, 7) = strftime('%Y-%m', 'now')
 GROUP BY visitor_hash
 HAVING COUNT(*) > 1
@@ -116,9 +115,9 @@ ORDER BY days DESC, hits DESC;
 --    typing the name or from a link that sends no referer at all.
 SELECT COALESCE(referer, '(none)')  AS referer,
        COUNT(*)                     AS hits,
-       -- Visitors are counted over v2 rows only; hits cover the whole log.
-       COUNT(DISTINCT CASE WHEN hash_scope IS NOT NULL THEN visitor_hash END)
-                                    AS visitors_v2,
+       -- Visitors are counted over v3 rows only; hits cover the whole log.
+       COUNT(DISTINCT CASE WHEN hash_scope LIKE 'v3:%' THEN visitor_hash END)
+                                    AS visitors_v3,
        MAX(ts)                      AS last_seen
 FROM visits
 WHERE classification = 'human'
@@ -214,13 +213,13 @@ ORDER BY day DESC;
 
 
 -- 5b. CLASSIFICATION TOTALS over the whole log.
---     hits span both hash generations; visitors_v2 counts only rows whose
---     hash is stable, so it is a floor, not a total, for anything before the
+--     hits span every hash generation; visitors_v3 counts only v3 rows, as
+--     person-days, so it is a floor, not a total, for anything before the
 --     change.
 SELECT classification,
        COUNT(*)                     AS hits,
-       COUNT(DISTINCT CASE WHEN hash_scope IS NOT NULL THEN visitor_hash END)
-                                    AS visitors_v2,
+       COUNT(DISTINCT CASE WHEN hash_scope LIKE 'v3:%' THEN visitor_hash END)
+                                    AS visitors_v3,
        MIN(ts)                      AS first_seen,
        MAX(ts)                      AS last_seen
 FROM visits
@@ -234,7 +233,7 @@ ORDER BY hits DESC;
 --    run when a rule looks wrong, because it is the only one that can show
 --    you what the classifier is deciding about.
 --    DELIBERATELY UNFILTERED, INCLUDING BY HASH GENERATION: the rows it
---    returns may mix v1 and v2 hashes, which is why hash_scope is selected
+--    returns may mix v1, v2 and v3 hashes, which is why hash_scope is selected
 --    alongside visitor_hash. Do not compare two hashes here without checking
 --    that both rows carry the same hash_scope. Nothing is counted, so nothing
 --    is double counted.
@@ -254,9 +253,9 @@ SELECT COALESCE(as_org, '(unknown)') AS as_org,
        asn,
        classification,
        COUNT(*)                      AS hits,
-       -- v2 rows only; see the note at the top of this file.
-       COUNT(DISTINCT CASE WHEN hash_scope IS NOT NULL THEN visitor_hash END)
-                                     AS visitors_v2,
+       -- v3 rows only; see the note at the top of this file.
+       COUNT(DISTINCT CASE WHEN hash_scope LIKE 'v3:%' THEN visitor_hash END)
+                                     AS visitors_v3,
        SUM(ua LIKE '%Mozilla%')      AS browserish,
        MAX(ts)                       AS last_seen
 FROM visits

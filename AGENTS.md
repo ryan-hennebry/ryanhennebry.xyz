@@ -47,7 +47,10 @@ a version tag, address scope, normalised IPv4 address or IPv6 /64 and user agent
 only in the `VISIT_ENRICH` KV namespace under `salt:v3:YYYY-MM-DD` and expires after 48 hours, so
 a hash links visits within one UTC day and nobody can recompute it afterwards. With no salt the
 hash is NULL; there is no fallback. `hash_scope` carries the version (`v3:ipv4`, `v3:ipv6-64`,
-`v3:raw`) and identifies comparable rows. No raw IP address is stored anywhere. A daily cron
+`v3:raw`) and identifies comparable rows. No table has an IP address column, but for a visit that
+clears `isGenuineVisit` the reverse DNS name is stored in `enrichment.ptr` and printed in the alert
+email, and that name often embeds the address (`host86-181-229-144.range86-181.btcentralplus.com`).
+Alert emails stay in Ryan's inbox outside the 90-day purge. A daily cron
 deletes rows older than 90 days from all four tables. Ryan approved this design on 4 October 2026
 (C15-1, quick Q-1). The schema is `schema.sql` and the reads are `queries.sql`.
 

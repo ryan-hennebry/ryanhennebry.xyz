@@ -6,7 +6,9 @@
 // latency and cannot change what a visitor sees. Every request is stored;
 // classification is a column, never a filter.
 //
-// No raw IP address is ever written. The IP is only an input to an
+// No IP address is written as a column. The one place it can still appear is
+// enrichment.ptr, the reverse DNS name, which often embeds the address and is
+// also printed in the alert email. Otherwise the IP is only an input to an
 // HMAC-SHA256 keyed with a random salt that is made each UTC day, held only in
 // KV and deleted by KV after 48 hours (see daySaltKey), so a repeat visit is
 // detectable within one UTC day and unlinkable across days by anyone once that

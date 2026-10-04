@@ -400,7 +400,13 @@ test("migration: clears pre-v3 identifiers and fingerprints, keeps v3 rows, runs
   visit.run("2026-09-01T10:00:00.000Z", "v1hash", null);
   visit.run("2026-10-01T10:00:00.000Z", "v2hash", "ipv4");
   visit.run("2026-10-06T10:00:00.000Z", "v3hash", "v3:ipv4");
-  for (const [ts, hash] of [["2026-10-01T10:00:00.000Z", "v2hash"], ["2026-10-06T10:00:00.000Z", "v3hash"]]) {
+  // The third pair is a v2 row an old isolate wrote after the first v3 visit,
+  // during the rollout. A time cutoff would keep it; the hash match clears it.
+  for (const [ts, hash] of [
+    ["2026-10-01T10:00:00.000Z", "v2hash"],
+    ["2026-10-06T10:00:00.000Z", "v3hash"],
+    ["2026-10-06T10:00:05.000Z", "v2late"],
+  ]) {
     db.prepare("INSERT INTO alerts_sent (visitor_hash, day, ts) VALUES (?, ?, ?)").run(hash, ts.slice(0, 10), ts);
     db.prepare("INSERT INTO alert_log (ts, visitor_hash, outcome) VALUES (?, ?, 'sent')").run(ts, hash);
   }
@@ -422,6 +428,7 @@ test("migration: clears pre-v3 identifiers and fingerprints, keeps v3 rows, runs
   assert.deepEqual(plain(db.prepare("SELECT visitor_hash FROM alert_log ORDER BY ts").all()), [
     { visitor_hash: null },
     { visitor_hash: "v3hash" },
+    { visitor_hash: null },
   ]);
 });
 
