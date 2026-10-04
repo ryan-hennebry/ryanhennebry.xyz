@@ -145,9 +145,9 @@ fi
 
 # The privacy notice is deliberately unlinked from index.html (Ryan, 4 Oct 2026),
 # carries no script and states the same retention the Worker enforces.
-if grep -Eiq 'href="[^"]*privacy' index.html; then
+if grep -Eiq "href=[\"']?[^\"' >]*privacy" index.html; then
   echo "FAIL index.html links privacy.html. The notice is deliberately unlinked."
-  grep -Ein 'href="[^"]*privacy' index.html
+  grep -Ein "href=[\"']?[^\"' >]*privacy" index.html
   fail=1
 else
   echo "ok: index.html does not link privacy.html"

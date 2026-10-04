@@ -51,8 +51,10 @@ around 25 Nov 2026. No table has an IP address column, but for a visit that clea
 and that name often embeds the address (`host86-181-229-144.range86-181.btcentralplus.com`). Alert
 emails stay in Ryan's inbox outside the 90-day purge. Rows written before the deploy keep the
 public month-salted hash (`hash_scope` NULL or without the `v3:` prefix) until the purge or the
-optional migration removes it. `privacy.html` states all of this, with the purpose, the lawful basis
-(legitimate interests), the right to object and the right to complain to the ICO. `privacy.html`
+optional migration removes it. `privacy.html` states the retention, hashing, enrichment and email
+terms, with the purpose, the lawful basis (legitimate interests), the right to object and the right
+to complain to the ICO. Its daily-key claim holds for rows written before the deploy only once
+`migrations/2026-10-04-clear-old-identifiers.sql` is run or those rows age out. `privacy.html`
 exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being
 told it probably does not meet UK GDPR Art 13's 'easy to access' requirement. `deploy.sh` still
 ships it, so it is served at `/privacy.html`; it is not in `sitemap.xml`. `schema.sql` holds the
