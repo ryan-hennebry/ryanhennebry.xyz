@@ -4,6 +4,11 @@ The identity page. One static document under Ryan's own name, and the only surfa
 person rather than the work. Parent workspace rules live in `../AGENTS.md`. This file wins on
 conflict with it.
 
+**Shared direction:** before changing the project list, cross-product positioning or any link that
+defines Ryan's relationship to In The Loop, read `../PRODUCT-DIRECTION.md`. It owns the relationship
+between the independent products and the `/grill-me` gate for major cross-repository changes; this
+repository owns the identity page and its release gates.
+
 ## What this repo is
 
 A single hand-written HTML page, one stylesheet, one self-hosted font. No build step, no framework,
