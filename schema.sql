@@ -1,3 +1,16 @@
+-- Retention: purgeOldRows in src/index.js deletes rows older than 90 days from
+-- visits, enrichment, alerts_sent and alert_log once a day, on the cron
+-- trigger in wrangler.jsonc. No table has an IP address column, but
+-- enrichment.ptr is a reverse DNS name and often embeds the address.
+--
+-- visitor_hash is HMAC-SHA256 under a random salt made each UTC day and held
+-- only in KV, where it expires after 48 hours. It links visits within one UTC
+-- day and cannot be recomputed or linked once that salt has expired. It is
+-- NULL when no salt was available: there is no fallback salt.
+--
+-- accept_language, http_protocol, tls_version and client_tcp_rtt are no
+-- longer written. They stay as columns so older rows still read, and the
+-- migration in migrations/ clears the values already stored.
 CREATE TABLE IF NOT EXISTS visits (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   ts TEXT NOT NULL,
@@ -54,9 +67,10 @@ CREATE TABLE IF NOT EXISTS alert_log (
 
 -- Enrichment for the small number of visits that clear isGenuineVisit(). One
 -- row per alert-worthy visit, keyed to visits.id, written whether or not any
--- provider answered. Still no raw IP: the address is an input to the PTR
+-- provider answered. No IP column: the address is an input to the PTR
 -- lookup and to the cache key hash, and is never a column here.
---   ptr           reverse DNS name, from Cloudflare DNS-over-HTTPS
+--   ptr           reverse DNS name, from Cloudflare DNS-over-HTTPS. Often
+--                 embeds the address, and is printed in the alert email
 --   company_*     IPLocate, only when the IPLOCATE_KEY secret is present
 --   is_vpn/proxy/tor  IPLocate privacy flags, 1/0/NULL (NULL = not asked)
 --   is_hosting    IPLocate privacy.is_hosting, added by the migration at the
@@ -93,11 +107,14 @@ CREATE TABLE IF NOT EXISTS enrichment (
 --              the interface identifier roughly daily and were turning one
 --              returning person into a new visitor every day
 --   'raw'      an address that did not parse, hashed as it arrived
--- NULL means the row was written before this column existed. Those hashes were
--- built from the full address under the v1 salt, so a NULL row can never be
--- joined to, counted with, or compared against a row written since. Filter on
--- hash_scope IS NOT NULL for any repeat-visit or distinct-visitor question that
--- must not mix the two generations.
+-- Those three values are v2 rows, hashed under the public month salt. v3 rows
+-- carry the version as a prefix: 'v3:ipv4', 'v3:ipv6-64' and 'v3:raw', hashed
+-- under the KV day salt. NULL means either the row was written before this
+-- column existed (v1, the full address under the month salt) or no salt was
+-- available and visitor_hash is NULL too. No generation can be joined to,
+-- counted with, or compared against another. Filter on hash_scope LIKE 'v3:%'
+-- for a distinct-visitor question, and remember that a v3 hash only links
+-- visits within one UTC day.
 --
 -- SQLite has no ALTER TABLE ... ADD COLUMN IF NOT EXISTS, so the guard here is
 -- position, not syntax: this is the last statement in the file, and the CREATE

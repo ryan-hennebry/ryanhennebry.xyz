@@ -26,6 +26,7 @@ Links
 Email -> mailto:ryanhennebry@gmail.com
 GitHub -> github.com/ryan-hennebry
 LinkedIn -> linkedin.com/in/ryanhennebry
+Privacy -> privacy.html
 
 Browser tab and link previews, not visible on the page:
 Title: Ryan Hennebry

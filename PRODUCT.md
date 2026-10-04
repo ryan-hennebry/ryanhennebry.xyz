@@ -31,7 +31,7 @@ Ryan Hennebry is the sole public identity. The freelance practice is unbranded a
 
 ## Operating Context
 
-The page is deployed at `https://ryanhennebry.xyz/` as a Cloudflare Worker with static assets. The Worker runs first on every request, serves the assets unchanged, and logs one row per request to the D1 database `ryanhennebry-visits`. No raw IP address is stored.
+The page is deployed at `https://ryanhennebry.xyz/` as a Cloudflare Worker with static assets. The Worker runs first on every request, serves the assets unchanged, and logs one row per request to the D1 database `ryanhennebry-visits`. No table has an IP address column, but for a visit that clears `isGenuineVisit` the reverse DNS name is stored in `enrichment.ptr` and emailed to Ryan, and that name often embeds the address.
 
 The document itself must still work as a single static file opened from `file://`, with no server, no scripts, no client-side analytics and no external asset. Nothing the Worker does may change that. It must survive being read on a phone, at high browser zoom, and by a screen reader.
 

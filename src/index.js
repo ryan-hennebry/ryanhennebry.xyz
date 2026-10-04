@@ -6,13 +6,21 @@
 // latency and cannot change what a visitor sees. Every request is stored;
 // classification is a column, never a filter.
 //
-// No raw IP address is ever written. The IP is only an input to a SHA-256
-// hash that is salted with the current calendar month, so a repeat visit is
-// detectable within a month and unlinkable across months. What goes into that
-// hash is the normalised address, not the address: an IPv6 client is reduced
-// to its /64 prefix first, because the low 64 bits rotate daily under RFC 4941
-// privacy extensions and were turning one returning person into a new visitor
-// every day. See normaliseIpForHash.
+// No IP address is written as a column. The one place it can still appear is
+// enrichment.ptr, the reverse DNS name, which often embeds the address and is
+// also printed in the alert email. Otherwise the IP is only an input to an
+// HMAC-SHA256 keyed with a random salt that is made each UTC day, held only in
+// KV and deleted by KV after 48 hours (see daySaltKey), so a repeat visit is
+// detectable within one UTC day and unlinkable across days by anyone once that
+// salt is gone. What goes into that hash is the normalised address, not the
+// address: an IPv6 client is reduced to its /64 prefix first, because the low
+// 64 bits rotate daily under RFC 4941 privacy extensions. See
+// normaliseIpForHash.
+//
+// The accept-language header and Cloudflare's protocol, TLS version and TCP
+// round-trip time are not recorded: together with the user agent they
+// fingerprint a browser. Rows are kept for 90 days; the scheduled handler
+// deletes anything older once a day (see purgeOldRows).
 //
 // A second, much narrower question is asked after the row is written: is this
 // worth an email? The bar is isGenuineVisit, which is deliberately tighter
@@ -259,32 +267,30 @@ function isGenuineVisit(visit) {
 // fired before cloudflare-dns.com answered and the name went missing.
 const PTR_TIMEOUT_MS = 3000;
 const IPLOCATE_TIMEOUT_MS = 3000;
-// Two TTLs, not one. A name that resolved is stable for a week. A miss is
-// not: IPv6 is now the common case, consumer IPv6 lines publish no PTR at all
-// (verified on the BT line whose IPv4 does have one), and the address itself
-// rotates daily. A week-long negative entry is therefore both the usual answer
-// and the one most likely to be stale, and re-asking costs one DoH request at
-// this traffic volume.
-const PTR_CACHE_HIT_TTL = 7 * 24 * 60 * 60; // 7 days
+// Two TTLs, not one. The PTR cache key is an HMAC under the day salt, so an
+// entry cannot be found again after midnight UTC and a hit is kept for no
+// longer than that day could last. A miss is kept shorter still: consumer IPv6
+// lines publish no PTR at all (verified on the BT line whose IPv4 does have
+// one), so a negative entry is both the usual answer and the one most likely
+// to be stale, and re-asking costs one DoH request at this traffic volume.
+const PTR_CACHE_HIT_TTL = 24 * 60 * 60; // 24 hours
 const PTR_CACHE_MISS_TTL = 6 * 60 * 60; // 6 hours
 const COMPANY_CACHE_TTL = 30 * 24 * 60 * 60; // 30 days
 
-// A fixed salt on the PTR cache key. The month salt used for visitor_hash is
-// deliberately not reused: this key has to survive a month boundary, and a
-// bare SHA-256 of an IPv4 address is enumerable in seconds.
-const PTR_CACHE_SALT = "ryanhennebry.xyz/ptr/v1";
-
-// Version tag mixed into every visitor_hash.
+// Version tag mixed into every visitor_hash and written into hash_scope.
 //
-// IMPORTANT: hashes written before this constant existed (v1: the full IP
-// concatenated with the user agent and the month, no version, no scope) are
-// NOT comparable with hashes written after it. The same person hashes
-// differently either side of the change, so a v1 hash and a v2 hash can never
-// be joined, counted together, or read as the same visitor. Pre-change rows
-// are identifiable in the table as the ones with hash_scope NULL. Bump this
-// again for any future change to the hash input, so the two generations
+// IMPORTANT: no generation is comparable with another. The same person hashes
+// differently in each, so hashes from two generations can never be joined,
+// counted together, or read as the same visitor.
+//   v1  SHA-256 of the full IP, user agent and month. hash_scope NULL.
+//   v2  SHA-256 of version, scope, normalised address, user agent and month.
+//       hash_scope 'ipv4', 'ipv6-64' or 'raw'.
+//   v3  HMAC-SHA256 under the KV day salt of version, scope, normalised
+//       address and user agent. hash_scope 'v3:ipv4', 'v3:ipv6-64' or
+//       'v3:raw'. Comparable only within one UTC day.
+// Bump this again for any future change to the hash input, so the generations
 // separate cleanly instead of silently colliding.
-const VISITOR_HASH_VERSION = "v2";
+const VISITOR_HASH_VERSION = "v3";
 
 function errText(err) {
   return err && err.message ? String(err.message) : String(err);
@@ -571,12 +577,80 @@ async function cachePut(env, key, value, ttl) {
   }
 }
 
+// --- Daily salt -------------------------------------------------------------
+
+// visitor_hash and the PTR cache key are both HMAC-SHA256 under a salt that
+// exists only in KV. The first request of each UTC day writes 32 random bytes
+// under salt:v3:YYYY-MM-DD with a 48-hour TTL, so KV deletes each salt the day
+// after its last use. Once it is gone nobody, Ryan included, can recompute or
+// link the hashes made with it, and nothing in this public repository is an
+// input that would let anyone brute force an address back out.
+//
+// KV is eventually consistent, so two isolates can both find the key absent
+// and write different salts on one day. Each re-reads after writing and uses
+// what KV returns, which converges, but one visitor can still count twice on
+// such a day. That is accepted.
+//
+// Returns a non-extractable HMAC key, or null. Null means no hash is written:
+// there is no fallback salt, because any fallback would be a public one. The
+// salt is never logged; the only thing logged on failure is the KV error.
+const DAY_SALT_TTL = 2 * 24 * 60 * 60; // 48 hours
+const DAY_SALT_BYTES = 32;
+
+function toHex(bytes) {
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function daySaltKey(env, day) {
+  if (!env.VISIT_ENRICH) {
+    return null;
+  }
+  const name = "salt:" + VISITOR_HASH_VERSION + ":" + day;
+  try {
+    let hex = await env.VISIT_ENRICH.get(name);
+    if (hex === null) {
+      const fresh = toHex(crypto.getRandomValues(new Uint8Array(DAY_SALT_BYTES)));
+      await env.VISIT_ENRICH.put(name, fresh, { expirationTtl: DAY_SALT_TTL });
+      // A write that is not yet visible to its own re-read still stored this
+      // salt, so it is the one to use.
+      hex = (await env.VISIT_ENRICH.get(name)) ?? fresh;
+    }
+    if (typeof hex !== "string" || !/^[0-9a-f]{64}$/.test(hex)) {
+      console.error("day salt malformed in KV");
+      return null;
+    }
+    const raw = new Uint8Array(DAY_SALT_BYTES);
+    for (let i = 0; i < DAY_SALT_BYTES; i++) {
+      raw[i] = parseInt(hex.slice(i * 2, i * 2 + 2), 16);
+    }
+    return await crypto.subtle.importKey(
+      "raw",
+      raw,
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["sign"]
+    );
+  } catch (err) {
+    console.error("day salt unavailable", errText(err));
+    return null;
+  }
+}
+
+async function hmacHex(key, input) {
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(input));
+  return toHex(new Uint8Array(sig));
+}
+
 // --- Providers --------------------------------------------------------------
 
 // Cloudflare DNS-over-HTTPS. No key, no account, and the PTR record often
 // names the corporate or ISP tenant that the AS organisation string does not.
-// Cached under a hash of the IP, never the IP: a KV key is stored data.
-// "-" is a cached miss, so a nameless address is asked about once a week.
+// Cached under an HMAC of the IP under the day salt, never the IP: a KV key is
+// stored data. "-" is a cached miss, so a nameless address is asked about at
+// most every six hours. With no day salt the cache is skipped and the lookup
+// still runs.
 //
 // Never throws, and never returns a bare null: every path that yields no name
 // pushes its reason onto notes. The silent null was the defect. Visit 7121
@@ -600,10 +674,11 @@ async function lookupPtr(env, ip, notes) {
   // PTR is a per-address record and a /64 prefix has no PTR to look up. The
   // cost of the coarser key is that every host behind one /64 shares one
   // cached answer, which for a home line is one household.
-  const key =
-    "ptr:" +
-    (await sha256Hex(PTR_CACHE_SALT + normaliseIpForHash(ip).value)).slice(0, 32);
-  const cached = await cacheGet(env, key);
+  const salt = await daySaltKey(env, new Date().toISOString().slice(0, 10));
+  const key = salt
+    ? "ptr:" + (await hmacHex(salt, normaliseIpForHash(ip).value)).slice(0, 32)
+    : null;
+  const cached = key ? await cacheGet(env, key) : null;
   if (typeof cached === "string") {
     if (cached === "-") {
       note("cached miss");
@@ -673,12 +748,14 @@ async function lookupPtr(env, ip, notes) {
   if (ptr === null) {
     note(status === 3 ? "NXDOMAIN" : "no PTR record in answer");
   }
-  await cachePut(
-    env,
-    key,
-    ptr === null ? "-" : ptr,
-    ptr === null ? PTR_CACHE_MISS_TTL : PTR_CACHE_HIT_TTL
-  );
+  if (key) {
+    await cachePut(
+      env,
+      key,
+      ptr === null ? "-" : ptr,
+      ptr === null ? PTR_CACHE_MISS_TTL : PTR_CACHE_HIT_TTL
+    );
+  }
   return ptr;
 }
 
@@ -1086,7 +1163,7 @@ function buildAlertEmail(visit, repeatCount, now, enrichment) {
     body.push("UA:       " + ascii(visit.ua, 60));
   }
   body.push("Referrer: " + referer);
-  body.push("Repeat:   " + ordinal(repeatCount) + " visit this month");
+  body.push("Repeat:   " + ordinal(repeatCount) + " visit today");
   body.push("");
 
   return headers.join("\r\n") + "\r\n\r\n" + body.join("\r\n");
@@ -1134,12 +1211,14 @@ async function maybeAlert(env, visit) {
       return;
     }
 
+    // Today only: the hash is keyed by the day salt, so it cannot match a
+    // visit from any other UTC day.
     let repeatCount = 1;
     try {
       const row = await env.DB.prepare(
         "SELECT COUNT(*) AS n FROM visits WHERE visitor_hash = ?1 AND ts >= ?2"
       )
-        .bind(visit.visitorHash, visit.ts.slice(0, 7) + "-01T00:00:00.000Z")
+        .bind(visit.visitorHash, day + "T00:00:00.000Z")
         .first();
       if (row && typeof row.n === "number" && row.n > 0) {
         repeatCount = row.n;
@@ -1187,14 +1266,6 @@ async function maybeAlert(env, visit) {
   }
 }
 
-async function sha256Hex(input) {
-  const bytes = new TextEncoder().encode(input);
-  const digest = await crypto.subtle.digest("SHA-256", bytes);
-  return Array.from(new Uint8Array(digest))
-    .map((b) => b.toString(16).padStart(2, "0"))
-    .join("");
-}
-
 async function logVisit(request, response, env) {
   try {
     if (!env.DB) {
@@ -1206,7 +1277,6 @@ async function logVisit(request, response, env) {
     const cf = request.cf || {};
 
     const ts = new Date().toISOString();
-    const month = ts.slice(0, 7); // YYYY-MM, the rotating hash salt.
 
     const ua = headers.get("user-agent");
     const ip = headers.get("cf-connecting-ip");
@@ -1217,33 +1287,33 @@ async function logVisit(request, response, env) {
     const status = response ? response.status : null;
     const classification = classify(url.pathname, ua, asn, asOrg);
 
-    // The IP exists only inside these two expressions. It is never stored,
-    // and what is hashed is the /64 for an IPv6 client, not the address.
+    // The IP exists only inside these two expressions and is never stored as
+    // itself, though the PTR name enrichment finds for it can embed it. What
+    // is hashed is the /64 for an IPv6 client, not the address.
     //
-    // The version tag and the scope are part of the input, so a v1 hash can
-    // never equal a v2 hash by accident. hash_scope is written on every new
-    // row, including the no-IP case, which is what makes NULL in that column
-    // mean exactly one thing: this row predates the change and its hash is
-    // not comparable with anything written since.
+    // The version tag and the scope are part of the input, and hash_scope
+    // carries the version, so hashes from different generations never
+    // collide and are never mistaken for one another. With no day salt the
+    // row is still written, with visitor_hash and hash_scope NULL.
     const address = normaliseIpForHash(ip || "");
-    const visitorHash =
-      ip || ua
-        ? await sha256Hex(
-            VISITOR_HASH_VERSION +
-              "|" +
-              address.scope +
-              "|" +
-              address.value +
-              "|" +
-              (ua || "") +
-              "|" +
-              month
-          )
-        : null;
-    const hashScope = visitorHash === null ? null : address.scope;
+    const salt = ip || ua ? await daySaltKey(env, ts.slice(0, 10)) : null;
+    const visitorHash = salt
+      ? await hmacHex(
+          salt,
+          VISITOR_HASH_VERSION +
+            "|" +
+            address.scope +
+            "|" +
+            address.value +
+            "|" +
+            (ua || "")
+        )
+      : null;
+    const hashScope =
+      visitorHash === null ? null : VISITOR_HASH_VERSION + ":" + address.scope;
 
     const insert = await env.DB.prepare(
-      "INSERT INTO visits (ts, path, status, asn, as_org, country, city, region, timezone, colo, referer, ua, accept_language, http_protocol, tls_version, client_tcp_rtt, classification, visitor_hash, hash_scope) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15, ?16, ?17, ?18, ?19)"
+      "INSERT INTO visits (ts, path, status, asn, as_org, country, city, region, timezone, colo, referer, ua, classification, visitor_hash, hash_scope) VALUES (?1, ?2, ?3, ?4, ?5, ?6, ?7, ?8, ?9, ?10, ?11, ?12, ?13, ?14, ?15)"
     )
       .bind(
         ts,
@@ -1258,10 +1328,6 @@ async function logVisit(request, response, env) {
         cf.colo || null,
         referer,
         ua,
-        headers.get("accept-language"),
-        cf.httpProtocol || null,
-        cf.tlsVersion || null,
-        typeof cf.clientTcpRtt === "number" ? cf.clientTcpRtt : null,
         classification,
         visitorHash,
         hashScope
@@ -1298,6 +1364,30 @@ async function logVisit(request, response, env) {
   }
 }
 
+// --- Retention --------------------------------------------------------------
+
+// Every table that holds visit data loses rows older than 90 days, once a day
+// from the cron trigger in wrangler.jsonc. Each ts is ISO 8601 UTC, so a string
+// comparison is a time comparison. Errors are not caught: a failed purge shows
+// as a failed scheduled run, and the next day's run deletes the same rows.
+const RETENTION_DAYS = 90;
+const RETAINED_TABLES = ["visits", "enrichment", "alerts_sent", "alert_log"];
+
+async function purgeOldRows(env, now) {
+  const cutoff = new Date(
+    now.getTime() - RETENTION_DAYS * 24 * 60 * 60 * 1000
+  ).toISOString();
+  const deleted = {};
+  for (const table of RETAINED_TABLES) {
+    const result = await env.DB.prepare("DELETE FROM " + table + " WHERE ts < ?1")
+      .bind(cutoff)
+      .run();
+    deleted[table] = result && result.meta ? result.meta.changes : null;
+  }
+  console.log("retention purge before " + cutoff, JSON.stringify(deleted));
+  return deleted;
+}
+
 export default {
   async fetch(request, env, ctx) {
     const response = await env.ASSETS.fetch(request);
@@ -1309,5 +1399,9 @@ export default {
     }
 
     return response;
+  },
+
+  async scheduled(controller, env, ctx) {
+    ctx.waitUntil(purgeOldRows(env, new Date(controller.scheduledTime)));
   },
 };

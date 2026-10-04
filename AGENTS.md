@@ -22,12 +22,13 @@ beyond its links.
 ## What is here now
 
 The finished static page, crawler files and technical identity assets: `index.html`,
-`assets/site.css`, one self-hosted Inter font, `robots.txt`, `sitemap.xml` and the favicons. Read
-`HANDOFF.md` before changing them.
+`privacy.html`, `assets/site.css`, one self-hosted Inter font, `robots.txt`, `sitemap.xml` and the
+favicons. Read `HANDOFF.md` before changing them.
 
 The server side is `src/index.js`, the Worker entrypoint, with `schema.sql` and `queries.sql` for
-the visit log. `wrangler.jsonc` carries the `main` entrypoint, the ASSETS binding and the DB
-binding.
+the visit log and `migrations/` for one-off data changes that nothing runs automatically.
+`wrangler.jsonc` carries the `main` entrypoint, the ASSETS, DB and VISIT_ENRICH bindings and the
+daily cron trigger. `test/` holds the Worker tests, run by `verify.sh`.
 
 ## What runs server-side
 
@@ -39,17 +40,23 @@ separate from the unchanged static page. Read `HANDOFF.md` for their current sta
 
 One row per request is written to the D1 database `ryanhennebry-visits`, bound as `env.DB` and
 running in WEUR: timestamp, path, status, ASN, AS organisation, country, city, region, timezone,
-colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP round-trip time, a
-classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash. The hash is
-SHA-256 of a version tag, address scope, normalised IPv4 address or IPv6 /64, user agent and
-current `YYYY-MM`. The month changes the hash input; `hash_scope` identifies comparable versions.
-No raw IP address is stored in the visits row. The known visitor-hash privacy issue remains
-pending Ryan's quick Q-1 decision; this runtime description is not privacy clearance. The schema is
-`schema.sql` and the reads are `queries.sql`.
+colo, referer, user agent, a classification of `human`, `scanner`, `bot_ua`, `datacenter` or
+`asset`, and a visitor hash. Accept-language, HTTP protocol, TLS version and TCP round-trip time
+are no longer written. The hash is HMAC-SHA256, under a random 32-byte salt made each UTC day, of
+a version tag, address scope, normalised IPv4 address or IPv6 /64 and user agent. The salt lives
+only in the `VISIT_ENRICH` KV namespace under `salt:v3:YYYY-MM-DD` and expires after 48 hours, so
+a hash links visits within one UTC day and nobody can recompute it afterwards. With no salt the
+hash is NULL; there is no fallback. `hash_scope` carries the version (`v3:ipv4`, `v3:ipv6-64`,
+`v3:raw`) and identifies comparable rows. No table has an IP address column, but for a visit that
+clears `isGenuineVisit` the reverse DNS name is stored in `enrichment.ptr` and printed in the alert
+email, and that name often embeds the address (`host86-181-229-144.range86-181.btcentralplus.com`).
+Alert emails stay in Ryan's inbox outside the 90-day purge. A daily cron
+deletes rows older than 90 days from all four tables. Ryan approved this design on 4 October 2026
+(C15-1, quick Q-1). The schema is `schema.sql` and the reads are `queries.sql`.
 
-The visible page is unaffected. It is byte-identical, carries no client JavaScript beyond the
-JSON-LD block, makes no network requests and still renders from `file://`. `verify.sh` does not
-check the Worker or the visit log.
+The Worker does not alter the visible page. The page carries no client JavaScript beyond the
+JSON-LD block, makes no network requests and still renders from `file://`. `verify.sh` runs the
+Worker tests in `test/`; it does not query the live visit log.
 
 ## The page as specified
 
@@ -64,6 +71,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 | Spacing | Seven distances, driven by tokens. The 117px void above the name and the 48px bottom padding are deliberately unequal |
 | Motion | Zero. There is correctly no `prefers-reduced-motion` block, and adding one transition turns that omission into a defect |
 | Structure | `h1`, role line, two narrative paragraphs, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
+| Links | Email, GitHub, LinkedIn, then Privacy, linked to `privacy.html`. Privacy is Ryan's approved exception of 4 October 2026; the notice is a separate page with no `h2` |
 | Projects | Startup Skills, linked to startupskills.dev, then Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
 
 ## Never
