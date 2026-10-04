@@ -37,8 +37,10 @@ also enriched (reverse DNS, IPLocate) and emailed to Ryan through Email Routing,
 does make external calls off the response path. The row holds timestamp, path, status, ASN, AS organisation, country, city,
 region, timezone, colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP
 round-trip time, a classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash
-that is SHA-256 of the IP, the user agent and the current `YYYY-MM`. No raw IP address is stored,
-and the monthly salt makes hashes unjoinable across months. `schema.sql` holds the schema and
+that is SHA-256 of a version tag, address scope, normalised IPv4 address or IPv6 /64, user agent
+and current `YYYY-MM`. No raw IP address is stored in the visits row; the month changes the hash
+input and `hash_scope` identifies comparable versions. This is a runtime description, not privacy
+clearance; the known hashing issue remains held under quick Q-1. `schema.sql` holds the schema and
 `queries.sql` the reads.
 
 Google Search Console has the verified domain property `ryanhennebry.xyz`. The verification TXT

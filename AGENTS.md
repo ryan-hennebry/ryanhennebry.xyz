@@ -33,15 +33,18 @@ binding.
 
 `src/index.js` runs first on every request. It hands the request to the static asset binding and
 returns that response untouched, so it cannot change what a visitor sees. The log write happens
-after the response is on its way, inside `ctx.waitUntil`, so it adds no latency. There are no
-external network calls.
+after the response is on its way, inside `ctx.waitUntil`, so the work is off the response path. Since 2 September 2026, qualifying visits also trigger
+reverse DNS, IPLocate enrichment and email through Email Routing; those server-side calls are
+separate from the unchanged static page. Read `HANDOFF.md` for their current state and approval gates.
 
 One row per request is written to the D1 database `ryanhennebry-visits`, bound as `env.DB` and
 running in WEUR: timestamp, path, status, ASN, AS organisation, country, city, region, timezone,
 colo, referer, user agent, accept-language, HTTP protocol, TLS version, TCP round-trip time, a
 classification of `human`, `bot_ua`, `datacenter` or `asset`, and a visitor hash. The hash is
-SHA-256 of the IP, the user agent and the current `YYYY-MM`, so the salt rotates every calendar
-month and hashes cannot be joined across months. No raw IP address is stored. The schema is
+SHA-256 of a version tag, address scope, normalised IPv4 address or IPv6 /64, user agent and
+current `YYYY-MM`. The month changes the hash input; `hash_scope` identifies comparable versions.
+No raw IP address is stored in the visits row. The known visitor-hash privacy issue remains
+pending Ryan's quick Q-1 decision; this runtime description is not privacy clearance. The schema is
 `schema.sql` and the reads are `queries.sql`.
 
 The visible page is unaffected. It is byte-identical, carries no client JavaScript beyond the
