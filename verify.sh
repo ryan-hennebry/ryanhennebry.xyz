@@ -1,6 +1,6 @@
 #!/bin/sh
-# Checks for ryanhennebry.xyz. Two gates: house style on the Markdown, and the locked
-# invariants of the page itself once it has been promoted into this repo.
+# Checks for ryanhennebry.xyz. Three gates: house style on the Markdown, the locked
+# invariants of the page and its privacy notice, and the Worker tests.
 set -eu
 cd "$(dirname "$0")"
 fail=0
@@ -18,12 +18,11 @@ done
 
 echo "== the page =="
 if [ ! -f index.html ]; then
-  echo "not built: the site has not been promoted into this repo yet."
-  echo "See HANDOFF.md. Nothing further to check."
-  exit "$fail"
+  echo "FAIL missing index.html. Nothing further can be checked."
+  exit 1
 fi
 
-for f in index.html assets/site.css robots.txt sitemap.xml; do
+for f in index.html privacy.html assets/site.css robots.txt sitemap.xml; do
   if [ ! -f "$f" ]; then
     echo "FAIL missing $f"
     fail=1
@@ -127,7 +126,7 @@ else
 fi
 
 # The visible page remains free of imagery.
-if grep -nEi '<img|<svg|<picture|background-image|url\(.*\.(png|jpg|jpeg|gif|svg|webp)' index.html assets/site.css 2>/dev/null; then
+if grep -nEi '<img|<svg|<picture|background-image|url\(.*\.(png|jpg|jpeg|gif|svg|webp)' index.html privacy.html assets/site.css 2>/dev/null; then
   echo "FAIL imagery found in the visible page."
   fail=1
 else
@@ -142,6 +141,23 @@ if [ "$scripts" != "$ldjson" ]; then
   fail=1
 else
   echo "ok: no JavaScript beyond the JSON-LD identity graph"
+fi
+
+# The privacy notice is linked last in Links, carries no script and states the
+# same retention the Worker enforces.
+if grep -Fq '<a href="https://www.linkedin.com/in/ryanhennebry/">LinkedIn</a>, <a href="privacy.html">Privacy</a></p>' index.html; then
+  echo "ok: Privacy is the last item in Links"
+else
+  echo "FAIL Links must end with the Privacy link to privacy.html."
+  fail=1
+fi
+
+if [ -f privacy.html ] && ! grep -q '<script' privacy.html && \
+   grep -Fq '90 days' privacy.html && grep -Fq 'two days' privacy.html; then
+  echo "ok: privacy notice has no script and states 90 days and two days"
+else
+  echo "FAIL privacy.html is missing, carries a script, or drops the 90-day or two-day terms."
+  fail=1
 fi
 
 # The measure is frozen at 550px for the final copy.
@@ -290,5 +306,15 @@ if grep -nEi 'addressLocality|addressCountry|"address"' index.html; then
 else
   echo "ok: no location"
 fi
+
+echo "== the Worker =="
+if worker_tests=$(node --test test/*.test.mjs 2>&1); then
+  echo "ok: Worker tests pass"
+else
+  printf '%s\n' "$worker_tests"
+  echo "FAIL Worker tests"
+  fail=1
+fi
+printf '%s\n' "$worker_tests" | grep -E '(tests|pass|fail) [0-9]+$' || true
 
 exit "$fail"

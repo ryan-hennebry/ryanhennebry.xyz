@@ -12,6 +12,7 @@ cleanup() {
 trap cleanup EXIT HUP INT TERM
 
 cp index.html "$deploy_dir/index.html"
+cp privacy.html "$deploy_dir/privacy.html"
 cp -R assets "$deploy_dir/assets"
 cp robots.txt "$deploy_dir/robots.txt"
 cp sitemap.xml "$deploy_dir/sitemap.xml"
@@ -21,6 +22,7 @@ cp apple-touch-icon.png "$deploy_dir/apple-touch-icon.png"
 
 for file in \
   index.html \
+  privacy.html \
   assets/site.css \
   assets/fonts/inter-latin-var.woff2 \
   assets/fonts/OFL-Inter.txt \
@@ -34,8 +36,8 @@ do
 done
 
 file_count=$(find "$deploy_dir" -type f | wc -l | tr -d ' ')
-if [ "$file_count" != "9" ]; then
-  echo "FAIL expected 9 deployment files, found $file_count"
+if [ "$file_count" != "10" ]; then
+  echo "FAIL expected 10 deployment files, found $file_count"
   exit 1
 fi
 
