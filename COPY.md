@@ -26,7 +26,6 @@ Links
 Email -> mailto:ryanhennebry@gmail.com
 GitHub -> github.com/ryan-hennebry
 LinkedIn -> linkedin.com/in/ryanhennebry
-Privacy -> privacy.html
 
 Browser tab and link previews, not visible on the page:
 Title: Ryan Hennebry
@@ -53,6 +52,7 @@ Break one of these and the page claims something it cannot support. Tell me if y
 - **Previously, Projects and Links are three labelled groups.** Each label sits 4px above one plain line of content.
 - **Projects are one comma-separated paragraph.** The three supplied repositories are public and openable. The project name is the link text; there are no descriptions.
 - **Links are one comma-separated paragraph.** The destination name is the link text.
+- **Privacy is not in Links.** `privacy.html` exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being told it probably does not meet UK GDPR Art 13's 'easy to access' requirement.
 
 ## Open questions
 

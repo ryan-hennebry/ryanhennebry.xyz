@@ -143,13 +143,14 @@ else
   echo "ok: no JavaScript beyond the JSON-LD identity graph"
 fi
 
-# The privacy notice is linked last in Links, carries no script and states the
-# same retention the Worker enforces.
-if grep -Fq '<a href="https://www.linkedin.com/in/ryanhennebry/">LinkedIn</a>, <a href="privacy.html">Privacy</a></p>' index.html; then
-  echo "ok: Privacy is the last item in Links"
-else
-  echo "FAIL Links must end with the Privacy link to privacy.html."
+# The privacy notice is deliberately unlinked from index.html (Ryan, 4 Oct 2026),
+# carries no script and states the same retention the Worker enforces.
+if grep -Eiq 'href="[^"]*privacy' index.html; then
+  echo "FAIL index.html links privacy.html. The notice is deliberately unlinked."
+  grep -Ein 'href="[^"]*privacy' index.html
   fail=1
+else
+  echo "ok: index.html does not link privacy.html"
 fi
 
 if [ -f privacy.html ] && ! grep -q '<script' privacy.html && \
