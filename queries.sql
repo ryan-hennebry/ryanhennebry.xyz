@@ -61,6 +61,8 @@
 -- Every query below that counts distinct visitors or looks for repeats
 -- restricts itself to hash_scope LIKE 'v3:%', and says so in its column name.
 -- Hit counts and row listings still cover the whole log.
+-- Since the 4 Oct 2026 migration, v1 and v2 rows keep their hash_scope label
+-- but their visitor_hash is NULL, so only v3 rows can carry a hash.
 
 
 -- 1. CANDIDATE REAL VISITS, most recent first.
