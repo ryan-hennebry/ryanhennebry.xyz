@@ -1,5 +1,11 @@
 # Handoff: ryanhennebry.xyz
 
+5 Oct 2026, Projects: at Ryan's request Projects now reads `Startup Skills, Competitor
+Intelligence, Growth Experiments`. Career Matching was removed and the Competitor Intel link text
+was lengthened; its URL is unchanged. Deployed as Worker version
+`151b4e42-9807-443b-8bab-fedb69395a65`; the live `/` was confirmed byte-identical to the repo.
+`.impeccable/design.json` was brought in line with the current page and DESIGN.md.
+
 5 Oct 2026, later: at Ryan's request the two narrative sentences were replaced by one, `Currently
 building AI tools for startups as part of an elaborate side project called In The Loop.`, with the
 In The Loop link kept. Spacing is unchanged: 24px from the name, 24px to Previously. Deployed

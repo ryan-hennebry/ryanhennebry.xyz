@@ -72,7 +72,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 | Motion | Zero. There is correctly no `prefers-reduced-motion` block, and adding one transition turns that omission into a defect |
 | Structure | `h1`, one narrative paragraph, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
 | Links | Email, GitHub, LinkedIn. `privacy.html` exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being told it probably does not meet UK GDPR Art 13's 'easy to access' requirement. Do not re-link it without Ryan; `verify.sh` fails if `index.html` links it |
-| Projects | Startup Skills, linked to startupskills.dev, then Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
+| Projects | Startup Skills, linked to startupskills.dev, then Competitor Intelligence and Growth Experiments, each linked to a public repository. Career Matching was removed by Ryan on 5 Oct 2026. Nothing unlinked, greyed or marked as coming |
 
 ## Never
 

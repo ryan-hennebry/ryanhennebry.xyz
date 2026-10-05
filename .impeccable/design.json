@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-21T22:16:58Z",
+  "generatedAt": "2026-10-05T15:54:18Z",
   "title": "Design System: Ryan Hennebry",
   "extensions": {
     "colorMeta": {
@@ -51,7 +51,7 @@
       },
       "rule": {
         "role": "neutral",
-        "displayName": "Rule Grey",
+        "displayName": "Neutral Grey Rule",
         "canonical": "oklch(56.93% 0 0)",
         "tonalRamp": [
           "oklch(15% 0 0)",
@@ -66,7 +66,7 @@
       },
       "rule-strong": {
         "role": "neutral",
-        "displayName": "Strong Rule Grey",
+        "displayName": "Neutral Grey Rule, Strong",
         "canonical": "oklch(50.32% 0 0)",
         "tonalRamp": [
           "oklch(15% 0 0)",
@@ -81,7 +81,7 @@
       },
       "selection": {
         "role": "neutral",
-        "displayName": "Neutral Grey Wash",
+        "displayName": "Pale Grey Wash",
         "canonical": "oklch(92.49% 0 0)",
         "tonalRamp": [
           "oklch(15% 0 0)",
@@ -147,7 +147,7 @@
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Everything else: the role line, the three narrative paragraphs, the two section labels and every link. 15px at 400. That is also Inter's default instance, which is why every rule that sets type states font-weight rather than letting the default stand in for a decision."
+        "purpose": "Everything else: the narrative sentence, all three section labels, every paragraph and every link, and on the privacy page the link home under the title. 15px at 400. That is also Inter's default instance, which is why every rule that sets type states font-weight rather than letting the default stand in for a decision."
       }
     },
     "fonts": [
@@ -161,7 +161,7 @@
         "license": "SIL OFL 1.1",
         "fontDisplay": "swap",
         "note": "The page ships two weights, 400 and 500. Inter's default instance is also 400, so every rule that sets type states its font-weight rather than letting the default stand in for a decision. The opsz axis is left unset so the browser resolves it from the rendered size.",
-        "deferred": "A rel=preload link was tried and reverted: on file:// the CORS-mode font fetch is blocked as origin 'null', producing console errors and a duplicate fetch. Revisit on a real origin, where it matters more now that the binary is 73,016 bytes."
+        "deferred": "A rel=preload link was tried and reverted: on file:// the CORS-mode font fetch is blocked as origin 'null', producing console errors and a duplicate fetch. The page is now live over HTTPS, but the file:// guarantee remains binding. Revisit only if a measured live performance trace shows a material gain and the implementation preserves clean local rendering."
       }
     ],
     "shadows": [],
@@ -175,30 +175,30 @@
     ],
     "spacingLadder": {
       "steps": [
-        "8px",
+        "4px",
         "12px",
         "24px",
         "48px",
         "56px",
         "117px"
       ],
-      "note": "Six tokens in :root, every one of them used, and no step declared that is not used: --space-void 117px, --space-void-narrow 56px, --space-bottom 48px, --space-group 24px, --space-para 12px, --space-tight 8px. The two inner steps are sourced rather than eyeballed: 8px is rad-spacing's tightest-grouping value, and 24px against 12px is exactly the 2.0x between-group to within-group ratio better-layout requires. Page padding is asymmetric: 117px top against 48px bottom on desktop, 56px top below 481px.",
+      "note": "Six spacing tokens in :root, every one of them used by at least one rule: --space-void 117px, --space-void-narrow 56px, --space-bottom 48px, --space-group 24px, --space-para 12px, --space-tight 4px. There is no proportional ladder; each distance is assigned to one relationship. The two inner steps follow the 4px scale used by published skills on ui-skills.com: rad-spacing treats 4px as an edge-case floor, which the label-to-content pair earns because label and content share the same size, weight and line box, and Ryan selected 4px after comparing the rendered pages. 24px against 12px is exactly the 2.0x between-group to within-group ratio better-layout requires. Page padding is asymmetric: 117px top against 48px bottom on desktop, 56px top below 481px.",
       "assignments": [
         {
           "distance": "0px",
-          "relationship": "The name to the role line. Not a token: the global h1/h2/p margin reset, which leaves the role line sitting one line-height under the name so the two read as a single unit."
+          "relationship": "On the privacy page only, the title to the link home beneath it. Not a token: the global h1/h2/p margin reset, which leaves that line sitting one line box under the title so the two read as one unit. The home page has no role line."
         },
         {
-          "distance": "8px",
-          "relationship": "A section label to its first item."
+          "distance": "4px",
+          "relationship": "A section label to its content."
         },
         {
           "distance": "12px",
-          "relationship": "Adjacent body paragraphs, from the third paragraph onward."
+          "relationship": "Adjacent paragraphs. The home page has one narrative sentence, so only privacy.html uses this step."
         },
         {
           "distance": "24px",
-          "relationship": "Block to block, and the role line to the first paragraph. One token for both uses, deliberately not split. Also the horizontal gutter."
+          "relationship": "Block to block, meaning the name to the narrative sentence, intro to Previously, Previously to Projects and Projects to Links. On the privacy page it is also the link home to the first paragraph. One token for both uses, deliberately not split. The horizontal gutter is a separate 24px token, --gutter."
         },
         {
           "distance": "48px",
@@ -217,7 +217,7 @@
     "mediaTiers": [
       {
         "name": "print",
-        "purpose": "A complete second colour tier, not a tint of the first. The stylesheet says why it exists: a background check may well be printed. True white paper, true black ink tier, darker grey annotation tier at #4A4A4A (8.86:1 on white), black underlines, no focus ring. Both tiers enumerate the same elements."
+        "purpose": "A complete second colour tier, not a tint of the first. The stylesheet says why it exists: a background check may well be printed. True white paper, true black ink tier, darker grey annotation tier at #4A4A4A (8.86:1 on white), black underlines, no focus ring. Both tiers enumerate the same elements. External links print their URL in brackets after the link text at 400 weight; mailto: links are left alone because the visible text is already the address."
       },
       {
         "name": "forced-colors",
@@ -233,23 +233,22 @@
       "lineBox": "line-height 1.5 on 15px, a 22.5px line box, one line box across the whole page.",
       "tracking": "None. letter-spacing is not declared anywhere on the page: at 15px Inter's own tracking stands unaltered. An earlier build carried -0.0064em on body and it has been removed.",
       "javascript": "None. The only <script> is a JSON-LD Person block.",
-      "networkRequests": "Zero beyond local file:// fetches. Works fully as a single static document.",
+      "networkRequests": "Zero third-party runtime requests. Works fully as a single static document from file://.",
       "motion": "Zero transitions, animations, keyframes and transforms. Because nothing moves there is deliberately no prefers-reduced-motion block; adding one transition makes that omission a defect.",
       "theme": "Single theme. color-scheme: light is declared and no dark palette exists. The page carries no hue at all: every colour in the system is a neutral grey. All contrast ratios, including the resting underline's 4.48:1 against a 3:1 non-text floor, are computed against paper."
     },
     "measureHistory": {
-      "current": "600px, frozen",
+      "current": "550px, frozen",
       "sequence": [
         "600px",
         "644px",
-        "600px"
+        "600px",
+        "550px"
       ],
-      "body": "600px is ibelick.com's measure, about 80 characters per line at this size, and it is where this page started. It was raised to 644px, emilkowal.ski's measure, only because the first body sentence then ran 90 characters, wrapped, and stranded two words on a second line. It returned to 600px when Ryan shortened that sentence to 78 characters, which sets on one line with 45.05px of slack. The return was enabled by shorter copy, not by relaxing the rule. The prohibition on tuning the measure to fit copy stands in both directions: it is not to be raised to rescue a long sentence or lowered to tighten a short one. If new copy does not fit 600px, the copy changes."
+      "body": "600px is ibelick.com's measure and it is where this page started. It went to 644px once, to stop a long first sentence wrapping, and came back to 600px when Ryan shortened the sentence. Ryan then selected 550px for the final copy after comparing rendered 600px, 550px and 525px variations. The move to 550px is an explicit choice for this page's final copy, not a claim that ibelick uses 550px. On 5 Oct 2026 Ryan replaced the two narrative sentences with one; a probe at 1440px and 768px measured it at two line boxes inside the same 550px box. Future copy changes must be re-measured, but the measure does not move again without Ryan reopening it."
     },
     "deferredDecisions": [
-      "Font preload: reverted because file:// blocks the CORS-mode font fetch as origin 'null'. Revisit on a real origin, where it matters more now that the Inter binary is 73,016 bytes.",
-      "Share card: twitter:card is summary with no og:image, so shares render a text card. Every remedy needs an image asset, which the imagery constraint forbids. Decide at deployment.",
-      "Canonical URL: canonical, og:url and the JSON-LD url key are all omitted until a live domain is approved. They land together."
+      "Font preload: reverted because file:// blocks the CORS-mode font fetch as origin 'null'. The page is now live over HTTPS, but the file:// guarantee remains binding. Revisit only if a measured live performance trace shows a material gain and the implementation preserves clean local rendering."
     ],
     "notRecorded": {
       "items": [
@@ -257,7 +256,7 @@
         "fold position at any viewport",
         "characters per line at a given viewport"
       ],
-      "reason": "Each is a function of the current wording. Across this build the page height and the fold moved on every copy edit, and chasing them is what drove the measure up and back before it was frozen. A design system records the rules that hold when the copy changes; a number a comma can invalidate belongs in a verification report. Durable measurements are recorded and sourced: the contrast ratios, the 22.5px line box, the 648px container, and the stylesheet's own note that 600px sets about 80 characters per line at this size."
+      "reason": "Each is a function of the current wording. Across this build the page height and the fold moved on every copy edit, and chasing them is what drove the measure through several values before it was frozen. A design system records the rules that hold when the copy changes; a number a comma can invalidate belongs in a verification report. Durable measurements are recorded and sourced from the stylesheet: the contrast ratios, the 22.5px line box, the 598px container, the 550px measure and every distance in the spacing assignments."
     }
   },
   "components": [
@@ -267,44 +266,52 @@
       "refersTo": "link",
       "description": "The only interactive element on the page, and the only thing on it that responds to input. Text inherits its context colour and its weight; the underline carries all the signal. The resting underline is a neutral grey at 4.48:1 against paper, well past the 1.7 to 2.5:1 the reference sites use, because it is the sole non-colour identifier of a link and has to clear the 3:1 non-text floor. Hover darkens it and thickens it; both changes are gated behind a hover-capable pointer.",
       "html": "<p class=\"ds-body\"><a class=\"ds-link\" href=\"#\">Email</a>, <a class=\"ds-link\" href=\"#\">GitHub</a>, <a class=\"ds-link\" href=\"#\">LinkedIn</a></p>",
-      "css": ".ds-body { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--ink, #16181A); text-wrap: pretty; margin: 0; } .ds-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rule, #777777); text-decoration-thickness: 0.08em; text-underline-offset: 0.15em; text-decoration-skip-ink: auto; } @media (hover: hover) and (pointer: fine) { .ds-link:hover { text-decoration-color: var(--rule-strong, #646464); text-decoration-thickness: 0.11em; } } .ds-link:focus-visible { outline: 2px solid var(--rule-strong, #646464); outline-offset: 2px; border-radius: 2px; } @media (forced-colors: active) { .ds-link { text-decoration-color: LinkText; } .ds-link:focus-visible { outline-color: Highlight; } }"
+      "css": ".ds-body { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--ink, #16181A); text-wrap: pretty; margin: 0; } .ds-link { color: inherit; text-decoration: underline; text-decoration-color: var(--rule, #777777); text-decoration-thickness: 0.08em; text-underline-offset: 0.15em; text-decoration-skip-ink: auto; white-space: nowrap; } @media (hover: hover) and (pointer: fine) { .ds-link:hover { text-decoration-color: var(--rule-strong, #646464); text-decoration-thickness: 0.11em; } } .ds-link:focus-visible { outline: 2px solid var(--rule-strong, #646464); outline-offset: 2px; border-radius: 2px; } @media (forced-colors: active) { .ds-link { text-decoration-color: LinkText; } .ds-link:focus-visible { outline-color: Highlight; } }"
     },
     {
       "name": "Page Title",
       "kind": "custom",
       "refersTo": "page-title",
-      "description": "The h1, used once, holding the name and nothing else, with no margin beneath it. The role line sits directly under it at one line-height, baseline to baseline, so the name and the role read as a single unit. The h1 is the only element on screen set at 500; it also comes first and is the ink tier, and those three things are the whole of its rank. No text-wrap treatment; wrapping is left to the browser.",
-      "html": "<h1 class=\"ds-page-title\">Ryan Hennebry</h1><p class=\"ds-page-role\">AI-native startup operator</p>",
-      "css": ".ds-page-title { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--ink, #16181A); margin: 0; } .ds-page-role { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--muted, #5F656B); margin: 0; }"
+      "description": "The h1, used once, holding the name and nothing else, with no margin beneath it. It is the only element on screen set at 500; that, its ink colour, its position first in the document and the 117px of silence above it are the whole of its rank. There is no role line, tagline, subtitle or availability badge attached to it on the home page; the narrative sentence follows it at the 24px block step. No text-wrap treatment; wrapping is left to the browser.",
+      "html": "<h1 class=\"ds-page-title\">Ryan Hennebry</h1>",
+      "css": ".ds-page-title { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 500; line-height: 1.5; color: var(--ink, #16181A); margin: 0; }"
+    },
+    {
+      "name": "Role Line",
+      "kind": "custom",
+      "refersTo": "role-line",
+      "description": "Used on privacy.html only, where it holds the link home. Removed from the home page on 5 Oct 2026, and it does not go back under the name there without Ryan. A p directly under the h1 at 15px, 400 weight, muted, with no margin of its own, so it sits one line box below the title at 0px and the two read as one unit. The first paragraph follows it at the 24px block step.",
+      "html": "<h1 class=\"ds-page-title\">Privacy</h1><p class=\"ds-role-line\"><a class=\"ds-link\" href=\"#\">Ryan Hennebry</a></p>",
+      "css": ".ds-role-line { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--muted, #5F656B); margin: 0; }"
     },
     {
       "name": "Section Label",
       "kind": "custom",
       "refersTo": "section-label",
-      "description": "An h2 at 15px and 400, in muted rather than ink, with 8px beneath it. It is the same size and the same weight as the body text directly below it, so colour alone separates the label from its items. That is the lightest mark available and it keeps the page to two weights. In forced colours, where muted resolves to CanvasText, the weight steps up to 500 to keep the distinction.",
+      "description": "An h2 at 15px and 400, in muted rather than ink, with 4px beneath it. It is the same size and the same weight as the body text directly below it, so colour alone separates the label from its content. That is the lightest mark available and it keeps the page to two weights. Three exist: Previously, Projects and Links. In forced colours, where muted resolves to CanvasText, the weight steps up to 500 to keep the distinction.",
       "html": "<h2 class=\"ds-section-label\">Projects</h2>",
-      "css": ".ds-section-label { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--muted, #5F656B); margin: 0 0 8px 0; } @media (forced-colors: active) { .ds-section-label { font-weight: 500; } }"
+      "css": ".ds-section-label { font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; color: var(--muted, #5F656B); margin: 0 0 4px 0; } @media (forced-colors: active) { .ds-section-label { font-weight: 500; } }"
     },
     {
       "name": "Page Container",
       "kind": "custom",
       "refersTo": "page",
-      "description": "One centred column capped at 648px, the 600px measure plus a 24px gutter each side. The reading measure comes from padding inward, never from a narrower content box. Vertical padding is asymmetric and heavily top-weighted: 117px above the name against 48px below the last line, so one long silence opens the page and the block beneath it reads as a single object. Below 481px the void alone shrinks, to 56px. Selection recolours the ground only: setting a colour here also resets text-decoration-color and flattens the muted tier.",
-      "html": "<main class=\"ds-page\"><p class=\"ds-page-body\">I&#8217;ve been building with them ever since.</p></main>",
-      "css": ".ds-page { max-width: calc(600px + 2 * 24px); margin-inline: auto; padding-inline: 24px; padding-block: 117px 48px; background-color: var(--paper, #ffffff); color: var(--ink, #16181A); font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; } .ds-page-body { text-wrap: pretty; margin: 0; } .ds-page ::selection { background-color: var(--selection, #E6E6E6); } @media (max-width: 480px) { .ds-page { padding-block: 56px 48px; } }"
+      "description": "One centred column capped at 598px, the 550px measure plus a 24px gutter each side. The reading measure comes from padding inward, never from a narrower content box. Vertical padding is asymmetric and heavily top-weighted: 117px above the name against 48px below the last line, so one long silence opens the page and the block beneath it reads as a single object. Below 481px the void alone shrinks, to 56px. Selection recolours the ground only: setting a colour here also resets text-decoration-color and flattens the muted tier.",
+      "html": "<main class=\"ds-page\"><p class=\"ds-page-body\">Currently building AI tools for startups as part of an elaborate side project called <a class=\"ds-link\" href=\"#\">In The Loop</a>.</p></main>",
+      "css": ".ds-page { max-width: calc(550px + 2 * 24px); margin-inline: auto; padding-inline: 24px; padding-block: 117px 48px; background-color: var(--paper, #ffffff); color: var(--ink, #16181A); font-family: \"Inter\", ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif; font-size: 15px; font-weight: 400; line-height: 1.5; } .ds-page-body { text-wrap: pretty; margin: 0; } .ds-page ::selection { background-color: var(--selection, #E6E6E6); } @media (max-width: 480px) { .ds-page { padding-block: 56px 48px; } }"
     }
   ],
   "narrative": {
     "northStar": "The Index Card",
-    "overview": "This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, a role line under it, three sentences and two labelled lists. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.\n\nThe defining fact of the system is that it has no size hierarchy. Every piece of text on the page is 15px. The name, the role line, the section labels, the project names, the body copy and the links are all set at the same size in the same face, and what separates them is weight, colour and position alone. Only the h1 uses the second weight, so on most of the page colour and position are doing the work by themselves. That is a deliberately narrow set of signals, and it is why the spacing and the two text tiers carry more load here than in a conventional page. Set at 15px on a 22.5px line box, the page reads closer to a well-made interface than to an essay.\n\nThe world it belongs to is the minimal personal-site canon (Benji, Emil, ibelick, Josh, Matt, Jakub), applied at full fidelity rather than copied cosmetically. What is drawn from it directly is named as such in the stylesheet: the measure is calibrated against ibelick's column, and the void above the name was measured against emilkowal.ski's and ibelick's before being set on this page's own terms.\n\nOne honest caveat about what is absent. This build ships no imagery, no colour, no hairline rules, no cards, no shadows and no motion, but the canon itself uses several of those natively, and the practitioners named above include people whose public work is largely about motion. Their absence here is a decision about this page, taken because a static single-document background check has nothing that needs to move or be boxed, and it is recorded as a scoped rule about this artefact. It is not a claim that the world forbids the device. Only the imagery ban is absolute, and it is absolute because Ryan set it, not because the world implies it.",
+    "overview": "This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, one narrative sentence and three labelled groups. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.\n\nThe defining fact of the system is that it has no size hierarchy. Every piece of text on the page is 15px. The name, the section labels, the project names, the body copy and the links are all set at the same size in the same face, and what separates them is colour, position and, in exactly one place, weight. Only the h1 uses the second weight, so on most of the page colour and position are doing the work by themselves. That is a deliberately narrow set of signals, and it is why the spacing and the two text tiers carry more load here than in a conventional page. Set at 15px on a 22.5px line box, the page reads closer to a well-made interface than to an essay.\n\nThe world it belongs to is the minimal personal-site canon (Benji, Emil, ibelick, Josh, Matt, Jakub), applied at full fidelity rather than copied cosmetically. ibelick's 600px column was the reference measure; Ryan selected 550px for the final copy after comparing 600px, 550px and 525px. The two inner spacing steps follow published skills on ui-skills.com, the registry of agent skills ibelick curates. The void above the name is borrowed from nobody: it is argued from this page's own conditions, and the fact that it lands on the same number as Emil's rendered top is a coincidence rather than a source.\n\nOne honest caveat about what is absent. The visible page ships no imagery, no colour, no hairline rules, no cards, no shadows and no motion, but the canon itself uses several of those natively, and the practitioners named above include people whose public work is largely about motion. Their absence here is a decision about this page, taken because a static single-document background check has nothing that needs to move or be boxed, and it is recorded as a scoped rule about this artefact. It is not a claim that the world forbids the device. Only the imagery ban is absolute, and it is absolute because Ryan set it, not because the world implies it. The off-page favicon is a solid #24303C field with no mark, taken from Ryan's LinkedIn banner, and it does not change the page palette.",
     "keyCharacteristics": [
       "One type size, 15px, across every element on the page",
       "Two weights, 400 and 500, and only the h1 uses the second one",
-      "Two text tiers: ink for narrative, muted for the role line and the section labels",
-      "Hierarchy carried by weight, colour and position, never by scale",
+      "Two text tiers: ink for narrative, muted for annotation (the section labels, and the privacy page's link home)",
+      "Hierarchy carried by colour, position and one long silence, never by scale",
       "One surface, no depth of any kind",
       "No hue anywhere: every colour is a neutral grey and there is no accent",
-      "Zero motion, zero JavaScript, zero network requests; works fully from file://"
+      "Zero motion, zero JavaScript, zero third-party runtime requests; works fully from file://"
     ],
     "rules": [
       {
@@ -323,13 +330,13 @@
         "section": "colors"
       },
       {
-        "name": "The No Hue Rule",
+        "name": "The Page Has No Hue Rule",
         "body": "The page carries no hue at all. An earlier build used a quiet teal on the underline, the focus ring and the selection wash; each was replaced by a neutral grey matched in luminance to the colour it replaced, so nothing moved except the chroma. Do not reintroduce an accent, and do not reach for one to mark a new element: this system has no colour signal to spend, only weight, tier and position.",
         "section": "colors"
       },
       {
         "name": "The One Size Rule",
-        "body": "15px, everywhere, for everything. There is no display size, no heading size and no small print. Any new element is 15px. A second size is not an addition to this system, it is the abandonment of its central premise, and it would immediately make the weight and colour signals redundant.",
+        "body": "15px, everywhere, for everything. There is no display size, no heading size and no small print. Any new element is 15px. A second size is not an addition to this system, it is the abandonment of its central premise, and it would immediately make the colour and position signals redundant.",
         "section": "typography"
       },
       {
@@ -338,7 +345,7 @@
         "section": "typography"
       },
       {
-        "name": "The No Tracking Rule",
+        "name": "The Untracked Type Rule",
         "body": "letter-spacing is not declared anywhere on this page. At 15px Inter's own tracking stands unaltered. A previous build carried a global -0.0064em optical correction on body; it was removed, and the measure figures were re-measured without it. Do not add tracking to an individual element; if something looks wrong, the size or the weight is the thing in question.",
         "section": "typography"
       },
@@ -349,7 +356,12 @@
       },
       {
         "name": "The Measure Is Frozen Rule",
-        "body": "The measure is 600px and the stylesheet marks it frozen. It is ibelick's column, about 80 characters per line at this size. It went to 644px once, to stop the first body sentence wrapping, and came back when Ryan shortened the sentence. That round trip is not licence to keep moving it: a measure tuned to how the current copy breaks becomes a function of the current wording and never settles. The rule holds in both directions, up and down. If a line bothers you, the sentence is the thing to change, and the copy is Ryan's.",
+        "body": "The measure is 550px and the stylesheet marks it frozen for the final copy. Ryan selected it after comparing rendered 600px, 550px and 525px variations. The earlier 600px came directly from ibelick.com and remains the reference that framed the comparison; 550px is an explicit choice for this page, not a claim that ibelick uses it. On 5 Oct 2026 Ryan replaced the narrative with one sentence, which measured at two line boxes inside the same 550px box at 1440px and 768px. Future copy changes must be re-measured, but the measure does not move again without Ryan reopening it. If a line bothers you, the sentence is the thing to change, and the copy is Ryan's.",
+        "section": "typography"
+      },
+      {
+        "name": "The Name Stands Alone Rule",
+        "body": "Ryan removed the Founding Operator role line on 5 Oct 2026. The name is now the only thing above the narrative, and the sentence says what Ryan does. Do not put a role line, tagline, pitch or subtitle back under the name without Ryan. If one returns, it is strictly an annotation on the name: body size, body weight, muted tier, zero added margin, one line box below the name, never a second ink-coloured line. The .intro__role class survives only on privacy.html, where it carries the link home.",
         "section": "typography"
       },
       {
@@ -359,12 +371,17 @@
       },
       {
         "name": "The Distance Is The Relationship Rule",
-        "body": "Every gap on the page is one of the distances in the spacing ladder, and which one is used is the only signal of how two elements relate. There are no rules, boxes, tints or badges doing that job. If two elements seem to need a new distance to look related, the hierarchy is wrong, not the ladder.",
+        "body": "Every gap on the page is one of the distances in the spacing assignments, and which one is used is the only signal of how two elements relate. There are no rules, boxes, tints or badges doing that job. If two elements seem to need a new distance to look related, the hierarchy is wrong, not the spacing.",
         "section": "layout"
       },
       {
-        "name": "The Page Sits High Rule",
-        "body": "Vertical padding is 117px above the name against 48px below the last line on desktop, and 56px above below 481px. The page is deliberately top-weighted, not vertically centred and not mis-padded. The void is the only generous gesture the page makes, and it keeps the whole document inside a 700px viewport without scrolling. It should not be evened up.",
+        "name": "The Void Above The Name Rule",
+        "body": "The 117px above the name, and the 56px that replaces it below 481px, are the page's largest deliberate decisions and they are not padding to be evened up. This page has no scroll, no large type, no imagery, no colour and no dividers, so the void is the only generous gesture left available to it. 117px is high enough to read as chosen rather than as a default top margin, and low enough to keep the whole page inside a 700px viewport without scrolling. Emil's rendered 117px is a coincidence, not the reason: it is 64px of authored padding plus 53px of flow taken by an invisible sticky banner. ibelick's 248px was measured and rejected as an outlier. The asymmetry against the 48px bottom padding is the point: do not reduce the void to bring the content up, and do not raise the bottom padding to balance it.",
+        "section": "layout"
+      },
+      {
+        "name": "The Bare List Rule",
+        "body": "Projects and Links are each one paragraph of comma-separated links and nothing else. Previously is one plain sentence with Minima as the link. There are no dates, descriptions, repeated View code labels or per-item rows. The name of the destination is the link, so every accessible name is already unique and no aria-label is needed. An item with no public destination is left out of Projects rather than listed unlinked. Both lists stay in the single reading column: no columns, per-item rows or artificial balancing space.",
         "section": "layout"
       },
       {
@@ -380,27 +397,29 @@
     ],
     "dos": [
       "Do set every new element at 15px. The single size is the premise of the system, not a default to be relaxed.",
-      "Do build hierarchy from the three signals that remain: weight (400 against 500), colour (ink against muted) and position.",
+      "Do build hierarchy from the signals that remain: colour (ink against muted) and position. Weight is spent: 500 marks the name and nothing else.",
       "Do set font-weight explicitly on every rule that sets type, so the weight reads as a decision rather than as Inter's default standing in for one.",
       "Do leave letter-spacing undeclared. Inter's own tracking at 15px is the page's tracking.",
       "Do leave Inter's opsz axis unset and let the browser resolve it from the rendered size.",
-      "Do pick every gap from the distances in the spacing ladder, and let spacing alone carry the grouping.",
-      "Do keep any group's internal gaps at most half the gap that separates it from the next group. 12px inside against 24px between is exactly the 2.0x the rule asks for.",
+      "Do pick every gap from the distances in the spacing assignments, and let spacing alone carry the grouping.",
+      "Do keep any group's internal gaps at most half the gap that separates it from the next group. 12px between paragraphs against 24px between blocks is exactly the 2.0x the rule asks for.",
       "Do keep link text inheriting its context colour and weight, and put all link signal in the underline.",
       "Do keep any non-text identifier at or above 3:1 against paper. The resting underline sits at 4.48:1 for exactly this reason; a lighter, prettier value would fail.",
       "Do add any new text element to the correct group in the @media print block at the same time you add it to the screen styles. This page gets printed, and a text colour that exists in only one of the two tiers is a defect.",
       "Do check any new element in forced-colours mode, where the muted tier collapses into CanvasText and colour-only distinctions stop working.",
       "Do keep :focus-visible visible, offset, and free of layout shift on every interactive element.",
       "Do gate any hover affordance behind (hover: hover) and (pointer: fine), and make sure the resting state alone is sufficient.",
-      "Do delete a spacing token when nothing uses it. All six tokens in :root are in use."
+      "Do delete a spacing token when nothing uses it. Every token in :root is used by at least one rule, and that should stay true."
     ],
     "donts": [
-      "Don't add imagery of any kind, meaning photography, avatar, logo, illustration, icon or decorative SVG. This is an absolute constraint set by Ryan, not an inference from the style.",
-      "Don't introduce a second type size to solve a hierarchy problem. Use weight, colour or position, which is what every existing distinction on the page does.",
-      "Don't add a third weight. The 400 and 500 pair is the whole weight vocabulary, and the h1 is currently the only thing spending the second one.",
+      "Don't add imagery to the visible page, meaning photography, avatar, logo, illustration, icon or decorative SVG. This is an absolute constraint set by Ryan, not an inference from the style. The solid #24303C favicon is the complete exception: a technical identity asset, not a new mark.",
+      "Don't introduce a second type size to solve a hierarchy problem. Use colour or position, which is what every existing distinction on the page does.",
+      "Don't add a third weight, and do not spend the existing 500 on a second element. One element on the page is strong, and that is what makes it the name.",
       "Don't set letter-spacing anywhere, and don't pin opsz on an individual element.",
-      "Don't move the measure to improve how a particular paragraph breaks. It is frozen at 600px on typographic grounds, and it is not to be moved up to rescue a long sentence or down to tighten a short one.",
+      "Don't move the measure away from 550px without Ryan reopening the decision. It is not to be moved up to rescue a long sentence or down to tighten a short one.",
+      "Don't put a role line, tagline or subtitle back under the name on the home page without Ryan.",
       "Don't reintroduce an accent colour, a tint or any hue. Every colour in the system is a neutral grey, including the underline, the focus ring and the selection wash.",
+      "Don't add dates, status lines, descriptions or View code labels back to a list. The lists are bare names.",
       "Don't give a project name a placeholder link, a greyed-out link or a coming soon. Every listed project is a live link; work with nothing public to open is not listed at all.",
       "Don't introduce a third text colour tier. Ink or muted; anything that fits neither should be cut.",
       "Don't set a colour on ::selection. It paints the ground only, because setting colour there also resets text-decoration-color, which flattens the muted tier and jumps the link underline to ink.",

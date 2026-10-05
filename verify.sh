@@ -259,6 +259,14 @@ else
   fail=1
 fi
 
+projects='<p><a href="https://startupskills.dev/">Startup Skills</a>, <a href="https://github.com/ryan-hennebry/competitor-intel">Competitor Intelligence</a>, <a href="https://github.com/ryan-hennebry/growth-experiments">Growth Experiments</a></p>'
+if grep -Fq "$projects" index.html; then
+  echo "ok: final Projects list present"
+else
+  echo "FAIL Projects list has drifted from: $projects"
+  fail=1
+fi
+
 narrative='<p>Currently building AI tools for startups as part of an elaborate side project called <a href="https://in-the-loop.studio/">In The Loop</a>.</p>'
 if grep -Fq "$narrative" index.html; then
   echo "ok: final narrative copy present"
@@ -270,7 +278,10 @@ fi
 for retired in \
   'I explore emerging ecosystems' \
   'now that agents work' \
-  'Founding Operator'
+  'Founding Operator' \
+  'career-matching' \
+  'Career Matching' \
+  'Competitor Intel<'
 do
   if grep -Fq "$retired" index.html; then
     echo "FAIL retired copy is back: $retired"
@@ -298,8 +309,7 @@ for url in \
   'https://minima.global/' \
   'https://startupskills.dev/' \
   'https://github.com/ryan-hennebry/competitor-intel' \
-  'https://github.com/ryan-hennebry/growth-experiments' \
-  'https://github.com/ryan-hennebry/career-matching'
+  'https://github.com/ryan-hennebry/growth-experiments'
 do
   if grep -Fq "href=\"$url\"" index.html; then
     echo "ok: linked $url"

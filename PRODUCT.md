@@ -21,7 +21,7 @@ Both readers arrive warm, already holding a reason to look. Nobody arrives cold 
 
 ## Product Purpose
 
-A quiet background check, not a funnel. The page identifies Ryan, states what he is building now, records that he was Minima's first employee, names three projects with public repositories, and leaves ordinary contact links.
+A quiet background check, not a funnel. The page identifies Ryan, states what he is building now, records that he was Minima's first employee, names three projects with public destinations, and leaves ordinary contact links.
 
 Success means either audience understands the through-line and continues the conversation that already brought them here. There is no second conversion path, because there is no second thing to convert to.
 
@@ -48,10 +48,10 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 - Retired claims do not come back without fresh approval: the Minima team growing to 30, any duration beyond `over four years`, and the Competitor Intel review result.
 - No imagery appears in the page content. The solid-colour favicon is the only image asset. Link previews carry only Ryan's name, with no description or preview image.
 - Ryan is not described as a consultant, a design engineer or a full-stack software engineer.
-- The two-word phrase pairing the acronym with `agents` never appears. The page says `agents` and `coding agents`.
-- In The Loop is linked inline to its public studio site, but it is not listed among the three repository-backed projects.
+- The two-word phrase pairing the acronym with `agents` never appears.
+- In The Loop is linked inline to its public studio site, but it is not listed among the projects.
 - `View project` is barred while no project pages exist.
-- Four projects currently appear: Startup Skills, Competitor Intel, Growth Experiments and Career Matching. Startup Skills links to its site; the other three link to their public repositories.
+- Three projects currently appear: Startup Skills, Competitor Intelligence and Growth Experiments. Startup Skills links to its site; the other two link to their public repositories. Career Matching was removed on 5 Oct 2026.
 - No brief link, because no safe public artefact exists yet.
 - The sole continuation is ordinary contact: email, GitHub or LinkedIn.
 - Ryan owns the copy and edits it directly. Propose wording to him; do not rewrite it in place.
@@ -65,7 +65,7 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 
 ## Evidence on Hand
 
-- Public GitHub repositories for Competitor Intel, Growth Experiments and Career Matching. They are the inspectable work the page points a reader at, and all three sit off-page.
+- The Startup Skills site and the public GitHub repositories for Competitor Intelligence and Growth Experiments. They are the inspectable work the page points a reader at, and all three sit off-page.
 - The parsed CV, which verifies the seed-to-Series-A claim: a $2.5m seed and a contribution to a $6.5m Series A, as Minima's first employee from 2019. Correction to the CV itself: Ryan joined before the seed round and before friends and family, so `from seed to Series A` understates when he arrived. Several agents have read that wording as evidence that the initial-idea stage predated him. The CV should be corrected.
 - A measured audit of reference personal sites, which informs `DESIGN.md` rather than this document.
 - The limits: no public Feed, no customer proof, no external-use evidence and no safe public brief URL.

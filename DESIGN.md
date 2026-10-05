@@ -98,7 +98,7 @@ Colour does more work in this system than in most, because size is off the table
 
 ### Neutral
 - **Pure White** (`{colors.paper}`): the page background, set on both `html` and `body` so overscroll never exposes a different colour. It is true white, not a pulled-back near-white.
-- **Cool Near-Black** (`{colors.ink}`): all narrative text, meaning the name, the two intro sentences and the group contents (17.80:1).
+- **Cool Near-Black** (`{colors.ink}`): all narrative text, meaning the name, the narrative sentence and the group contents (17.80:1).
 - **Cool Muted Grey** (`{colors.muted}`): all annotation text, meaning all three section labels and, on the privacy page only, the link home under the title (5.90:1). This is the second and last text tier.
 - **Neutral Grey Rule** (`{colors.rule}`): the resting link underline (4.48:1). Deliberately raised well past the 1.7 to 2.5:1 the reference sites use, because the underline is the sole non-colour identifier of a link and therefore has to clear the 3:1 non-text contrast floor on its own. It is a neutral matched in luminance to the accent it replaced, so removing the hue cost the link technique nothing.
 - **Neutral Grey Rule, Strong** (`{colors.rule-strong}`): the hover underline and the `:focus-visible` ring (5.92:1).
