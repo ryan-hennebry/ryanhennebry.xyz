@@ -9,7 +9,11 @@ deploy_dir=$(mktemp -d "${TMPDIR:-/tmp}/ryanhennebry-xyz.XXXXXX")
 cleanup() {
   rm -rf -- "$deploy_dir"
 }
-trap cleanup EXIT HUP INT TERM
+# wrangler runs as a child, not via exec, so the EXIT trap removes the copy on any exit or signal.
+trap cleanup EXIT
+trap 'exit 129' HUP
+trap 'exit 130' INT
+trap 'exit 143' TERM
 
 cp index.html "$deploy_dir/index.html"
 cp privacy.html "$deploy_dir/privacy.html"
@@ -41,7 +45,7 @@ if [ "$file_count" != "10" ]; then
   exit 1
 fi
 
-exec npx --yes wrangler@4.125.0 deploy \
+npx --yes wrangler@4.125.0 deploy \
   --config wrangler.jsonc \
   --assets "$deploy_dir" \
   "$@"
