@@ -1,5 +1,12 @@
 # Handoff: ryanhennebry.xyz
 
+5 Oct 2026: at Ryan's request the `Founding Operator` role line and the JSON-LD `jobTitle` were
+removed from `index.html`. The intro spacing selectors were rewritten so the name to the first
+sentence keeps the 24px block step and the two sentences keep 12px; `privacy.html`, which still
+uses `.intro__role` for its link home, renders unchanged. Deployed with `deploy.sh` as Worker
+version `30c176b5-4dfa-48a4-b4ab-b3227c2509fe`; the live `/` and `assets/site.css` were confirmed
+byte-identical to the repo.
+
 ## Status (4 Oct 2026)
 
 4 Oct 2026: cross-repo planning closed. The `visitor_hash` privacy fix is deployed and its

@@ -70,7 +70,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 | Colour | No hue anywhere. Two text tiers, ink and muted. Link signal lives entirely in the underline |
 | Spacing | Seven distances, driven by tokens. The 117px void above the name and the 48px bottom padding are deliberately unequal |
 | Motion | Zero. There is correctly no `prefers-reduced-motion` block, and adding one transition turns that omission into a defect |
-| Structure | `h1`, role line, two narrative paragraphs, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
+| Structure | `h1`, two narrative paragraphs, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
 | Links | Email, GitHub, LinkedIn. `privacy.html` exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being told it probably does not meet UK GDPR Art 13's 'easy to access' requirement. Do not re-link it without Ryan; `verify.sh` fails if `index.html` links it |
 | Projects | Startup Skills, linked to startupskills.dev, then Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
 
@@ -82,7 +82,7 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
   preview image.
 - No location anywhere, including inside the JSON-LD.
 - No claim of clients, customers, users, readers, adoption, outcomes or prices.
-- No rewriting the copy, the role line or the order of the Projects or Links without Ryan. Those get
+- No rewriting the copy, adding a role line under the name, or changing the order of the Projects or Links without Ryan. Those get
   their own session with him.
 - No second type size, no italic, no availability badge, no two-column layout for Projects or Links.
   Each was proposed, measured and rejected.

@@ -43,7 +43,7 @@ components:
   page-title:
     textColor: "{colors.ink}"
     typography: "{typography.strong}"
-  role-line:
+  role-line:  # privacy.html only (the link home); removed from the home page 5 Oct 2026
     textColor: "{colors.muted}"
     typography: "{typography.body}"
   section-label:
@@ -67,9 +67,9 @@ components:
 
 **Creative North Star: "The Index Card"**
 
-This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, a role, two narrative sentences and three labelled groups. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.
+This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, two narrative sentences and three labelled groups. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.
 
-The defining fact of the system is that it has no size hierarchy. Every piece of text on the page is 15px. The name, the role line, the section labels, the project names and the links are all set at the same size in the same face. What separates them is colour, position and, in exactly one place, weight.
+The defining fact of the system is that it has no size hierarchy. Every piece of text on the page is 15px. The name, the section labels, the project names and the links are all set at the same size in the same face. What separates them is colour, position and, in exactly one place, weight.
 
 The second defining fact is that there is no hue. The page is pure white paper, a near-black and a grey that share one faint cool bias, and two neutral greys for the link underline and the focus ring. Nothing on the page is saturated. The signal palette is therefore narrower than it was, and colour is now carrying a distinction that weight used to help with: the section labels differ from the text beneath them by colour alone.
 
@@ -99,7 +99,7 @@ Colour does more work in this system than in most, because size is off the table
 ### Neutral
 - **Pure White** (`{colors.paper}`): the page background, set on both `html` and `body` so overscroll never exposes a different colour. It is true white, not a pulled-back near-white.
 - **Cool Near-Black** (`{colors.ink}`): all narrative text, meaning the name, the two intro sentences and the group contents (17.80:1).
-- **Cool Muted Grey** (`{colors.muted}`): all annotation text, meaning the role line and all three section labels (5.90:1). This is the second and last text tier.
+- **Cool Muted Grey** (`{colors.muted}`): all annotation text, meaning all three section labels and, on the privacy page only, the link home under the title (5.90:1). This is the second and last text tier.
 - **Neutral Grey Rule** (`{colors.rule}`): the resting link underline (4.48:1). Deliberately raised well past the 1.7 to 2.5:1 the reference sites use, because the underline is the sole non-colour identifier of a link and therefore has to clear the 3:1 non-text contrast floor on its own. It is a neutral matched in luminance to the accent it replaced, so removing the hue cost the link technique nothing.
 - **Neutral Grey Rule, Strong** (`{colors.rule-strong}`): the hover underline and the `:focus-visible` ring (5.92:1).
 - **Pale Grey Wash** (`{colors.selection}`): the `::selection` background. It is neutral, so selecting text greys the page rather than tinting it in any hue, the browser's blue included.
@@ -143,7 +143,7 @@ compact text card with only `Ryan Hennebry`, no description and no preview image
 There are exactly two typographic roles, and they differ only in weight.
 
 - **Strong** (`{typography.strong}`): the `h1`, and nothing else. This is the only element on the page set at 500.
-- **Body** (`{typography.body}`): everything else, meaning the role line, all three section labels, every paragraph and every link. 400 is Inter's default instance and it is stated explicitly everywhere it applies.
+- **Body** (`{typography.body}`): everything else, meaning all three section labels, every paragraph and every link. 400 is Inter's default instance and it is stated explicitly everywhere it applies.
 
 The weight step is 400 to 500, a 100-unit delta. It is wider than it was, and it is used in exactly one place, so weight is no longer a general-purpose hierarchy signal on this page. It marks the name and stops.
 
@@ -171,7 +171,7 @@ Measure: the column is 550px. At the full measure, both current narrative senten
 
 The earlier 600px measure came directly from ibelick.com and remains the reference that framed the comparison. The move to 550px is an explicit choice for this page's final copy, not a claim that ibelick uses 550px. Future copy changes must be re-measured, but the measure does not move again without Ryan reopening it.
 
-**The Role Line Rule.** The role line is the only second-tier text above the fold and the only thing on the page that qualifies the name. Without it the name is the sole identity signal, and a reader arriving from an email has to read the narrative to find out what Ryan does. It is therefore load-bearing and not decoration. It is also strictly an annotation on the name: body size, body weight, muted tier, zero added margin, sitting one line box below the name. It must never become a tagline, a pitch, a subtitle at another size, or a second ink-coloured line, because any of those would make it compete with the name instead of qualifying it.
+**The Name Stands Alone Rule.** Ryan removed the `Founding Operator` role line on 5 Oct 2026. The name is now the only thing above the narrative, and the first sentence says what Ryan does. Do not put a role line, tagline, pitch or subtitle back under the name without Ryan. If one returns, it is strictly an annotation on the name: body size, body weight, muted tier, zero added margin, one line box below the name, never a second ink-coloured line. The `.intro__role` class survives only on `privacy.html`, where it carries the link home.
 
 ## Layout
 
@@ -185,10 +185,10 @@ There is no proportional ladder. There are six distances plus a deliberate zero,
 
 | Distance | Relationship |
 | --- | --- |
-| 0px | The name to the role line. Every margin is reset, so the role line sits exactly one line box below the name and the two read as one unit |
+| 0px | On the privacy page only, the title to the link home beneath it. Every margin is reset, so that line sits exactly one line box below the title and the two read as one unit |
 | 4px | A section label to its content |
-| 12px | The first narrative sentence to the second. The role line is excluded |
-| 24px | Block to block, meaning the role line to the first body paragraph, intro to Previously, Previously to Projects and Projects to Links |
+| 12px | The first narrative sentence to the second |
+| 24px | Block to block, meaning the name to the first body paragraph, intro to Previously, Previously to Projects and Projects to Links |
 | 48px | The page's bottom padding |
 | 56px | Above the name, below 481px |
 | 117px | Above the name, at desktop |
@@ -209,9 +209,9 @@ Changing the measure to 550px changes nothing at narrow widths. Below the 598px 
 
 **The Distance Is The Relationship Rule.** Every gap on the page is one of the distances in the table above, and which one is used is the only signal of how two elements relate. There are no rules, boxes, tints or badges doing that job. If two elements seem to need a new distance to look related, the hierarchy is wrong, not the spacing.
 
-One correction is worth recording, because it is a trap that could easily be reintroduced. The step from the role line to the first body paragraph used to be governed by a plain `.intro p + p`, which handed it the paragraph step, because the role line is itself a `p`. The top of the page ran short by the difference; at today's values the same mistake would cost 12px. Two selectors now do the job: `.intro__role + p` takes the 24px block step, and `.intro p + p + p` takes the 12px paragraph step from the third `p` onward, so the role line is excluded from it. Any future rule that spaces the intro by element type alone will make the same mistake. The role line is an annotation on the name rather than a paragraph in the narrative, and it has to be addressed by its class.
+One correction is worth recording, because it is a trap that could easily be reintroduced. The step into the narrative used to be governed by a plain `.intro p + p`, which handed it the paragraph step, because the role line was itself a `p`. The top of the page ran short by the difference; at today's values the same mistake would cost 12px. The selectors now do the job by role, not by count: `.intro h1 + p:not(.intro__role)` (the home page, where the narrative follows the name) and `.intro__role + p` (the privacy page, where it follows the link home) take the 24px block step, and `.intro p:not(.intro__role) + p` takes the 12px paragraph step between narrative sentences only. The earlier `.intro p + p + p` counted paragraphs, so removing the role line on 5 Oct 2026 would have collapsed both home-page steps to 0px. Any future rule that spaces the intro by element type or position alone will make the same mistake.
 
-One thing inside that table was decided rather than defaulted, and it should not be silently reopened. `--space-group` is a single token at 24px doing two jobs: the step from the role line to the first paragraph, and the step from block to block. Ryan considered splitting those relationships and chose to keep them identical. The page is meant to read as one dense object under one long silence, not as a graded outline. The stylesheet reuses `--space-group` on `.intro__role + p` and all three sections for that reason. Do not hardcode a separate number there, and do not split the token without reopening the decision explicitly.
+One thing inside that table was decided rather than defaulted, and it should not be silently reopened. `--space-group` is a single token at 24px doing two jobs: the step from the name to the first paragraph, and the step from block to block. Ryan considered splitting those relationships and chose to keep them identical. The page is meant to read as one dense object under one long silence, not as a graded outline. The stylesheet reuses `--space-group` on the narrative-entry selectors and all three sections for that reason. Do not hardcode a separate number there, and do not split the token without reopening the decision explicitly.
 
 **The Void Above The Name Rule.** The 117px above the name, and the 56px that replaces it below 481px, are the page's largest deliberate decisions and they are not padding to be evened up. The justification is the page's own rather than a borrowed number. This page has no scroll, no large type, no imagery, no colour and no dividers, so the void is the only generous gesture left available to it: it is the single place where this design can spend anything at all. 117px is high enough to read as chosen rather than as a browser's or a framework's default top margin, and it is still low enough to keep the whole page inside a 700px viewport without scrolling. That pair of constraints, generous enough to read as a decision and tight enough to keep the page whole on one screen, is what fixes the value.
 
@@ -263,11 +263,11 @@ The only interactive element on the page.
 
 ### Page Title
 
-The `h1`, used once, holding the name and nothing else, carrying no margin below it. It is the only element on the page at 500 weight, and that, its ink colour, its position first in the document and the 117px of silence above it are what identify it. The rule sets size and weight only; the ink comes from `body` by inheritance, and the `color: var(--ink)` the `h1` used to restate was removed as redundant. There is no tagline, no subtitle and no availability badge attached to it; the role line beneath it is a separate element with its own rule.
+The `h1`, used once, holding the name and nothing else, carrying no margin below it. It is the only element on the page at 500 weight, and that, its ink colour, its position first in the document and the 117px of silence above it are what identify it. The rule sets size and weight only; the ink comes from `body` by inheritance, and the `color: var(--ink)` the `h1` used to restate was removed as redundant. There is no role line, tagline, subtitle or availability badge attached to it; the first narrative sentence follows it at the 24px block step.
 
 ### Role Line
 
-A `p` directly under the `h1`: 15px, 400 weight, muted, no margin of its own, so it sits one line box below the name. It reads `Founding Operator`. It is the page's only second-tier text above the fold and the only element that says what Ryan does before the narrative starts. See The Role Line Rule for what it must not become.
+Removed from the home page on 5 Oct 2026; see The Name Stands Alone Rule. The `.intro__role` class remains for `privacy.html` only: a `p` directly under the `h1` holding the link home, at 15px, 400 weight, muted, with no margin of its own.
 
 ### Section Label
 

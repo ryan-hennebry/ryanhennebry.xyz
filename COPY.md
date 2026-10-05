@@ -7,7 +7,6 @@ Write normal apostrophes. I convert them when applying (they are `&#8217;` in th
 ---
 
 Ryan Hennebry
-Founding Operator
 
 I explore emerging ecosystems and build systems that help people navigate them.
 
@@ -44,7 +43,7 @@ Break one of these and the page claims something it cannot support. Tell me if y
 3. **No customers, clients, users, readers, adoption, outcomes or prices.** Nothing currently claims any, and nothing here can support one.
 4. **No location, anywhere on the page.** Not in the copy, not in the metadata.
 5. **British English, no em dash, no emoji, pure ASCII.** The only non-ASCII characters in the markup are the escaped apostrophes.
-6. **Not a consultant, a design engineer or a full-stack software engineer.** The role line reads `Founding Operator`.
+6. **Not a consultant, a design engineer or a full-stack software engineer.** There is no role line; Ryan removed `Founding Operator` on 5 Oct 2026.
 
 ## Notes on the shape
 
