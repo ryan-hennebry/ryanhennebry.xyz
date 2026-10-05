@@ -25,7 +25,7 @@
 
   /*
     FROZEN at 550px. Ryan selected this measure after comparing 600px, 550px
-    and 525px with the final copy. Both narrative paragraphs wrap at the full
+    and 525px with the final copy. The narrative sentence wraps at the full
     measure; the type, tracking and browser's natural pretty wrap stay unchanged.
   */
   --measure: 550px;

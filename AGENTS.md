@@ -64,13 +64,13 @@ Every value below was measured, argued and settled. Treat them as fixed, not as 
 
 | Layer | Locked |
 |---|---|
-| Body copy | Two narrative sentences, each set as two lines at the full measure |
+| Body copy | One narrative sentence, set as two lines at the full measure (Ryan replaced the two earlier sentences on 5 Oct 2026) |
 | Measure | 550px, frozen for the final copy |
 | Type | Inter, self-hosted variable latin subset. One size, 15px, for every element. Two weights, 400 and 500, with 500 used once on the `h1` |
 | Colour | No hue anywhere. Two text tiers, ink and muted. Link signal lives entirely in the underline |
 | Spacing | Seven distances, driven by tokens. The 117px void above the name and the 48px bottom padding are deliberately unequal |
 | Motion | Zero. There is correctly no `prefers-reduced-motion` block, and adding one transition turns that omission into a defect |
-| Structure | `h1`, two narrative paragraphs, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
+| Structure | `h1`, one narrative paragraph, then Previously, Projects and Links. Heading outline `H1 > H2 > H2 > H2` at every width |
 | Links | Email, GitHub, LinkedIn. `privacy.html` exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being told it probably does not meet UK GDPR Art 13's 'easy to access' requirement. Do not re-link it without Ryan; `verify.sh` fails if `index.html` links it |
 | Projects | Startup Skills, linked to startupskills.dev, then Competitor Intel, Growth Experiments and Career Matching, each linked to a public repository. Nothing unlinked, greyed or marked as coming |
 

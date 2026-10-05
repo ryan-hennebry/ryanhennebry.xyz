@@ -1,5 +1,11 @@
 # Handoff: ryanhennebry.xyz
 
+5 Oct 2026, later: at Ryan's request the two narrative sentences were replaced by one, `Currently
+building AI tools for startups as part of an elaborate side project called In The Loop.`, with the
+In The Loop link kept. Spacing is unchanged: 24px from the name, 24px to Previously. Deployed
+with `deploy.sh` as Worker version `58bc0edb-47c2-443d-864b-c316d9361a57`; the live `/` was
+confirmed byte-identical to the repo.
+
 5 Oct 2026: at Ryan's request the `Founding Operator` role line and the JSON-LD `jobTitle` were
 removed from `index.html`. The intro spacing selectors were rewritten so the name to the first
 sentence keeps the 24px block step and the two sentences keep 12px; `privacy.html`, which still

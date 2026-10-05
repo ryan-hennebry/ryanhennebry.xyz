@@ -8,9 +8,7 @@ Write normal apostrophes. I convert them when applying (they are `&#8217;` in th
 
 Ryan Hennebry
 
-I explore emerging ecosystems and build systems that help people navigate them.
-
-Currently building [In The Loop](https://in-the-loop.studio/), exploring how startups should operate now that agents work.
+Currently building AI tools for startups as part of an elaborate side project called [In The Loop](https://in-the-loop.studio/).
 
 Previously
 
@@ -47,7 +45,7 @@ Break one of these and the page claims something it cannot support. Tell me if y
 
 ## Notes on the shape
 
-- **Two sentences at the current width.** The column is 550px. Both sentences intentionally wrap to two lines at the full measure.
+- **One sentence at the current width.** The column is 550px. The sentence wraps to two lines at the full measure, with `called In The Loop.` on the second.
 - **Previously, Projects and Links are three labelled groups.** Each label sits 4px above one plain line of content.
 - **Projects are one comma-separated paragraph.** The three supplied repositories are public and openable. The project name is the link text; there are no descriptions.
 - **Links are one comma-separated paragraph.** The destination name is the link text.

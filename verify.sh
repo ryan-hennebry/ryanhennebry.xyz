@@ -259,15 +259,24 @@ else
   fail=1
 fi
 
-for sentence in \
-  'I explore emerging ecosystems and build systems that help people navigate them.' \
-  'exploring how startups should operate now that agents work.'
+narrative='<p>Currently building AI tools for startups as part of an elaborate side project called <a href="https://in-the-loop.studio/">In The Loop</a>.</p>'
+if grep -Fq "$narrative" index.html; then
+  echo "ok: final narrative copy present"
+else
+  echo "FAIL missing final narrative copy: $narrative"
+  fail=1
+fi
+
+for retired in \
+  'I explore emerging ecosystems' \
+  'now that agents work' \
+  'Founding Operator'
 do
-  if grep -Fq "$sentence" index.html; then
-    echo "ok: final narrative copy present"
-  else
-    echo "FAIL missing final narrative copy: $sentence"
+  if grep -Fq "$retired" index.html; then
+    echo "FAIL retired copy is back: $retired"
     fail=1
+  else
+    echo "ok: retired copy absent: $retired"
   fi
 done
 

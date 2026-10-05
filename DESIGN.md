@@ -67,7 +67,7 @@ components:
 
 **Creative North Star: "The Index Card"**
 
-This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, two narrative sentences and three labelled groups. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.
+This is a page with the density and manners of a well-set index card: one surface, one column, a name at the top, one narrative sentence and three labelled groups. Nothing overlaps, nothing floats, nothing is layered on top of anything else. Craft is expressed as the absence of mistakes rather than the presence of decoration, so every element that survived on the page is one that answers a factual question a reader actually has.
 
 The defining fact of the system is that it has no size hierarchy. Every piece of text on the page is 15px. The name, the section labels, the project names and the links are all set at the same size in the same face. What separates them is colour, position and, in exactly one place, weight.
 
@@ -153,7 +153,7 @@ The 1.5 figure is sourced rather than tuned. Three independent audits arrived at
 
 Paragraphs carry `text-wrap: pretty`, which suppresses single-word final lines where the browser supports it. The `h1` has no `text-wrap` treatment; wrapping the name is left to the browser.
 
-Measure: the column is 550px. At the full measure, both current narrative sentences set as two lines with `text-wrap: pretty`. Below a 598px viewport the fixed 24px gutters, not the maximum measure, determine the line length.
+Measure: the column is 550px. At the full measure, the narrative sentence sets as two lines with `text-wrap: pretty`. Below a 598px viewport the fixed 24px gutters, not the maximum measure, determine the line length.
 
 ### Named Rules
 
@@ -167,11 +167,11 @@ Measure: the column is 550px. At the full measure, both current narrative senten
 
 **The Unset Optical Size Rule.** Inter's `opsz` axis runs 14 to 32 and is deliberately never set. The browser resolves it from the rendered size, which is correct at every size the page uses. Pinning it would override that resolution for no gain.
 
-**The Measure Is Frozen Rule.** The measure is 550px and the stylesheet marks it frozen for the final copy. Ryan selected it after comparing wider and narrower rendered variations. A Chromium probe under `file://`, run after `document.fonts.ready`, measured a 550px content box at 1440px and 768px viewports. Both narrative sentences occupied two 22.5px line boxes, with no horizontal overflow. The same probe measured the intended 24px, 12px and 4px spacing relationships exactly.
+**The Measure Is Frozen Rule.** The measure is 550px and the stylesheet marks it frozen for the final copy. Ryan selected it after comparing wider and narrower rendered variations. A Chromium probe under `file://`, run after `document.fonts.ready`, measured a 550px content box at 1440px and 768px viewports. Both narrative sentences then occupied two 22.5px line boxes, with no horizontal overflow, and the same probe measured the intended 24px, 12px and 4px spacing relationships exactly. On 5 Oct 2026 Ryan replaced them with one sentence; a probe at 1440px and 768px measured it at two line boxes (519px, then 135px) inside the same 550px box, with the 24px and 4px relationships exact.
 
 The earlier 600px measure came directly from ibelick.com and remains the reference that framed the comparison. The move to 550px is an explicit choice for this page's final copy, not a claim that ibelick uses 550px. Future copy changes must be re-measured, but the measure does not move again without Ryan reopening it.
 
-**The Name Stands Alone Rule.** Ryan removed the `Founding Operator` role line on 5 Oct 2026. The name is now the only thing above the narrative, and the first sentence says what Ryan does. Do not put a role line, tagline, pitch or subtitle back under the name without Ryan. If one returns, it is strictly an annotation on the name: body size, body weight, muted tier, zero added margin, one line box below the name, never a second ink-coloured line. The `.intro__role` class survives only on `privacy.html`, where it carries the link home.
+**The Name Stands Alone Rule.** Ryan removed the `Founding Operator` role line on 5 Oct 2026. The name is now the only thing above the narrative, and the sentence says what Ryan does. Do not put a role line, tagline, pitch or subtitle back under the name without Ryan. If one returns, it is strictly an annotation on the name: body size, body weight, muted tier, zero added margin, one line box below the name, never a second ink-coloured line. The `.intro__role` class survives only on `privacy.html`, where it carries the link home.
 
 ## Layout
 
@@ -187,7 +187,7 @@ There is no proportional ladder. There are six distances plus a deliberate zero,
 | --- | --- |
 | 0px | On the privacy page only, the title to the link home beneath it. Every margin is reset, so that line sits exactly one line box below the title and the two read as one unit |
 | 4px | A section label to its content |
-| 12px | The first narrative sentence to the second |
+| 12px | Adjacent paragraphs. The home page now has one narrative sentence, so only `privacy.html` uses this step |
 | 24px | Block to block, meaning the name to the first body paragraph, intro to Previously, Previously to Projects and Projects to Links |
 | 48px | The page's bottom padding |
 | 56px | Above the name, below 481px |
@@ -209,7 +209,7 @@ Changing the measure to 550px changes nothing at narrow widths. Below the 598px 
 
 **The Distance Is The Relationship Rule.** Every gap on the page is one of the distances in the table above, and which one is used is the only signal of how two elements relate. There are no rules, boxes, tints or badges doing that job. If two elements seem to need a new distance to look related, the hierarchy is wrong, not the spacing.
 
-One correction is worth recording, because it is a trap that could easily be reintroduced. The step into the narrative used to be governed by a plain `.intro p + p`, which handed it the paragraph step, because the role line was itself a `p`. The top of the page ran short by the difference; at today's values the same mistake would cost 12px. The selectors now do the job by role, not by count: `.intro h1 + p:not(.intro__role)` (the home page, where the narrative follows the name) and `.intro__role + p` (the privacy page, where it follows the link home) take the 24px block step, and `.intro p:not(.intro__role) + p` takes the 12px paragraph step between narrative sentences only. The earlier `.intro p + p + p` counted paragraphs, so removing the role line on 5 Oct 2026 would have collapsed both home-page steps to 0px. Any future rule that spaces the intro by element type or position alone will make the same mistake.
+One correction is worth recording, because it is a trap that could easily be reintroduced. The step into the narrative used to be governed by a plain `.intro p + p`, which handed it the paragraph step, because the role line was itself a `p`. The top of the page ran short by the difference; at today's values the same mistake would cost 12px. The selectors now do the job by role, not by count: `.intro h1 + p:not(.intro__role)` (the home page, where the narrative follows the name) and `.intro__role + p` (the privacy page, where it follows the link home) take the 24px block step, and `.intro p:not(.intro__role) + p` takes the 12px paragraph step between narrative paragraphs only. The earlier `.intro p + p + p` counted paragraphs, so removing the role line on 5 Oct 2026 would have collapsed both home-page steps to 0px. Any future rule that spaces the intro by element type or position alone will make the same mistake.
 
 One thing inside that table was decided rather than defaulted, and it should not be silently reopened. `--space-group` is a single token at 24px doing two jobs: the step from the name to the first paragraph, and the step from block to block. Ryan considered splitting those relationships and chose to keep them identical. The page is meant to read as one dense object under one long silence, not as a graded outline. The stylesheet reuses `--space-group` on the narrative-entry selectors and all three sections for that reason. Do not hardcode a separate number there, and do not split the token without reopening the decision explicitly.
 
