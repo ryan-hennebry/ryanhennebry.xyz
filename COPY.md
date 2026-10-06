@@ -16,7 +16,7 @@ First employee at [Minima](https://minima.global/).
 
 Projects
 
-[Startup Skills](https://startupskills.dev/), [Competitor Intelligence](https://github.com/ryan-hennebry/competitor-intel), [Growth Experiments](https://github.com/ryan-hennebry/growth-experiments)
+[Startup Skills](https://startupskills.dev/), [Competitor Intelligence](https://ryanhennebry.xyz/competitor-intel-agent/), [Growth Experiments](https://github.com/ryan-hennebry/growth-experiments)
 
 Links
 
@@ -47,7 +47,7 @@ Break one of these and the page claims something it cannot support. Tell me if y
 
 - **One sentence at the current width.** The column is 550px. The sentence wraps to two lines at the full measure, with `called In The Loop.` on the second.
 - **Previously, Projects and Links are three labelled groups.** Each label sits 4px above one plain line of content.
-- **Projects are one comma-separated paragraph.** Startup Skills links to its site; the two repositories are public and openable. The project name is the link text; there are no descriptions.
+- **Projects are one comma-separated paragraph.** Startup Skills links to its site, Competitor Intelligence to its example brief at `/competitor-intel-agent/`, and Growth Experiments to its public repository. The project name is the link text; there are no descriptions.
 - **Links are one comma-separated paragraph.** The destination name is the link text.
 - **Privacy is not in Links.** `privacy.html` exists but is deliberately unlinked from `index.html`; Ryan chose this on 4 Oct 2026 after being told it probably does not meet UK GDPR Art 13's 'easy to access' requirement.
 

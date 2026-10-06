@@ -1,5 +1,11 @@
 # Handoff: ryanhennebry.xyz
 
+6 Oct 2026: at Ryan's request the homepage Projects link `Competitor Intelligence` now points to
+`https://ryanhennebry.xyz/competitor-intel-agent/` instead of the GitHub repository. The URL is
+absolute so `/` still works from `file://`. Text, order and spacing are unchanged. Deployed
+as Worker version `7b485435-6974-460c-8b83-e5d4115f84a0`; live `/` and `/competitor-intel-agent/`
+were confirmed byte-identical to the repo.
+
 5 Oct 2026, deployed 2026-10-05 22:05 UTC as Worker version
 `4a8c8119-9917-4580-b4d7-9d53ea93afb4`, committed and pushed as `0072cb3`: `competitor-intel-agent/` holds Ryan's prototype T
 page (`index.html` = `variant-t.html` from `prototype/founder-page` `01ba34c`) and its seven

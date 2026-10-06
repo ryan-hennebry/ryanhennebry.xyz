@@ -259,7 +259,7 @@ else
   fail=1
 fi
 
-projects='<p><a href="https://startupskills.dev/">Startup Skills</a>, <a href="https://github.com/ryan-hennebry/competitor-intel">Competitor Intelligence</a>, <a href="https://github.com/ryan-hennebry/growth-experiments">Growth Experiments</a></p>'
+projects='<p><a href="https://startupskills.dev/">Startup Skills</a>, <a href="https://ryanhennebry.xyz/competitor-intel-agent/">Competitor Intelligence</a>, <a href="https://github.com/ryan-hennebry/growth-experiments">Growth Experiments</a></p>'
 if grep -Fq "$projects" index.html; then
   echo "ok: final Projects list present"
 else
@@ -308,7 +308,7 @@ done
 for url in \
   'https://minima.global/' \
   'https://startupskills.dev/' \
-  'https://github.com/ryan-hennebry/competitor-intel' \
+  'https://ryanhennebry.xyz/competitor-intel-agent/' \
   'https://github.com/ryan-hennebry/growth-experiments'
 do
   if grep -Fq "href=\"$url\"" index.html; then

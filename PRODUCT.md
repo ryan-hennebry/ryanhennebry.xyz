@@ -43,7 +43,7 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 
 - No claim of customers, clients, users, readers, adoption, outcomes or prices. Nothing currently supports one.
 - No location anywhere, by Ryan's explicit choice, including in the structured data.
-- The page makes one employment claim, that Ryan was Minima's first employee, and links Minima as the named organisation. Three linked public repositories are the work a reader can inspect.
+- The page makes one employment claim, that Ryan was Minima's first employee, and links Minima as the named organisation. The three linked projects are the work a reader can inspect.
 - If `from seed to Series A`, or any equivalent stage claim, returns to the page, it must be accurate: a $2.5m seed and a contribution to a $6.5m Series A, with Ryan as Minima's first employee from 2019.
 - Retired claims do not come back without fresh approval: the Minima team growing to 30, any duration beyond `over four years`, and the Competitor Intel review result.
 - No imagery appears in the page content. The solid-colour favicon is the only image asset. Link previews carry only Ryan's name, with no description or preview image.
@@ -51,7 +51,7 @@ What the page may claim, and what it may not. How it looks is out of scope here.
 - The two-word phrase pairing the acronym with `agents` never appears.
 - In The Loop is linked inline to its public studio site, but it is not listed among the projects.
 - `View project` is barred while no project pages exist.
-- Three projects currently appear: Startup Skills, Competitor Intelligence and Growth Experiments. Startup Skills links to its site; the other two link to their public repositories. Career Matching was removed on 5 Oct 2026.
+- Three projects currently appear: Startup Skills, Competitor Intelligence and Growth Experiments. Startup Skills links to its site, Competitor Intelligence to its example brief at `/competitor-intel-agent/` (from 6 Oct 2026; previously its repository), and Growth Experiments to its public repository. Career Matching was removed on 5 Oct 2026.
 - No brief link, because no safe public artefact exists yet.
 - The sole continuation is ordinary contact: email, GitHub or LinkedIn.
 - Ryan owns the copy and edits it directly. Propose wording to him; do not rewrite it in place.
