@@ -1,7 +1,7 @@
 # Handoff: ryanhennebry.xyz
 
 5 Oct 2026, deployed 2026-10-05 22:05 UTC as Worker version
-`4a8c8119-9917-4580-b4d7-9d53ea93afb4`, NOT committed: `competitor-intel-agent/` holds Ryan's prototype T
+`4a8c8119-9917-4580-b4d7-9d53ea93afb4`, committed and pushed as `0072cb3`: `competitor-intel-agent/` holds Ryan's prototype T
 page (`index.html` = `variant-t.html` from `prototype/founder-page` `01ba34c`) and its seven
 assets. Ryan ruled directly: host ryanhennebry.xyz, slug `competitor-intel-agent`, install link
 stays `https://github.com/ryan-hennebry/competitor-intel` knowing it is the older agent. This
@@ -9,7 +9,7 @@ stands in for the T page's own publication grill (macro C15-8); `../PRODUCT-DIRE
 macro summary still say the host is undecided. `deploy.sh` ships 18 files and `verify.sh` checks
 the new files. The identity-page rules in `AGENTS.md` (one page, no imagery, no preview image)
 describe `/` only and were not rewritten. Live `/competitor-intel-agent/` and `/` were confirmed
-byte-identical to the repo, and all seven assets return 200. Ryan decides on commit and push.
+byte-identical to the repo, and all seven assets return 200.
 
 5 Oct 2026, Projects: at Ryan's request Projects now reads `Startup Skills, Competitor
 Intelligence, Growth Experiments`. Career Matching was removed and the Competitor Intel link text
