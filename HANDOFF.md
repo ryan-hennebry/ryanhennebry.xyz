@@ -9,7 +9,9 @@ stands in for the T page's own publication grill (macro C15-8); `../PRODUCT-DIRE
 macro summary still say the host is undecided. `deploy.sh` ships 18 files and `verify.sh` checks
 the new files. The identity-page rules in `AGENTS.md` (one page, no imagery, no preview image)
 describe `/` only and were not rewritten. Live `/competitor-intel-agent/` and `/` were confirmed
-byte-identical to the repo, and all seven assets return 200.
+byte-identical to the repo, and all seven assets return 200. Redeployed 2026-10-06 08:49 UTC as
+version `60285e93-a242-48ae-982d-5216f824be79`: title, 2x card (2400x1260, ?v=4), matched to
+Startup Skills' 192px edge.
 
 5 Oct 2026, Projects: at Ryan's request Projects now reads `Startup Skills, Competitor
 Intelligence, Growth Experiments`. Career Matching was removed and the Competitor Intel link text

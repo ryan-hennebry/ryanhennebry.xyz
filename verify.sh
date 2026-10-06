@@ -343,7 +343,7 @@ do
 done
 
 for asset_spec in \
-  'og.png|PNG image data, 1200 x 630' \
+  'og.png|PNG image data, 2400 x 1260' \
   'favicon-32.png|PNG image data, 32 x 32' \
   'apple-touch-icon.png|PNG image data, 180 x 180'
 do
@@ -360,7 +360,7 @@ done
 for cia_value in \
   '<link rel="canonical" href="https://ryanhennebry.xyz/competitor-intel-agent">' \
   '<meta property="og:url" content="https://ryanhennebry.xyz/competitor-intel-agent">' \
-  '<meta property="og:image" content="https://ryanhennebry.xyz/competitor-intel-agent/og.png?v=2">'
+  '<meta property="og:image" content="https://ryanhennebry.xyz/competitor-intel-agent/og.png?v=4">'
 do
   if [ -f "$cia/index.html" ] && grep -Fq "$cia_value" "$cia/index.html"; then
     echo "ok: $cia metadata $cia_value"
