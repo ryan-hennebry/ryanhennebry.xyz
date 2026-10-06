@@ -327,6 +327,49 @@ else
   echo "ok: no location"
 fi
 
+echo "== the competitor intel agent page =="
+# A separate page under /competitor-intel-agent/ (Ryan, 5 Oct 2026), built from
+# prototype T. The identity-page checks above do not apply to it.
+cia=competitor-intel-agent
+for f in index.html fonts/plex-sans-t-var.woff2 fonts/OFL-IBMPlexSans.txt \
+  favicon-p.svg favicon-32.png apple-touch-icon.png in-the-loop-mark.svg og.png
+do
+  if [ -f "$cia/$f" ]; then
+    echo "ok: $cia/$f present"
+  else
+    echo "FAIL missing $cia/$f"
+    fail=1
+  fi
+done
+
+for asset_spec in \
+  'og.png|PNG image data, 1200 x 630' \
+  'favicon-32.png|PNG image data, 32 x 32' \
+  'apple-touch-icon.png|PNG image data, 180 x 180'
+do
+  asset=$cia/${asset_spec%%|*}
+  signature=${asset_spec#*|}
+  if [ -f "$asset" ] && file "$asset" | grep -Fq "$signature"; then
+    echo "ok: $asset has its required format and dimensions"
+  else
+    echo "FAIL $asset is missing or has the wrong format or dimensions."
+    fail=1
+  fi
+done
+
+for cia_value in \
+  '<link rel="canonical" href="https://ryanhennebry.xyz/competitor-intel-agent">' \
+  '<meta property="og:url" content="https://ryanhennebry.xyz/competitor-intel-agent">' \
+  '<meta property="og:image" content="https://ryanhennebry.xyz/competitor-intel-agent/og.png?v=2">'
+do
+  if [ -f "$cia/index.html" ] && grep -Fq "$cia_value" "$cia/index.html"; then
+    echo "ok: $cia metadata $cia_value"
+  else
+    echo "FAIL $cia/index.html is missing: $cia_value"
+    fail=1
+  fi
+done
+
 echo "== the Worker =="
 if worker_tests=$(node --test test/*.test.mjs 2>&1); then
   echo "ok: Worker tests pass"

@@ -15,7 +15,7 @@
     }
   ],
   // The assets directory is supplied at the command line by deploy.sh, which
-  // builds a temp dir of exactly the ten public files. Wrangler merges
+  // builds a temp dir of exactly the eighteen public files. Wrangler merges
   // --assets over this block as the "directory" value, so it is deliberately
   // absent here: there is no checked-in directory that is safe to serve.
   "assets": {

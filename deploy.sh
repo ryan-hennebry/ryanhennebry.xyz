@@ -23,6 +23,7 @@ cp sitemap.xml "$deploy_dir/sitemap.xml"
 cp favicon.ico "$deploy_dir/favicon.ico"
 cp favicon-48.png "$deploy_dir/favicon-48.png"
 cp apple-touch-icon.png "$deploy_dir/apple-touch-icon.png"
+cp -R competitor-intel-agent "$deploy_dir/competitor-intel-agent"
 
 for file in \
   index.html \
@@ -34,14 +35,22 @@ for file in \
   sitemap.xml \
   favicon.ico \
   favicon-48.png \
-  apple-touch-icon.png
+  apple-touch-icon.png \
+  competitor-intel-agent/index.html \
+  competitor-intel-agent/fonts/plex-sans-t-var.woff2 \
+  competitor-intel-agent/fonts/OFL-IBMPlexSans.txt \
+  competitor-intel-agent/favicon-p.svg \
+  competitor-intel-agent/favicon-32.png \
+  competitor-intel-agent/apple-touch-icon.png \
+  competitor-intel-agent/in-the-loop-mark.svg \
+  competitor-intel-agent/og.png
 do
   cmp "$file" "$deploy_dir/$file"
 done
 
 file_count=$(find "$deploy_dir" -type f | wc -l | tr -d ' ')
-if [ "$file_count" != "10" ]; then
-  echo "FAIL expected 10 deployment files, found $file_count"
+if [ "$file_count" != "18" ]; then
+  echo "FAIL expected 18 deployment files, found $file_count"
   exit 1
 fi
 

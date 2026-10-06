@@ -4,6 +4,10 @@ The identity page. One static document under Ryan's own name, and the only surfa
 person rather than the work. Parent workspace rules live in `../AGENTS.md`. This file wins on
 conflict with it.
 
+The page rules here govern the identity page at `/` only. `/competitor-intel-agent/` is a separate
+example-brief page with its own assets and share card, built in the competitor-intelligence-prototype
+worktree on branch `prototype/founder-page` and copied in; change it there, then copy it in.
+
 **Shared direction:** before changing the project list, cross-product positioning or any link that
 defines Ryan's relationship to In The Loop, read `../PRODUCT-DIRECTION.md`. It owns the relationship
 between the independent products and the `/grill-me` gate for major cross-repository changes; this
